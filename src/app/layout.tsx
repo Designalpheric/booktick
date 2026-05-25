@@ -4,6 +4,7 @@ import { Fraunces, Inter, Instrument_Sans, Instrument_Serif } from "next/font/go
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import CTABanner from "@/components/layout/CTABanner";
 import WhatsAppFloatButton from "@/components/ui/WhatsAppFloatButton";
 
 /* ── Brand Fonts ──────────────────────────────────────────────────────────────
@@ -96,6 +97,7 @@ export default function RootLayout({
           <Header />
         </Suspense>
         <main>{children}</main>
+        <CTABanner />
         <Footer />
         <WhatsAppFloatButton />
       </body>

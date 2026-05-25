@@ -561,46 +561,6 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* ── Bottom CTA strip ─────────────────────────────────────────────── */}
-      <div
-        className="py-14"
-        style={{ backgroundColor: "#0E1424" }}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h2
-            className="font-extrabold text-white mb-3 leading-tight"
-            style={{ fontSize: "clamp(24px, 3.5vw, 40px)", letterSpacing: "-0.025em" }}
-          >
-            Prefer to talk?{" "}
-            <span className="font-serif italic font-normal" style={{ color: "#F2A93B" }}>
-              We&apos;re one call away.
-            </span>
-          </h2>
-          <p className="text-white/50 mb-8 max-w-lg mx-auto text-sm leading-relaxed">
-            Our travel experts are available Mon–Sat, 9 AM to 8 PM. Call us or start a WhatsApp chat right now.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="tel:+919876543210"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 font-bold px-8 py-4 rounded-full text-[15px] text-white transition-all hover:opacity-90 active:scale-95"
-              style={{ backgroundColor: "#1F8C9E" }}
-            >
-              <Phone className="w-4 h-4" />
-              Call +91 98765 43210
-            </a>
-            <a
-              href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 font-bold px-8 py-4 rounded-full text-[15px] text-white transition-all hover:opacity-90 active:scale-95"
-              style={{ backgroundColor: "#22c55e" }}
-            >
-              <WaIcon className="w-4 h-4" />
-              WhatsApp Us Now
-            </a>
-          </div>
-        </div>
-      </div>
 
     </div>
   );

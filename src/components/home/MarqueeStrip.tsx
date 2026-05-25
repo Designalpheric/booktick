@@ -9,8 +9,13 @@ const items = [
   "Wanderlust",
 ];
 
-function MarqueeRow({ reverse = false }: { reverse?: boolean }) {
-  // duplicate items so the scroll loop is seamless at the -50% reset point
+function MarqueeRow({
+  reverse = false,
+  textColor = "text-white",
+}: {
+  reverse?: boolean;
+  textColor?: string;
+}) {
   const repeated = [...items, ...items];
 
   return (
@@ -22,7 +27,7 @@ function MarqueeRow({ reverse = false }: { reverse?: boolean }) {
       {repeated.map((item, i) => (
         <div key={i} className="flex items-center">
           <span
-            className="font-serif italic text-white px-6 sm:px-8"
+            className={`font-serif italic ${textColor} px-6 sm:px-8`}
             style={{
               fontSize: "clamp(20px, 3.2vw, 36px)",
               lineHeight: 1,
@@ -32,7 +37,7 @@ function MarqueeRow({ reverse = false }: { reverse?: boolean }) {
             {item}
           </span>
           <Asterisk
-            className="text-white/85 shrink-0"
+            className={`${textColor} opacity-80 shrink-0`}
             style={{
               width: "clamp(14px, 2vw, 22px)",
               height: "clamp(14px, 2vw, 22px)",
@@ -46,36 +51,39 @@ function MarqueeRow({ reverse = false }: { reverse?: boolean }) {
 }
 
 export default function MarqueeStrip() {
-  return (
-    <section className="relative py-10 sm:py-12 overflow-hidden bg-cream">
-      <div
-        className="relative mx-auto overflow-hidden"
-        style={{ height: "clamp(56px, 5.6vw, 78px)" }}
-      >
-        {/* ── Black strip — back, taller, rotated, peeks out clearly ── */}
-        <div
-          className="absolute overflow-hidden"
-          style={{
-            backgroundColor: "#0E1424",
-            left: "-8%",
-            right: "-8%",
-            top: "-14px",
-            bottom: "-14px",
-            transform: "rotate(-5deg)",
-            transformOrigin: "center center",
-          }}
-        >
-          <MarqueeRow reverse />
-        </div>
+  const stripHeight = "clamp(52px, 5.2vw, 72px)";
 
-        {/* ── Teal strip — front, straight, same vertical center ── */}
-        <div
-          className="absolute inset-0 overflow-hidden z-10"
-          style={{ backgroundColor: "#1F8C9E" }}
-        >
-          <MarqueeRow />
-        </div>
+  return (
+    <section className="relative py-10 sm:py-12 overflow-hidden bg-cream flex flex-col gap-4">
+
+      {/* ── Strip 1 — Black, rotated left ── */}
+      <div
+        className="relative overflow-hidden"
+        style={{
+          backgroundColor: "#0E1424",
+          height: stripHeight,
+          transform: "rotate(-3deg)",
+          marginLeft: "-6%",
+          marginRight: "-6%",
+        }}
+      >
+        <MarqueeRow reverse />
       </div>
+
+      {/* ── Strip 2 — Teal, rotated right ── */}
+      <div
+        className="relative overflow-hidden"
+        style={{
+          backgroundColor: "#1F8C9E",
+          height: stripHeight,
+          transform: "rotate(3deg)",
+          marginLeft: "-6%",
+          marginRight: "-6%",
+        }}
+      >
+        <MarqueeRow />
+      </div>
+
     </section>
   );
 }

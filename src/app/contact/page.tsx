@@ -319,7 +319,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* ── Right column — form ────────────────────────────────────── */}
+          {/* ── Right column — form only ───────────────────────────────── */}
           <div className="relative">
 
             {/* Dotted pattern — bottom right */}
@@ -331,7 +331,7 @@ export default function ContactPage() {
               }}
             />
 
-            {/* Form header */}
+            {/* Form heading */}
             <div className="mb-6">
               <h3
                 className="font-extrabold text-xl sm:text-2xl mb-1 leading-tight"
@@ -344,7 +344,7 @@ export default function ContactPage() {
               </p>
             </div>
 
-            {/* ── PLACEHOLDER — original card will be inlined here ── */}
+            {/* Form card */}
             <div
               className="bg-white rounded-3xl overflow-hidden"
               style={{
@@ -352,369 +352,160 @@ export default function ContactPage() {
                 border: "1px solid rgba(20,20,20,0.05)",
               }}
             >
-              <h2
-                className="font-extrabold text-lg mb-6"
-                style={{ color: "#343434", letterSpacing: "-0.01em" }}
-              >
-                Get In Touch
-              </h2>
-
-              <div className="space-y-5">
-                {/* Phone */}
-                <div className="flex items-start gap-4">
+              {isSuccess ? (
+                /* ── Success state ── */
+                <div className="px-8 py-14 text-center">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                    className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5"
                     style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
                   >
-                    <Phone className="w-5 h-5" style={{ color: "#1F8C9E" }} />
+                    <CheckCircle className="w-10 h-10" style={{ color: "#1F8C9E" }} />
                   </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-0.5">Phone</p>
-                    <a
-                      href="tel:+919876543210"
-                      className="text-sm font-semibold hover:underline"
-                      style={{ color: "#1F8C9E" }}
-                    >
-                      +91 98765 43210
-                    </a>
-                    <p className="text-gray-400 text-xs mt-0.5">Mon–Sat, 9 AM – 8 PM</p>
-                  </div>
-                </div>
-
-                {/* WhatsApp */}
-                <div className="flex items-start gap-4">
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: "rgba(37,211,102,0.10)" }}
+                  <h3
+                    className="text-2xl font-extrabold mb-2"
+                    style={{ color: "#343434", letterSpacing: "-0.02em" }}
                   >
-                    <WaIcon className="w-5 h-5 text-[#25d366]" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-0.5">WhatsApp</p>
-                    <a
-                      href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-semibold text-[#1ebe5d] hover:underline"
-                    >
-                      Chat Instantly
-                    </a>
-                    <p className="text-gray-400 text-xs mt-0.5">Available 24/7</p>
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div className="flex items-start gap-4">
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
-                  >
-                    <Mail className="w-5 h-5" style={{ color: "#1F8C9E" }} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-0.5">Email</p>
-                    <a
-                      href="mailto:info@booktick.in"
-                      className="text-sm font-semibold hover:underline"
-                      style={{ color: "#1F8C9E" }}
-                    >
-                      info@booktick.in
-                    </a>
-                    <p className="text-gray-400 text-xs mt-0.5">Reply within 4 hours</p>
-                  </div>
-                </div>
-
-                {/* Address */}
-                <div className="flex items-start gap-4">
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: "rgba(242,169,59,0.12)" }}
-                  >
-                    <MapPin className="w-5 h-5" style={{ color: "#d97706" }} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-0.5">Office</p>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      123 Travel House,<br />Connaught Place,<br />New Delhi – 110001
-                    </p>
-                  </div>
-                </div>
-
-                {/* Hours */}
-                <div className="flex items-start gap-4">
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
-                  >
-                    <Clock className="w-5 h-5" style={{ color: "#1F8C9E" }} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-0.5">Hours</p>
-                    <p className="text-sm text-gray-600">Mon–Fri: 9 AM – 8 PM</p>
-                    <p className="text-sm text-gray-600">Sat–Sun: 10 AM – 6 PM</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* WhatsApp CTA */}
-            <a
-              href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-4 w-full rounded-2xl px-5 py-4 transition-all hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
-              style={{
-                background: "linear-gradient(135deg, #16a34a 0%, #22c55e 100%)",
-                boxShadow: "0 4px 18px -4px rgba(34,197,94,0.38)",
-              }}
-            >
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                <WaIcon className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-bold text-sm leading-tight">Chat on WhatsApp</p>
-                <p className="text-white/70 text-xs mt-0.5">Available 24 / 7 · Instant reply</p>
-              </div>
-              <ArrowRight className="w-4 h-4 text-white/60 shrink-0 transition-transform group-hover:translate-x-0.5" />
-            </a>
-
-            {/* Response time badge */}
-            <div
-              className="rounded-2xl px-5 py-4 flex items-center gap-3"
-              style={{
-                backgroundColor: "rgba(31,140,158,0.07)",
-                border: "1px solid rgba(31,140,158,0.15)",
-              }}
-            >
-              <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                style={{ backgroundColor: "#1F8C9E" }}
-              >
-                <Clock className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-bold" style={{ color: "#1F8C9E" }}>
-                  We respond within 2 hours
-                </p>
-                <p className="text-xs text-gray-500">Mon – Sat, 9 AM to 8 PM IST</p>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Right: Enquiry form ────────────────────────────────────── */}
-          <div
-            className="bg-white rounded-3xl overflow-hidden"
-            style={{
-              boxShadow: "0 1px 2px rgba(20,20,20,0.04), 0 20px 40px -16px rgba(20,20,20,0.14)",
-              border: "1px solid rgba(20,20,20,0.05)",
-            }}
-          >
-
-            {isSuccess ? (
-              /* ── Success state ── */
-              <div className="px-8 py-14 text-center">
-                <div
-                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5"
-                  style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
-                >
-                  <CheckCircle className="w-10 h-10" style={{ color: "#1F8C9E" }} />
-                </div>
-                <h3
-                  className="text-2xl font-extrabold mb-2"
-                  style={{ color: "#343434", letterSpacing: "-0.02em" }}
-                >
-                  Enquiry Sent!
-                </h3>
-                <p className="text-gray-500 mb-8 max-w-sm mx-auto leading-relaxed">
-                  Thank you, <span className="font-semibold text-gray-700">{formData.name}</span>! Our travel expert will call you on{" "}
-                  <span className="font-semibold text-gray-700">{formData.mobile}</span> within 2 hours.
-                </p>
-                <button
-                  onClick={() => { setIsSuccess(false); setFormData(initialState); }}
-                  className="inline-flex items-center gap-2 font-bold px-8 py-3.5 rounded-full text-white transition-all hover:opacity-90 active:scale-95"
-                  style={{ backgroundColor: "#1F8C9E" }}
-                >
-                  Send Another Enquiry <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            ) : (
-              /* ── Form ── */
-              <form onSubmit={handleSubmit} className="px-5 sm:px-8 py-6">
-
-                {/* ── Required fields ── */}
-                <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
-                  Your Details
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4 mb-5">
-
-                  {/* Name */}
-                  <div>
-                    <FieldLabel>Full Name <span className="text-red-400">*</span></FieldLabel>
-                    <div className="relative">
-                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                      <input
-                        type="text"
-                        placeholder="Your full name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className={cn(inputBase, "pl-10", errors.name ? inputError : inputNormal)}
-                      />
-                    </div>
-                    {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
-                  </div>
-
-                  {/* Mobile */}
-                  <div>
-                    <FieldLabel>Mobile Number <span className="text-red-400">*</span></FieldLabel>
-                    <div className="relative">
-                      <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                      <input
-                        type="tel"
-                        placeholder="10-digit number"
-                        value={formData.mobile}
-                        onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                        className={cn(inputBase, "pl-10", errors.mobile ? inputError : inputNormal)}
-                      />
-                    </div>
-                    {errors.mobile && <p className="text-red-400 text-xs mt-1">{errors.mobile}</p>}
-                  </div>
-
-                  {/* Email */}
-                  <div className="sm:col-span-2">
-                    <FieldLabel>Email Address <span className="text-red-400">*</span></FieldLabel>
-                    <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                      <input
-                        type="email"
-                        placeholder="your@email.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className={cn(inputBase, "pl-10", errors.email ? inputError : inputNormal)}
-                      />
-                    </div>
-                    {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
-                  </div>
-                </div>
-
-                {/* ── Trip details ── */}
-                <div className="border-t border-gray-100 pt-5 mb-5">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
-                    Trip Details
+                    Enquiry Sent!
+                  </h3>
+                  <p className="text-gray-500 mb-8 max-w-sm mx-auto leading-relaxed">
+                    Thank you, <span className="font-semibold text-gray-700">{formData.name}</span>! Our travel expert will call you on{" "}
+                    <span className="font-semibold text-gray-700">{formData.mobile}</span> within 2 hours.
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
+                  <button
+                    onClick={() => { setIsSuccess(false); setFormData(initialState); }}
+                    className="inline-flex items-center gap-2 font-bold px-8 py-3.5 rounded-full text-white transition-all hover:opacity-90 active:scale-95"
+                    style={{ backgroundColor: "#1F8C9E" }}
+                  >
+                    Send Another Enquiry <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                /* ── Form ── */
+                <form onSubmit={handleSubmit} className="px-5 sm:px-8 py-6">
 
-                    {/* Enquiry Type */}
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
+                    Your Details
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4 mb-5">
+
                     <div>
-                      <FieldLabel>Enquiry Type</FieldLabel>
-                      <input
-                        type="text"
-                        placeholder="e.g. Package, Flight, General"
-                        value={formData.enquiryType === "general" ? "" : formData.enquiryType}
-                        onChange={(e) =>
-                          setFormData({ ...formData, enquiryType: (e.target.value || "general") as "package" | "flight" | "general" })
-                        }
-                        className={cn(inputBase, inputNormal)}
-                      />
-                    </div>
-
-                    {/* Destination */}
-                    <div>
-                      <FieldLabel>Destination</FieldLabel>
-                      <input
-                        type="text"
-                        placeholder="e.g. Goa, Dubai, Bali"
-                        value={formData.destination}
-                        onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                        className={cn(inputBase, inputNormal)}
-                      />
-                    </div>
-
-                    {/* Travel Date */}
-                    <div>
-                      <FieldLabel>Preferred Travel Date</FieldLabel>
-                      <input
-                        type="date"
-                        value={formData.travelDate}
-                        min={new Date().toISOString().split("T")[0]}
-                        onChange={(e) => setFormData({ ...formData, travelDate: e.target.value })}
-                        className={cn(inputBase, inputNormal)}
-                      />
-                    </div>
-
-                    {/* Travellers */}
-                    <div>
-                      <FieldLabel>Number of Travellers</FieldLabel>
-                      <input
-                        type="number"
-                        min="1"
-                        max="50"
-                        placeholder="e.g. 2"
-                        value={formData.travellers || ""}
-                        onChange={(e) => setFormData({ ...formData, travellers: Number(e.target.value) })}
-                        className={cn(inputBase, inputNormal)}
-                      />
-                    </div>
-
-                    {/* Budget Range */}
-                    <div className="sm:col-span-2">
-                      <FieldLabel>Budget Range <span className="text-gray-400 font-normal text-xs">(per person)</span></FieldLabel>
-                      <input
-                        type="text"
-                        placeholder="e.g. ₹40,000 – ₹80,000"
-                        value={budgetText}
-                        onChange={(e) => setBudgetText(e.target.value)}
-                        className={cn(inputBase, inputNormal)}
-                      />
-                    </div>
-
-                    {/* Message */}
-                    <div className="sm:col-span-2">
-                      <FieldLabel>Message / Special Requirements</FieldLabel>
+                      <FieldLabel>Full Name <span className="text-red-400">*</span></FieldLabel>
                       <div className="relative">
-                        <MessageSquare className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-300 pointer-events-none" />
-                        <textarea
-                          rows={3}
-                          placeholder="Tell us your travel preferences or any special requirements..."
-                          value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          className={cn(inputBase, inputNormal, "pl-10 resize-none")}
-                        />
+                        <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                        <input type="text" placeholder="Your full name" value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className={cn(inputBase, "pl-10", errors.name ? inputError : inputNormal)} />
+                      </div>
+                      {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                    </div>
+
+                    <div>
+                      <FieldLabel>Mobile Number <span className="text-red-400">*</span></FieldLabel>
+                      <div className="relative">
+                        <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                        <input type="tel" placeholder="10-digit number" value={formData.mobile}
+                          onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                          className={cn(inputBase, "pl-10", errors.mobile ? inputError : inputNormal)} />
+                      </div>
+                      {errors.mobile && <p className="text-red-400 text-xs mt-1">{errors.mobile}</p>}
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <FieldLabel>Email Address <span className="text-red-400">*</span></FieldLabel>
+                      <div className="relative">
+                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                        <input type="email" placeholder="your@email.com" value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className={cn(inputBase, "pl-10", errors.email ? inputError : inputNormal)} />
+                      </div>
+                      {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-100 pt-5 mb-5">
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
+                      Trip Details
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
+
+                      <div>
+                        <FieldLabel>Enquiry Type</FieldLabel>
+                        <input type="text" placeholder="e.g. Package, Flight, General"
+                          value={formData.enquiryType === "general" ? "" : formData.enquiryType}
+                          onChange={(e) => setFormData({ ...formData, enquiryType: (e.target.value || "general") as "package" | "flight" | "general" })}
+                          className={cn(inputBase, inputNormal)} />
+                      </div>
+
+                      <div>
+                        <FieldLabel>Destination</FieldLabel>
+                        <input type="text" placeholder="e.g. Goa, Dubai, Bali" value={formData.destination}
+                          onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                          className={cn(inputBase, inputNormal)} />
+                      </div>
+
+                      <div>
+                        <FieldLabel>Preferred Travel Date</FieldLabel>
+                        <input type="date" value={formData.travelDate}
+                          min={new Date().toISOString().split("T")[0]}
+                          onChange={(e) => setFormData({ ...formData, travelDate: e.target.value })}
+                          className={cn(inputBase, inputNormal)} />
+                      </div>
+
+                      <div>
+                        <FieldLabel>Number of Travellers</FieldLabel>
+                        <input type="number" min="1" max="50" placeholder="e.g. 2"
+                          value={formData.travellers || ""}
+                          onChange={(e) => setFormData({ ...formData, travellers: Number(e.target.value) })}
+                          className={cn(inputBase, inputNormal)} />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <FieldLabel>Budget Range <span className="text-gray-400 font-normal text-xs">(per person)</span></FieldLabel>
+                        <input type="text" placeholder="e.g. ₹40,000 – ₹80,000" value={budgetText}
+                          onChange={(e) => setBudgetText(e.target.value)}
+                          className={cn(inputBase, inputNormal)} />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <FieldLabel>Message / Special Requirements</FieldLabel>
+                        <div className="relative">
+                          <MessageSquare className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-300 pointer-events-none" />
+                          <textarea rows={3}
+                            placeholder="Tell us your travel preferences or any special requirements..."
+                            value={formData.message}
+                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                            className={cn(inputBase, inputNormal, "pl-10 resize-none")} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Submit */}
-                <div className="space-y-3">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2.5 text-white font-bold py-3.5 rounded-xl text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
-                    style={{ backgroundColor: "#1F8C9E" }}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                        </svg>
-                        Sending Enquiry…
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        Send Enquiry
-                      </>
-                    )}
-                  </button>
-
-                  <p className="text-center text-gray-400 text-xs">
-                    🔒 100% secure &nbsp;·&nbsp; No spam &nbsp;·&nbsp; No direct booking &nbsp;·&nbsp; Just expert travel assistance
-                  </p>
-                </div>
-              </form>
-            )}
+                  <div className="space-y-3">
+                    <button type="submit" disabled={isSubmitting}
+                      className="w-full flex items-center justify-center gap-2.5 text-white font-bold py-3.5 rounded-xl text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
+                      style={{ backgroundColor: "#1F8C9E" }}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          </svg>
+                          Sending Enquiry…
+                        </>
+                      ) : (
+                        <><Send className="w-4 h-4" />Send Enquiry</>
+                      )}
+                    </button>
+                    <p className="text-center text-gray-400 text-xs">
+                      🔒 100% secure &nbsp;·&nbsp; No spam &nbsp;·&nbsp; No direct booking &nbsp;·&nbsp; Just expert travel assistance
+                    </p>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
+
         </div>
         </div>
       </div>

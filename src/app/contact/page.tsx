@@ -96,10 +96,7 @@ export default function ContactPage() {
                   letterSpacing: "-0.03em",
                 }}
               >
-                Contact{" "}
-                <span className="font-serif italic" style={{ fontWeight: 400 }}>
-                  Us
-                </span>
+                Contact Us
               </h1>
             </div>
 

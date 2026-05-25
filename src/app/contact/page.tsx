@@ -93,9 +93,9 @@ export default function ContactPage() {
               <h1
                 className="font-extrabold leading-none"
                 style={{
-                  fontSize: "clamp(58px, 9vw, 112px)",
+                  fontSize: "clamp(48px, 7vw, 82px)",
                   color: "#343434",
-                  letterSpacing: "-0.035em",
+                  letterSpacing: "-0.03em",
                 }}
               >
                 Contact{" "}
@@ -108,26 +108,24 @@ export default function ContactPage() {
             {/* Right — subtitle + paragraph */}
             <div>
               <h2
-                className="font-extrabold leading-snug mb-4"
+                className="font-extrabold leading-snug mb-3"
                 style={{
-                  fontSize: "clamp(20px, 2vw, 26px)",
+                  fontSize: "clamp(18px, 1.8vw, 22px)",
                   color: "#343434",
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "-0.018em",
                 }}
               >
                 We&apos;d Love to Hear From You.
               </h2>
               <p
-                className="leading-relaxed"
+                className="leading-relaxed max-w-sm"
                 style={{
-                  color: "rgba(52,52,52,0.55)",
-                  fontSize: "clamp(15px, 1.3vw, 17px)",
+                  color: "rgba(52,52,52,0.52)",
+                  fontSize: "clamp(14px, 1.1vw, 15px)",
                 }}
               >
-                Share your travel goals with us — our experts will craft a personalised
-                itinerary and call you within 2 hours. Whether you&apos;re planning a
-                family holiday, a honeymoon escape, or an adventure trip, we&apos;re here
-                to make it seamless and unforgettable.
+                Got a travel question or ready to plan your next trip? Our experts are
+                here to help — say hello, we&apos;re listening.
               </p>
             </div>
 

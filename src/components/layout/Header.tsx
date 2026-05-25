@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -63,6 +63,19 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen]         = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [scrolled, setScrolled]             = useState(false);
+
+  const showTransparent = !scrolled;
+  // On homepage use light logo + white text; on all other pages use dark logo + dark text
+  const isHome = pathname === "/";
+  const useLightStyle = isHome && showTransparent;
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const isActive = (href: string) => {
     const [base, query] = href.split("?");
@@ -81,20 +94,29 @@ export default function Header() {
       style={{ padding: "10px 16px 0", pointerEvents: "none" }}
     >
       <div
-        className="max-w-7xl mx-auto flex items-center px-5 sm:px-6"
+        className="max-w-7xl mx-auto flex items-center px-5 sm:px-6 transition-all duration-300"
         style={{
           pointerEvents: "auto",
-          backgroundColor: "#ffffff",
-          borderRadius: "14px",
-          border: "1px solid rgba(0,0,0,0.07)",
-          boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
           height: "56px",
+          ...(!showTransparent ? {
+            backgroundColor: "rgba(255,255,255,0.72)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            borderRadius: "14px",
+            border: "1px solid rgba(0,0,0,0.07)",
+            boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+          } : {
+            backgroundColor: "transparent",
+            borderRadius: "0",
+            border: "none",
+            boxShadow: "none",
+          }),
         }}
       >
         <div className="flex-1 flex items-center">
           <Link href="/" className="shrink-0 flex items-center">
             <Image
-              src="/logo-dark.png"
+              src={useLightStyle ? "/logo-light.png" : "/logo-dark.png"}
               alt="BookTick"
               width={130}
               height={40}
@@ -118,9 +140,11 @@ export default function Header() {
                   href={link.href}
                   className={cn(
                     "inline-flex items-center gap-1 px-3.5 py-2 rounded-full text-sm transition-colors duration-150 whitespace-nowrap",
-                    active ? "bg-gray-100 font-semibold" : "font-medium hover:bg-gray-100"
+                    active
+                      ? useLightStyle ? "bg-white/15 font-semibold" : "bg-gray-100 font-semibold"
+                      : useLightStyle ? "font-medium hover:bg-white/10" : "font-medium hover:bg-gray-100"
                   )}
-                  style={{ color: "#0b0b0d" }}
+                  style={{ color: useLightStyle ? "#ffffff" : "#0b0b0d" }}
                 >
                   {link.label}
                   {link.dropdown && (
@@ -209,17 +233,23 @@ export default function Header() {
 
         <div className="flex-1 flex items-center justify-end gap-2.5">
           <Link href="/contact"
-            className="hidden lg:inline-flex items-center gap-2.5 text-sm font-medium text-white transition-opacity hover:opacity-85 active:scale-95"
-            style={{ backgroundColor: "#0b0b0d", borderRadius: "9999px", paddingLeft: "20px", paddingRight: "8px", paddingTop: "8px", paddingBottom: "8px" }}
+            className="hidden lg:inline-flex items-center gap-2.5 text-sm font-medium text-white transition-all duration-300 hover:opacity-85 active:scale-95"
+            style={{
+              backgroundColor: useLightStyle ? "rgba(255,255,255,0.15)" : "#0b0b0d",
+              border: useLightStyle ? "1px solid rgba(255,255,255,0.30)" : "none",
+              backdropFilter: useLightStyle ? "blur(8px)" : "none",
+              borderRadius: "9999px",
+              paddingLeft: "20px", paddingRight: "8px", paddingTop: "8px", paddingBottom: "8px",
+            }}
           >
-            Contact us
+            Book Trip
             <span className="flex items-center justify-center shrink-0" style={{ width: "28px", height: "28px", borderRadius: "9999px", backgroundColor: "rgba(255,255,255,0.12)" }}>
               <Phone className="w-3.5 h-3.5 text-white" />
             </span>
           </Link>
           <button
-            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full transition-colors hover:bg-gray-100"
-            style={{ color: "#0b0b0d" }}
+            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full transition-colors"
+            style={{ color: useLightStyle ? "#ffffff" : "#0b0b0d" }}
             onClick={() => { setMobileOpen(!mobileOpen); setMobileExpanded(null); }}
             aria-label="Toggle menu"
           >

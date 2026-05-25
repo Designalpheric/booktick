@@ -48,19 +48,12 @@ function FlightsContent() {
   const [from,        setFrom]        = useState(searchParams.get("from") || "");
   const [to,          setTo]          = useState(searchParams.get("to")   || "");
   const [sortBy,      setSortBy]      = useState("price-asc");
-  const [airlineSearch, setAirlineSearch] = useState("");
-
   /* Sidebar filter state */
   const [filterDirect,   setFilterDirect]   = useState(false);
   const [filterBusiness, setFilterBusiness] = useState(false);
-  const [selectedAirlines, setSelectedAirlines] = useState<string[]>([]);
 
-  const allAirlines = [...new Set(flights.map((f) => f.airline))].sort();
-  const minFare     = Math.min(...flights.map((f) => f.estimatedFare));
-  const maxFare     = Math.max(...flights.map((f) => f.estimatedFare));
-
-  const toggleAirline = (a: string) =>
-    setSelectedAirlines((prev) => prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]);
+  const minFare = Math.min(...flights.map((f) => f.estimatedFare));
+  const maxFare = Math.max(...flights.map((f) => f.estimatedFare));
 
   const swapRoutes = () => { setFrom(to); setTo(from); };
 
@@ -76,25 +69,20 @@ function FlightsContent() {
     );
     if (filterDirect)   result = result.filter((f) => f.stops === 0);
     if (filterBusiness) result = result.filter((f) => f.class === "Business" || f.class === "First");
-    if (selectedAirlines.length > 0) result = result.filter((f) => selectedAirlines.includes(f.airline));
 
     if (sortBy === "price-asc")  result.sort((a, b) => a.estimatedFare - b.estimatedFare);
     if (sortBy === "price-desc") result.sort((a, b) => b.estimatedFare - a.estimatedFare);
     return result;
-  }, [from, to, filterDirect, filterBusiness, selectedAirlines, sortBy]);
+  }, [from, to, filterDirect, filterBusiness, sortBy]);
 
   const cheapestFare = filtered.length > 0 ? Math.min(...filtered.map(f => f.estimatedFare)) : 0;
 
   const resetFilters = () => {
     setFrom(""); setTo(""); setFilterDirect(false);
-    setFilterBusiness(false); setSelectedAirlines([]); setSortBy("price-asc");
+    setFilterBusiness(false); setSortBy("price-asc");
   };
 
-  const hasFilters = from || to || filterDirect || filterBusiness || selectedAirlines.length > 0;
-
-  const visibleAirlines = allAirlines.filter((a) =>
-    a.toLowerCase().includes(airlineSearch.toLowerCase())
-  );
+  const hasFilters = from || to || filterDirect || filterBusiness;
 
   const inputCls = "w-full pl-10 pr-4 py-3 text-sm font-medium rounded-xl focus:outline-none transition-all";
   const inputStyle = { border: "1px solid rgba(0,0,0,0.10)", backgroundColor: "#fafafa", color: "#1a1a1a" };
@@ -193,19 +181,6 @@ function FlightsContent() {
                 )}
               </div>
 
-              {/* Search by airline */}
-              <FilterSection title="Search by Airline">
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                  <input
-                    type="text" placeholder="Search airline…"
-                    value={airlineSearch} onChange={(e) => setAirlineSearch(e.target.value)}
-                    className="w-full pl-8 pr-3 py-2 text-sm rounded-lg focus:outline-none"
-                    style={{ border: "1px solid rgba(0,0,0,0.10)", backgroundColor: "#fafafa", color: "#1a1a1a" }}
-                  />
-                </div>
-              </FilterSection>
-
               {/* Popular */}
               <FilterSection title="Popular">
                 <CheckboxRow label="Direct Flight" checked={filterDirect} onChange={() => setFilterDirect(!filterDirect)} />
@@ -233,21 +208,6 @@ function FlightsContent() {
                 </div>
               </FilterSection>
 
-              {/* Airline names */}
-              <div>
-                <span className="text-xs font-extrabold uppercase tracking-[0.12em] block mb-3" style={{ color: "#1a1a1a" }}>
-                  Airline Names
-                </span>
-                <div className="space-y-0.5">
-                  {visibleAirlines.map((a) => (
-                    <CheckboxRow
-                      key={a} label={a}
-                      checked={selectedAirlines.includes(a)}
-                      onChange={() => toggleAirline(a)}
-                    />
-                  ))}
-                </div>
-              </div>
             </div>
           </aside>
 

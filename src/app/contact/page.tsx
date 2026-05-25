@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import {
-  Phone, Mail, MapPin, Clock, Send, CheckCircle,
-  User, MessageSquare, ArrowRight, Plane, Package,
-  Heart, Users, Route,
+  Mail, Send, CheckCircle,
+  ArrowRight, Plane, Package, Route, Plus, Minus,
 } from "lucide-react";
 import { EnquiryFormData } from "@/types";
-import { cn } from "@/lib/utils";
 
-/* ── WhatsApp SVG (reused) ─────────────────────────────────────────────────── */
+/* ── WhatsApp SVG ──────────────────────────────────────────────────────────── */
 function WaIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="currentColor" viewBox="0 0 24 24">
@@ -17,21 +15,6 @@ function WaIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
-/* ── Field wrapper ─────────────────────────────────────────────────────────── */
-function FieldLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <label className="block text-sm font-semibold mb-1.5" style={{ color: "#343434" }}>
-      {children}
-    </label>
-  );
-}
-
-const inputBase =
-  "w-full px-4 py-3 rounded-xl text-sm bg-white transition-all outline-none focus:ring-2 placeholder-gray-300";
-const inputNormal =
-  "border border-gray-200 focus:border-[#1F8C9E] focus:ring-[#1F8C9E]/20";
-const inputError = "border-red-400 focus:ring-red-200";
 
 /* ── Initial form state ────────────────────────────────────────────────────── */
 const initialState: EnquiryFormData = {
@@ -46,6 +29,7 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof EnquiryFormData, string>>>({});
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const validate = () => {
     const e: Partial<Record<keyof EnquiryFormData, string>> = {};
@@ -81,11 +65,11 @@ export default function ContactPage() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div
-        className="py-16 sm:py-20 lg:py-24"
+        className="py-10 sm:py-12 lg:py-16"
         style={{ backgroundColor: "#FFFFFF" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-center">
 
             {/* Left — large bold heading */}
             <div>
@@ -130,28 +114,28 @@ export default function ContactPage() {
       </div>
 
       {/* ── We're Open To ────────────────────────────────────────────────── */}
-      <div className="bg-white py-14 sm:py-16">
+      <div className="py-12 sm:py-16" style={{ backgroundColor: "#F7F6F3" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Heading */}
-          <div className="text-center mb-10 sm:mb-12">
+          <div className="text-center mb-8 sm:mb-10">
             <h2
-              className="font-extrabold leading-tight mb-4"
-              style={{ fontSize: "clamp(30px, 4vw, 48px)", color: "#343434", letterSpacing: "-0.03em" }}
+              className="font-extrabold leading-tight mb-3"
+              style={{ fontSize: "clamp(28px, 4vw, 44px)", color: "#343434", letterSpacing: "-0.03em" }}
             >
               We&apos;re Open To...
             </h2>
             <p
-              className="max-w-xl mx-auto leading-relaxed"
-              style={{ color: "rgba(52,52,52,0.52)", fontSize: "clamp(14px, 1.2vw, 16px)" }}
+              className="max-w-lg mx-auto leading-relaxed"
+              style={{ color: "rgba(52,52,52,0.52)", fontSize: "clamp(14px, 1.1vw, 15px)" }}
             >
               Whether you have a trip in mind, a question, or just want to explore your
-              options — we&apos;re always happy to help you plan something special.
+              options — we&apos;re always happy to help.
             </p>
           </div>
 
           {/* Card grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
             {[
               {
                 icon: Route,
@@ -168,39 +152,21 @@ export default function ContactPage() {
                 title: "Flight Assistance",
                 desc: "Let us find you the best flights, timings, and connecting routes.",
               },
-              {
-                icon: Heart,
-                title: "Honeymoon Getaways",
-                desc: "Romantic escapes crafted with special touches just for couples.",
-              },
-              {
-                icon: Users,
-                title: "Group & Corporate Travel",
-                desc: "Custom travel plans for families, friend groups, and corporate teams.",
-              },
-              {
-                icon: MessageSquare,
-                title: "Just Saying Hello",
-                desc: "Every great journey starts with a conversation — we're listening.",
-              },
             ].map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex flex-col p-6 sm:p-7 bg-white"
+                className="flex flex-col p-6 bg-white"
                 style={{
-                  border: "1px solid rgba(20,20,20,0.09)",
-                  borderRadius: "16px",
+                  border: "1px solid rgba(20,20,20,0.07)",
+                  borderRadius: "14px",
                 }}
               >
-                {/* Icon box */}
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 shrink-0"
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 shrink-0"
                   style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
                 >
                   <Icon className="w-5 h-5" style={{ color: "#1F8C9E" }} />
                 </div>
-
-                {/* Text */}
                 <h3
                   className="font-bold text-base leading-snug mb-2"
                   style={{ color: "#343434" }}
@@ -209,7 +175,7 @@ export default function ContactPage() {
                 </h3>
                 <p
                   className="text-sm leading-relaxed"
-                  style={{ color: "rgba(52,52,52,0.55)" }}
+                  style={{ color: "rgba(52,52,52,0.52)" }}
                 >
                   {desc}
                 </p>
@@ -221,375 +187,453 @@ export default function ContactPage() {
       </div>
 
       {/* ── Main content ─────────────────────────────────────────────────── */}
-      <div style={{ backgroundColor: "#F7F6F3" }} className="py-16 sm:py-20">
+      <div style={{ backgroundColor: "#F7F6F3" }} className="py-14 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-          {/* ── Left column — enhanced ────────────────────────────────── */}
-          <div className="relative">
+            {/* ── Left column ──────────────────────────────────────────── */}
+            <div className="relative lg:pt-2">
 
-            {/* Soft teal glow — top left */}
-            <div
-              className="absolute -top-16 -left-16 w-72 h-72 rounded-full pointer-events-none"
-              style={{ background: "radial-gradient(circle, rgba(31,140,158,0.09) 0%, transparent 70%)" }}
-            />
+              {/* Decorative teal glow */}
+              <div className="absolute -top-12 -left-12 w-64 h-64 rounded-full pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(31,140,158,0.08) 0%, transparent 70%)" }} />
+              {/* Decorative dot grid */}
+              <div className="absolute top-0 right-0 w-36 h-36 pointer-events-none opacity-50"
+                style={{ backgroundImage: "radial-gradient(circle, rgba(31,140,158,0.32) 1.5px, transparent 1.5px)", backgroundSize: "12px 12px" }} />
 
-            {/* Dot pattern — top right */}
-            <div
-              className="absolute top-0 right-0 w-32 h-32 pointer-events-none opacity-60"
-              style={{
-                backgroundImage: "radial-gradient(circle, rgba(31,140,158,0.35) 1.5px, transparent 1.5px)",
-                backgroundSize: "12px 12px",
-              }}
-            />
+              {/* Headline */}
+              <h2 className="font-extrabold leading-[1.05] mb-5"
+                style={{ fontSize: "clamp(34px, 4.5vw, 58px)", color: "#343434", letterSpacing: "-0.030em" }}>
+                Every trip is unique,<br />
+                we craft journeys<br />
+                <span className="font-serif italic" style={{ fontWeight: 400, color: "#1F8C9E" }}>beyond bookings.</span>
+              </h2>
 
-            {/* Badge — teal pill with live dot */}
-            <div className="inline-flex items-center gap-2 mb-7 px-3.5 py-1.5 rounded-full"
-              style={{ backgroundColor: "rgba(31,140,158,0.08)", border: "1px solid rgba(31,140,158,0.18)" }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "#1F8C9E" }} />
-              <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "#1F8C9E" }}>
-                Contact Us
-              </span>
-            </div>
+              {/* Description */}
+              <p className="leading-relaxed mb-8 max-w-md" style={{ color: "rgba(52,52,52,0.55)", fontSize: "15px" }}>
+                Share your travel goals with us. Our experts reply with a personalised
+                itinerary within 2 hours, Mon–Sat.
+              </p>
 
-            {/* Headline */}
-            <h2
-              className="font-extrabold leading-[1.06] mb-5"
-              style={{ fontSize: "clamp(30px, 3.8vw, 50px)", color: "#343434", letterSpacing: "-0.028em" }}
-            >
-              Every trip is unique,<br />
-              we craft journeys<br />
-              <span className="font-serif italic" style={{ fontWeight: 400, color: "#1F8C9E" }}>
-                beyond bookings.
-              </span>
-            </h2>
-
-            {/* Description */}
-            <p className="leading-relaxed mb-8 max-w-sm" style={{ color: "rgba(52,52,52,0.52)", fontSize: "15px" }}>
-              Share your travel goals with us. Our experts reply with a
-              personalised itinerary within 2 hours, Mon–Sat.
-            </p>
-
-            {/* Stats grid — premium teal-tinted card */}
-            <div
-              className="mb-8 rounded-2xl overflow-hidden"
-              style={{ border: "1px solid rgba(31,140,158,0.14)" }}
-            >
-              {/* Header bar */}
-              <div className="px-5 py-3 flex items-center gap-2"
-                style={{ backgroundColor: "rgba(31,140,158,0.07)", borderBottom: "1px solid rgba(31,140,158,0.10)" }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#1F8C9E" }} />
-                <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#1F8C9E" }}>
-                  Trusted by Travellers
-                </p>
+              {/* CTA buttons */}
+              <div className="flex flex-wrap gap-3 mb-10">
+                <a href="/packages"
+                  className="inline-flex items-center px-6 py-3 rounded-xl font-bold text-sm transition-all hover:bg-gray-100 active:scale-95"
+                  style={{ border: "1.5px solid rgba(52,52,52,0.18)", color: "#343434", backgroundColor: "transparent" }}>
+                  Browse Packages
+                </a>
+                <a href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white transition-all hover:opacity-90 active:scale-95"
+                  style={{ backgroundColor: "#1F8C9E" }}>
+                  <WaIcon className="w-4 h-4" />
+                  Chat on WhatsApp
+                </a>
               </div>
 
-              {/* 2×2 stat cells separated by hairlines */}
-              <div className="grid grid-cols-2" style={{ backgroundColor: "rgba(31,140,158,0.06)" }}>
+              {/* Divider */}
+              <div className="border-t mb-8" style={{ borderColor: "rgba(52,52,52,0.10)" }} />
+
+              {/* 3-column feature highlights */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 {[
-                  { value: "10,000+", label: "Happy Travellers" },
-                  { value: "4.8 ★",   label: "Average Rating"   },
-                  { value: "500+",    label: "Packages"          },
-                  { value: "50+",     label: "Destinations"      },
-                ].map((s, i) => (
-                  <div
-                    key={s.label}
-                    className="bg-white px-5 py-4"
-                    style={{
-                      borderRight:  i % 2 === 0 ? "1px solid rgba(31,140,158,0.10)" : "none",
-                      borderBottom: i < 2       ? "1px solid rgba(31,140,158,0.10)" : "none",
-                    }}
-                  >
-                    <p className="font-extrabold text-xl leading-none mb-1" style={{ color: "#1F8C9E" }}>{s.value}</p>
-                    <p className="text-xs text-gray-400">{s.label}</p>
+                  {
+                    title: "What We Offer",
+                    items: ["National Tours", "International Tours", "Honeymoon Packages", "Adventure Tours"],
+                  },
+                  {
+                    title: "Our Promise",
+                    items: ["2hr Itinerary Reply", "4.8 ★ Avg Rating", "500+ Packages", "10,000+ Travellers"],
+                  },
+                  {
+                    title: "Who We Serve",
+                    items: ["Honeymoon Couples", "Families & Groups", "Solo Travellers", "Corporate Teams"],
+                  },
+                ].map(({ title, items }) => (
+                  <div key={title}>
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3"
+                      style={{ backgroundColor: "rgba(31,140,158,0.12)" }}>
+                      <CheckCircle className="w-4 h-4" style={{ color: "#1F8C9E" }} />
+                    </div>
+                    <p className="font-bold text-sm mb-2.5" style={{ color: "#343434" }}>{title}</p>
+                    <ul className="space-y-1.5">
+                      {items.map((item) => (
+                        <li key={item} className="text-xs leading-relaxed" style={{ color: "rgba(52,52,52,0.55)" }}>{item}</li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Contact channels — premium mini-cards */}
-            <div className="space-y-2.5">
-              <a
-                href="tel:+919876543210"
-                className="group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all hover:shadow-md hover:-translate-y-0.5"
-                style={{ backgroundColor: "#fff", border: "1px solid rgba(20,20,20,0.07)" }}
-              >
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(31,140,158,0.10)" }}>
-                  <Phone className="w-4 h-4" style={{ color: "#1F8C9E" }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Phone</p>
-                  <p className="text-sm font-semibold" style={{ color: "#343434" }}>+91 98765 43210</p>
-                </div>
-                <ArrowRight className="w-4 h-4 text-gray-300 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: "#1F8C9E" }} />
-              </a>
+            {/* ── Right column — form card ──────────────────────────────── */}
+            <div className="relative">
 
-              <a
-                href="mailto:info@booktick.in"
-                className="group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all hover:shadow-md hover:-translate-y-0.5"
-                style={{ backgroundColor: "#fff", border: "1px solid rgba(20,20,20,0.07)" }}
-              >
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(31,140,158,0.10)" }}>
-                  <Mail className="w-4 h-4" style={{ color: "#1F8C9E" }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Email</p>
-                  <p className="text-sm font-semibold" style={{ color: "#343434" }}>info@booktick.in</p>
-                </div>
-                <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: "#1F8C9E" }} />
-              </a>
+              {/* Dot pattern — bottom right */}
+              <div className="absolute -bottom-8 -right-4 w-40 h-40 pointer-events-none"
+                style={{ backgroundImage: "radial-gradient(circle, rgba(52,52,52,0.10) 1.5px, transparent 1.5px)", backgroundSize: "14px 14px" }} />
 
-              <a
-                href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
-                target="_blank" rel="noopener noreferrer"
-                className="group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all hover:shadow-md hover:-translate-y-0.5"
-                style={{ backgroundColor: "#fff", border: "1px solid rgba(20,20,20,0.07)" }}
+              {/* Card */}
+              <div className="bg-white rounded-3xl relative"
+                style={{ border: "1px solid rgba(20,20,20,0.10)" }}>
+
+                {isSuccess ? (
+                  /* ── Success state ── */
+                  <div className="px-8 py-14 text-center">
+                    <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5"
+                      style={{ backgroundColor: "rgba(31,140,158,0.10)" }}>
+                      <CheckCircle className="w-10 h-10" style={{ color: "#1F8C9E" }} />
+                    </div>
+                    <h3 className="text-2xl font-extrabold mb-2" style={{ color: "#343434", letterSpacing: "-0.02em" }}>Enquiry Sent!</h3>
+                    <p className="text-gray-500 mb-8 max-w-sm mx-auto leading-relaxed">
+                      Thank you, <span className="font-semibold text-gray-700">{formData.name}</span>! Our travel expert will call you on{" "}
+                      <span className="font-semibold text-gray-700">{formData.mobile}</span> within 2 hours.
+                    </p>
+                    <button onClick={() => { setIsSuccess(false); setFormData(initialState); }}
+                      className="inline-flex items-center gap-2 font-bold px-8 py-3.5 rounded-full text-white transition-all hover:opacity-90 active:scale-95"
+                      style={{ backgroundColor: "#1F8C9E" }}>
+                      Send Another Enquiry <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {/* Card header */}
+                    <div className="px-7 pt-7 pb-5" style={{ borderBottom: "1px solid rgba(20,20,20,0.06)" }}>
+                      <h3 className="font-extrabold mb-1 leading-tight"
+                        style={{ fontSize: "clamp(18px, 1.8vw, 22px)", color: "#343434", letterSpacing: "-0.022em" }}>
+                        Send Us an{" "}
+                        <span style={{ color: "#1F8C9E" }}>Enquiry</span>
+                      </h3>
+                      <p className="text-sm" style={{ color: "rgba(52,52,52,0.50)" }}>
+                        No fluff. Fill in your details and get a personalised travel plan within 2 hours.
+                      </p>
+                    </div>
+
+                    {/* Form — floating label inputs */}
+                    <form onSubmit={handleSubmit} className="px-7 pt-7 pb-7 space-y-3">
+
+                      {/* Row 1: Name + Mobile */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                        {/* Full Name */}
+                        <div className="relative pt-2.5">
+                          <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                            style={{ color: "#343434", backgroundColor: "#fff" }}>
+                            Your Name <span style={{ color: "#f87171" }}>*</span>
+                          </label>
+                          <input type="text" placeholder="Enter full name" value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                            style={{ border: errors.name ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }} />
+                          {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                        </div>
+
+                        {/* Mobile */}
+                        <div className="relative pt-2.5">
+                          <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                            style={{ color: "#343434", backgroundColor: "#fff" }}>
+                            Phone Number <span style={{ color: "#f87171" }}>*</span>
+                          </label>
+                          <div className="flex overflow-hidden"
+                            style={{ border: errors.mobile ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }}>
+                            <span className="flex items-center px-3 text-[13px] font-semibold shrink-0 select-none"
+                              style={{ backgroundColor: "rgba(31,140,158,0.06)", borderRight: "1.5px solid rgba(20,20,20,0.10)", color: "#343434" }}>
+                              +91
+                            </span>
+                            <input type="tel" placeholder="10-digit number" value={formData.mobile}
+                              onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                              className="flex-1 px-3 py-3.5 text-[13px] bg-white outline-none placeholder-gray-300" />
+                          </div>
+                          {errors.mobile && <p className="text-red-400 text-xs mt-1">{errors.mobile}</p>}
+                        </div>
+                      </div>
+
+                      {/* Email */}
+                      <div className="relative pt-2.5">
+                        <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                          style={{ color: "#343434", backgroundColor: "#fff" }}>
+                          Your Email <span style={{ color: "#f87171" }}>*</span>
+                        </label>
+                        <input type="email" placeholder="Enter your email" value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                          style={{ border: errors.email ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }} />
+                        {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                      </div>
+
+                      {/* Row: Destination + Enquiry Type */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="relative pt-2.5">
+                          <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                            style={{ color: "#343434", backgroundColor: "#fff" }}>Destination</label>
+                          <input type="text" placeholder="e.g. Goa, Dubai, Bali" value={formData.destination}
+                            onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                            style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
+                        </div>
+                        <div className="relative pt-2.5">
+                          <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                            style={{ color: "#343434", backgroundColor: "#fff" }}>Enquiry Type</label>
+                          <input type="text" placeholder="Package, Flight, General"
+                            value={formData.enquiryType === "general" ? "" : formData.enquiryType}
+                            onChange={(e) => setFormData({ ...formData, enquiryType: (e.target.value || "general") as "package" | "flight" | "general" })}
+                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                            style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
+                        </div>
+                      </div>
+
+                      {/* Row: Travel Date + Travellers */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="relative pt-2.5">
+                          <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                            style={{ color: "#343434", backgroundColor: "#fff" }}>Travel Date</label>
+                          <input type="date" value={formData.travelDate}
+                            min={new Date().toISOString().split("T")[0]}
+                            onChange={(e) => setFormData({ ...formData, travelDate: e.target.value })}
+                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                            style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
+                        </div>
+                        <div className="relative pt-2.5">
+                          <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                            style={{ color: "#343434", backgroundColor: "#fff" }}>No. of Travellers</label>
+                          <input type="number" min="1" max="50" placeholder="e.g. 2"
+                            value={formData.travellers || ""}
+                            onChange={(e) => setFormData({ ...formData, travellers: Number(e.target.value) })}
+                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                            style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
+                        </div>
+                      </div>
+
+                      {/* Budget */}
+                      <div className="relative pt-2.5">
+                        <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                          style={{ color: "#343434", backgroundColor: "#fff" }}>
+                          Budget Range <span className="font-normal" style={{ color: "rgba(52,52,52,0.45)" }}>(per person)</span>
+                        </label>
+                        <input type="text" placeholder="e.g. ₹40,000 – ₹80,000" value={budgetText}
+                          onChange={(e) => setBudgetText(e.target.value)}
+                          className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                          style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
+                      </div>
+
+                      {/* Message */}
+                      <div className="relative pt-2.5">
+                        <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
+                          style={{ color: "#343434", backgroundColor: "#fff" }}>Message / Requirements</label>
+                        <textarea rows={3} placeholder="Tell us your travel preferences or any special requirements..."
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300 resize-none"
+                          style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
+                      </div>
+
+                      {/* Submit */}
+                      <div className="space-y-2.5 pt-1">
+                        <button type="submit" disabled={isSubmitting}
+                          className="w-full flex items-center justify-center gap-2.5 font-bold py-4 rounded-xl text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
+                          style={{ backgroundColor: "#343434", color: "#fff" }}>
+                          {isSubmitting ? (
+                            <>
+                              <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                              </svg>
+                              Sending Enquiry…
+                            </>
+                          ) : (
+                            <><Send className="w-4 h-4" />Send Enquiry</>
+                          )}
+                        </button>
+                        <p className="text-center text-xs" style={{ color: "rgba(52,52,52,0.40)" }}>
+                          We respond within 2 hours. No spam.
+                        </p>
+                      </div>
+                    </form>
+                  </>
+                )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* ── Ready to Talk ───────────────────────────────────────────────── */}
+      <div className="py-14 sm:py-20" style={{ backgroundColor: "#F7F6F3" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center bg-white px-8 sm:px-12 py-10 sm:py-14"
+            style={{ border: "1.5px solid rgba(31,140,158,0.30)" }}
+          >
+
+            {/* Left */}
+            <div>
+              <h2
+                className="font-extrabold leading-[1.05] mb-4"
+                style={{ fontSize: "clamp(36px, 5vw, 64px)", color: "#343434", letterSpacing: "-0.03em" }}
               >
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(37,211,102,0.10)" }}>
-                  <WaIcon className="w-4 h-4 text-[#25d366]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">WhatsApp</p>
-                  <p className="text-sm font-semibold" style={{ color: "#343434" }}>Chat instantly · 24/7</p>
-                </div>
-                <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: "#22c55e" }} />
+                Ready to{" "}
+                <span className="font-serif italic" style={{ fontWeight: 400, color: "#1F8C9E" }}>talk?</span>
+              </h2>
+              <p className="mb-6" style={{ color: "rgba(52,52,52,0.55)", fontSize: "15px" }}>
+                I want to travel to your experts in:
+              </p>
+              <div className="relative">
+                <select
+                  className="w-full px-4 py-3.5 text-[13px] bg-white outline-none appearance-none cursor-pointer transition-all focus:ring-2 focus:ring-[#1F8C9E]/15"
+                  style={{
+                    border: "none",
+                    borderBottom: "2px solid #1F8C9E",
+                    color: "#343434",
+                    backgroundColor: "transparent",
+                  }}
+                  defaultValue=""
+                >
+                  <option value="" disabled>Select a travel type</option>
+                  <option>Honeymoon Packages</option>
+                  <option>Family Tours</option>
+                  <option>International Tours</option>
+                  <option>Adventure & Trekking</option>
+                  <option>Beach Getaways</option>
+                  <option>Luxury Escapes</option>
+                  <option>Corporate Travel</option>
+                  <option>Solo Travel</option>
+                  <option>Flight Booking</option>
+                </select>
+                <svg
+                  className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4"
+                  fill="none" stroke="#1F8C9E" strokeWidth={2} viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Right */}
+            <div>
+              <p
+                className="leading-relaxed mb-6 max-w-md"
+                style={{ color: "rgba(52,52,52,0.60)", fontSize: "clamp(15px, 1.3vw, 17px)" }}
+              >
+                We work as one team to help you plan the perfect journey — with personalised itineraries, expert advice, and zero stress.
+              </p>
+
+              {/* Email input */}
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300 mb-4"
+                style={{ border: "1.5px solid rgba(20,20,20,0.14)" }}
+              />
+
+              {/* Button */}
+              <a
+                href="/contact#enquiry"
+                className="inline-flex items-center gap-2 font-bold text-[15px] text-white transition-all hover:opacity-90 active:scale-95 px-8 py-4"
+                style={{ backgroundColor: "#343434" }}
+              >
+                Contact Us
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M7 7h10v10" />
+                </svg>
               </a>
             </div>
+
           </div>
+        </div>
+      </div>
 
-          {/* ── Right column — form only ───────────────────────────────── */}
-          <div className="relative">
+      {/* ── FAQ Section ──────────────────────────────────────────────────── */}
+      <div className="py-14 sm:py-20" style={{ backgroundColor: "#ffffff" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-            {/* Dotted pattern — bottom right */}
-            <div
-              className="absolute -bottom-10 -right-4 w-44 h-44 pointer-events-none"
-              style={{
-                backgroundImage: "radial-gradient(circle, rgba(52,52,52,0.13) 1.5px, transparent 1.5px)",
-                backgroundSize: "14px 14px",
-              }}
-            />
-
-            {/* Form heading */}
-            <div className="mb-6">
-              <h3
-                className="font-extrabold text-xl sm:text-2xl mb-1 leading-tight"
-                style={{ color: "#343434", letterSpacing: "-0.02em" }}
+            {/* Left — heading block */}
+            <div className="lg:sticky lg:top-28">
+              <h2
+                className="font-extrabold leading-[1.0] mb-2"
+                style={{ fontSize: "clamp(38px, 5.5vw, 68px)", color: "#343434", letterSpacing: "-0.035em" }}
               >
-                Send Us an Enquiry
-              </h3>
-              <p className="text-sm" style={{ color: "rgba(52,52,52,0.50)" }}>
-                Fill in your details and we&apos;ll craft a personalised itinerary for you.
+                Got Questions?
+              </h2>
+              <p
+                className="font-serif italic leading-tight mb-6"
+                style={{ fontSize: "clamp(32px, 4.5vw, 58px)", color: "#343434", fontWeight: 400 }}
+              >
+                We&apos;ve Got Answers
+              </p>
+              <p
+                className="leading-relaxed max-w-xs"
+                style={{ color: "rgba(52,52,52,0.50)", fontSize: "clamp(14px, 1.1vw, 15px)" }}
+              >
+                If you&apos;re exploring travel options with BookTick, reach out and we&apos;ll walk you through everything you need to know.
               </p>
             </div>
 
-            {/* Form card */}
-            <div
-              className="bg-white rounded-3xl overflow-hidden"
-              style={{
-                boxShadow: "0 1px 2px rgba(20,20,20,0.04), 0 20px 40px -16px rgba(20,20,20,0.14)",
-                border: "1px solid rgba(20,20,20,0.05)",
-              }}
-            >
-              {isSuccess ? (
-                /* ── Success state ── */
-                <div className="px-8 py-14 text-center">
-                  <div
-                    className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5"
-                    style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
-                  >
-                    <CheckCircle className="w-10 h-10" style={{ color: "#1F8C9E" }} />
-                  </div>
-                  <h3
-                    className="text-2xl font-extrabold mb-2"
-                    style={{ color: "#343434", letterSpacing: "-0.02em" }}
-                  >
-                    Enquiry Sent!
-                  </h3>
-                  <p className="text-gray-500 mb-8 max-w-sm mx-auto leading-relaxed">
-                    Thank you, <span className="font-semibold text-gray-700">{formData.name}</span>! Our travel expert will call you on{" "}
-                    <span className="font-semibold text-gray-700">{formData.mobile}</span> within 2 hours.
-                  </p>
+            {/* Right — accordion */}
+            <div style={{ borderTop: "1px solid rgba(52,52,52,0.10)" }}>
+              {[
+                {
+                  q: "What Types of Travel Packages Does BookTick Offer?",
+                  a: "We offer a wide range of curated national and international travel packages — from beachside getaways in Goa and Kerala to luxury escapes in Maldives, Dubai, Bali, and beyond. Every package is handcrafted by our travel experts.",
+                },
+                {
+                  q: "How Do I Enquire About a Travel Package?",
+                  a: "Simply fill out the enquiry form on this page, reach out via WhatsApp, or call us directly. Our team will get back to you within 2 hours (Mon–Sat) with personalised options tailored to your preferences.",
+                },
+                {
+                  q: "Do You Offer Customised Itineraries?",
+                  a: "Absolutely. Every itinerary we create is fully personalised based on your travel dates, budget, group size, and interests. We don't believe in one-size-fits-all — your trip is unique, and we plan it that way.",
+                },
+                {
+                  q: "How Long Does It Take to Get a Personalised Itinerary?",
+                  a: "Our travel experts typically respond within 2 hours during working hours (Mon–Sat, 9am–7pm IST). For complex international itineraries, it may take up to 24 hours to prepare a detailed proposal.",
+                },
+                {
+                  q: "Is There Any Fee to Enquire or Plan a Trip?",
+                  a: "Not at all — enquiries and itinerary consultations are completely free. We only charge once you review and confirm your travel plan. No hidden fees, no spam, just honest travel assistance.",
+                },
+              ].map((item, i) => (
+                <div key={i} style={{ borderBottom: "1px solid rgba(52,52,52,0.10)" }}>
                   <button
-                    onClick={() => { setIsSuccess(false); setFormData(initialState); }}
-                    className="inline-flex items-center gap-2 font-bold px-8 py-3.5 rounded-full text-white transition-all hover:opacity-90 active:scale-95"
-                    style={{ backgroundColor: "#1F8C9E" }}
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full flex items-center justify-between py-5 text-left gap-4 group"
                   >
-                    Send Another Enquiry <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
-                /* ── Form ── */
-                <form onSubmit={handleSubmit} className="px-5 sm:px-8 py-6">
-
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
-                    Your Details
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4 mb-5">
-
-                    <div>
-                      <FieldLabel>Full Name <span className="text-red-400">*</span></FieldLabel>
-                      <div className="relative">
-                        <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                        <input type="text" placeholder="Your full name" value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className={cn(inputBase, "pl-10", errors.name ? inputError : inputNormal)} />
-                      </div>
-                      {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
-                    </div>
-
-                    <div>
-                      <FieldLabel>Mobile Number <span className="text-red-400">*</span></FieldLabel>
-                      <div className="relative">
-                        <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                        <input type="tel" placeholder="10-digit number" value={formData.mobile}
-                          onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                          className={cn(inputBase, "pl-10", errors.mobile ? inputError : inputNormal)} />
-                      </div>
-                      {errors.mobile && <p className="text-red-400 text-xs mt-1">{errors.mobile}</p>}
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <FieldLabel>Email Address <span className="text-red-400">*</span></FieldLabel>
-                      <div className="relative">
-                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                        <input type="email" placeholder="your@email.com" value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className={cn(inputBase, "pl-10", errors.email ? inputError : inputNormal)} />
-                      </div>
-                      {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-100 pt-5 mb-5">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
-                      Trip Details
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
-
-                      <div>
-                        <FieldLabel>Enquiry Type</FieldLabel>
-                        <input type="text" placeholder="e.g. Package, Flight, General"
-                          value={formData.enquiryType === "general" ? "" : formData.enquiryType}
-                          onChange={(e) => setFormData({ ...formData, enquiryType: (e.target.value || "general") as "package" | "flight" | "general" })}
-                          className={cn(inputBase, inputNormal)} />
-                      </div>
-
-                      <div>
-                        <FieldLabel>Destination</FieldLabel>
-                        <input type="text" placeholder="e.g. Goa, Dubai, Bali" value={formData.destination}
-                          onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                          className={cn(inputBase, inputNormal)} />
-                      </div>
-
-                      <div>
-                        <FieldLabel>Preferred Travel Date</FieldLabel>
-                        <input type="date" value={formData.travelDate}
-                          min={new Date().toISOString().split("T")[0]}
-                          onChange={(e) => setFormData({ ...formData, travelDate: e.target.value })}
-                          className={cn(inputBase, inputNormal)} />
-                      </div>
-
-                      <div>
-                        <FieldLabel>Number of Travellers</FieldLabel>
-                        <input type="number" min="1" max="50" placeholder="e.g. 2"
-                          value={formData.travellers || ""}
-                          onChange={(e) => setFormData({ ...formData, travellers: Number(e.target.value) })}
-                          className={cn(inputBase, inputNormal)} />
-                      </div>
-
-                      <div className="sm:col-span-2">
-                        <FieldLabel>Budget Range <span className="text-gray-400 font-normal text-xs">(per person)</span></FieldLabel>
-                        <input type="text" placeholder="e.g. ₹40,000 – ₹80,000" value={budgetText}
-                          onChange={(e) => setBudgetText(e.target.value)}
-                          className={cn(inputBase, inputNormal)} />
-                      </div>
-
-                      <div className="sm:col-span-2">
-                        <FieldLabel>Message / Special Requirements</FieldLabel>
-                        <div className="relative">
-                          <MessageSquare className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-300 pointer-events-none" />
-                          <textarea rows={3}
-                            placeholder="Tell us your travel preferences or any special requirements..."
-                            value={formData.message}
-                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                            className={cn(inputBase, inputNormal, "pl-10 resize-none")} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <button type="submit" disabled={isSubmitting}
-                      className="w-full flex items-center justify-center gap-2.5 text-white font-bold py-3.5 rounded-xl text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
-                      style={{ backgroundColor: "#1F8C9E" }}
+                    <span
+                      className="font-semibold text-[15px] leading-snug transition-colors"
+                      style={{ color: openFaq === i ? "#1F8C9E" : "#343434" }}
                     >
-                      {isSubmitting ? (
-                        <>
-                          <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                          </svg>
-                          Sending Enquiry…
-                        </>
-                      ) : (
-                        <><Send className="w-4 h-4" />Send Enquiry</>
-                      )}
-                    </button>
-                    <p className="text-center text-gray-400 text-xs">
-                      🔒 100% secure &nbsp;·&nbsp; No spam &nbsp;·&nbsp; No direct booking &nbsp;·&nbsp; Just expert travel assistance
+                      {item.q}
+                    </span>
+                    <span
+                      className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all"
+                      style={{
+                        border: `1.5px solid ${openFaq === i ? "#1F8C9E" : "rgba(52,52,52,0.22)"}`,
+                        color: openFaq === i ? "#1F8C9E" : "#343434",
+                        backgroundColor: openFaq === i ? "rgba(31,140,158,0.07)" : "transparent",
+                      }}
+                    >
+                      {openFaq === i
+                        ? <Minus className="w-3.5 h-3.5" />
+                        : <Plus className="w-3.5 h-3.5" />
+                      }
+                    </span>
+                  </button>
+                  {openFaq === i && (
+                    <p
+                      className="pb-5 text-sm leading-relaxed"
+                      style={{ color: "rgba(52,52,52,0.55)" }}
+                    >
+                      {item.a}
                     </p>
-                  </div>
-                </form>
-              )}
+                  )}
+                </div>
+              ))}
             </div>
-          </div>
 
-        </div>
+          </div>
         </div>
       </div>
-
-      {/* ── Map section ──────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
-        <div
-          className="rounded-3xl overflow-hidden"
-          style={{
-            boxShadow: "0 1px 2px rgba(20,20,20,0.04), 0 20px 40px -16px rgba(20,20,20,0.12)",
-            border: "1px solid rgba(20,20,20,0.05)",
-          }}
-        >
-          {/* Map header bar */}
-          <div
-            className="px-6 py-4 flex items-center gap-3"
-            style={{ backgroundColor: "#0E1424" }}
-          >
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: "rgba(31,140,158,0.20)" }}
-            >
-              <MapPin className="w-4 h-4" style={{ color: "#1F8C9E" }} />
-            </div>
-            <div>
-              <p className="text-white font-bold text-sm">Our Office</p>
-              <p className="text-white/50 text-xs">123 Travel House, Connaught Place, New Delhi – 110001</p>
-            </div>
-          </div>
-
-          {/* Map embed */}
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.9!2d77.2177!3d28.6315!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd37b741d057%3A0xc7d6a0f9d0cc7bfb!2sConnaught%20Place%2C%20New%20Delhi!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin"
-            width="100%"
-            height="340"
-            style={{ border: 0, display: "block" }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="BookTick Office Location"
-          />
-        </div>
-      </div>
-
 
     </div>
   );

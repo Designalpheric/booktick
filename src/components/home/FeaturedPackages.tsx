@@ -25,12 +25,6 @@ export default function FeaturedPackages() {
 
           {/* ── Centered header ── */}
           <div className="text-center mb-10">
-            <p
-              className="text-xs font-bold uppercase tracking-widest mb-3"
-              style={{ color: "#1F8C9E" }}
-            >
-              Curated For You
-            </p>
             <h2 className="font-extrabold leading-tight mb-4">
               <span
                 className="font-heading block text-4xl sm:text-5xl"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { PlaneTakeoff, PlaneLanding, ArrowLeftRight, MessageSquare, Wifi, Coffee, Utensils, Luggage, Heart } from "lucide-react";
 import { Flight } from "@/types";
 import { formatCurrency } from "@/lib/utils";
@@ -50,6 +50,7 @@ export default function FlightCard({
 }) {
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [liked,       setLiked]       = useState(false);
+  const router = useRouter();
 
   const cBadge = classBadge[flight.class]  ?? classBadge.Economy;
   const sBadge = stopBadge(flight.stops);
@@ -57,117 +58,38 @@ export default function FlightCard({
   return (
     <>
       <div
-        className="bg-white flex flex-col sm:flex-row overflow-hidden transition-all duration-200 hover:shadow-lg"
+        className="bg-white flex flex-col sm:flex-row overflow-hidden transition-all duration-200 hover:shadow-lg cursor-pointer"
         style={{
           borderRadius: "16px",
           border: "1px solid rgba(0,0,0,0.07)",
           boxShadow: "0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.05)",
         }}
+        onClick={() => router.push("/contact")}
       >
-        {/* ── Left image ─────────────────────────────────────────────────── */}
-        <div className="relative sm:w-[42%] shrink-0 h-56 sm:h-auto overflow-hidden">
-          <Image
-            src={flight.airlineLogo}
-            alt={`${flight.airline} — ${flight.from} to ${flight.to}`}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, 42vw"
-          />
-          {/* dark overlay */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.35) 100%)" }}
-          />
-
-          {/* Heart */}
-          <button
-            onClick={() => setLiked(!liked)}
-            className="absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center transition-all"
-            style={{ backgroundColor: "rgba(255,255,255,0.20)", backdropFilter: "blur(8px)" }}
-          >
-            <Heart
-              className="w-4 h-4"
-              style={{ color: liked ? "#ef4444" : "#fff", fill: liked ? "#ef4444" : "none" }}
-            />
-          </button>
-
-          {/* Cheapest badge */}
-          {isCheapest && (
-            <div className="absolute top-3 left-12">
-              <span
-                className="text-xs font-bold px-3 py-1 rounded-full text-white"
-                style={{ backgroundColor: "#1F8C9E" }}
-              >
-                Cheapest
-              </span>
-            </div>
-          )}
-
-          {/* Class badge — top right, amber box like reference */}
-          <div className="absolute top-3 right-3">
-            <span
-              className="text-xs font-bold px-2.5 py-1 rounded-lg"
-              style={{ backgroundColor: cBadge.bg, color: cBadge.color }}
-            >
-              {flight.class}
-            </span>
-          </div>
-
-          {/* Stops badge — bottom left */}
-          <div className="absolute bottom-3 left-3">
-            <span
-              className="text-[11px] font-bold px-2.5 py-1 rounded-full"
-              style={{ backgroundColor: sBadge.bg, color: sBadge.color }}
-            >
-              {sBadge.label}
-            </span>
-          </div>
-
-          {/* Dot indicators (decorative) */}
-          <div className="absolute bottom-3 right-3 flex gap-1">
-            {[0,1,2].map(i => (
-              <span
-                key={i}
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: i === 0 ? "#fff" : "rgba(255,255,255,0.40)" }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ── Right content ──────────────────────────────────────────────── */}
+        {/* ── Content ────────────────────────────────────────────────────── */}
         <div className="flex-1 p-5 flex flex-col min-w-0">
 
-          {/* Title + stop badge */}
-          <div className="flex items-start justify-between gap-2 mb-1">
-            <h3
-              className="font-extrabold text-base leading-snug"
-              style={{ color: "#1a1a1a", letterSpacing: "-0.01em" }}
-            >
-              {flight.airline} · {flight.fromCode} → {flight.toCode}
-            </h3>
-            <span
-              className="text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0"
-              style={{ backgroundColor: sBadge.bg, color: sBadge.color }}
-            >
+          {/* Badges row */}
+          <div className="flex items-center gap-2 mb-3">
+            {isCheapest && (
+              <span className="text-xs font-bold px-3 py-1 rounded-full text-white" style={{ backgroundColor: "#1F8C9E" }}>
+                Cheapest
+              </span>
+            )}
+            <span className="text-xs font-bold px-2.5 py-1 rounded-lg" style={{ backgroundColor: cBadge.bg, color: cBadge.color }}>
+              {flight.class}
+            </span>
+            <span className="text-[11px] font-bold px-2.5 py-1 rounded-full" style={{ backgroundColor: sBadge.bg, color: sBadge.color }}>
               {sBadge.label}
             </span>
-          </div>
-
-          {/* Airline + aircraft */}
-          <div className="flex items-center gap-2 mb-2.5">
-            <div
-              className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[9px] font-extrabold text-white"
-              style={{ backgroundColor: "#1F8C9E" }}
+            {/* Heart */}
+            <button
+              onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
+              className="ml-auto w-8 h-8 rounded-full flex items-center justify-center transition-all"
+              style={{ backgroundColor: "rgba(0,0,0,0.05)" }}
             >
-              {flight.airline.charAt(0)}
-            </div>
-            <p className="text-xs font-medium text-gray-500">
-              {flight.airline} &bull; {flight.aircraft}
-              {flight.stopDetails && (
-                <span className="ml-1 text-amber-600"> · {flight.stopDetails}</span>
-              )}
-            </p>
+              <Heart className="w-4 h-4" style={{ color: liked ? "#ef4444" : "#9ca3af", fill: liked ? "#ef4444" : "none" }} />
+            </button>
           </div>
 
           {/* Description */}
@@ -232,13 +154,14 @@ export default function FlightCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp Enquiry"
+                onClick={(e) => e.stopPropagation()}
                 className="w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:opacity-90 active:scale-95 shrink-0"
                 style={{ backgroundColor: "rgba(37,211,102,0.12)", color: "#16a34a" }}
               >
                 <WaIcon />
               </a>
               <button
-                onClick={() => setEnquiryOpen(true)}
+                onClick={(e) => { e.stopPropagation(); setEnquiryOpen(true); }}
                 aria-label="Send Enquiry"
                 className="w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:bg-gray-50 active:scale-95 shrink-0"
                 style={{ border: "1.5px solid #e5e7eb", color: "#1a1a1a" }}

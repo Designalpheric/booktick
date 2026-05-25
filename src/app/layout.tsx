@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Fraunces, Inter, Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Fraunces, Urbanist, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import CTABanner from "@/components/layout/CTABanner";
 import WhatsAppFloatButton from "@/components/ui/WhatsAppFloatButton";
 
 /* ── Brand Fonts ──────────────────────────────────────────────────────────────
@@ -36,7 +35,7 @@ const instrumentSans = Instrument_Sans({
   display: "swap",
 });
 
-const inter = Inter({
+const urbanist = Urbanist({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -92,12 +91,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fraunces.variable} ${instrumentSans.variable} ${instrumentSerif.variable} ${inter.variable} antialiased`}>
+      <body className={`${fraunces.variable} ${instrumentSans.variable} ${instrumentSerif.variable} ${urbanist.variable} antialiased`}>
         <Suspense fallback={null}>
           <Header />
         </Suspense>
         <main>{children}</main>
-        <CTABanner />
         <Footer />
         <WhatsAppFloatButton />
       </body>

@@ -95,16 +95,100 @@ export default function AboutPage() {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl p-10 text-center">
-          <h2 className="text-3xl font-extrabold text-white mb-3">Ready to Start Your Journey?</h2>
-          <p className="text-orange-100 mb-6 max-w-xl mx-auto">Join thousands of happy travellers who trust BookTick for their travel experiences. Send us an enquiry and let our experts plan your perfect trip.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/packages" className="bg-white text-orange-600 font-bold px-8 py-3.5 rounded-xl hover:bg-orange-50 transition-colors">
-              Browse Packages
-            </Link>
-            <Link href="/contact" className="bg-orange-700 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-orange-800 transition-colors">
-              Contact Us Today
-            </Link>
+        <div
+          className="relative rounded-3xl overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, #0f5f6e 0%, #1F8C9E 50%, #27a3b8 100%)",
+          }}
+        >
+          {/* Diagonal overlay shapes */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 64px)",
+            }}
+          />
+          <div
+            className="absolute -top-24 -right-24 w-96 h-96 rounded-full pointer-events-none"
+            style={{ background: "rgba(255,255,255,0.06)" }}
+          />
+          <div
+            className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full pointer-events-none"
+            style={{ background: "rgba(255,255,255,0.04)" }}
+          />
+          <div
+            className="absolute top-0 left-1/3 w-64 h-full pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 60%)",
+              transform: "skewX(-20deg)",
+            }}
+          />
+
+          {/* Content */}
+          <div className="relative px-8 sm:px-12 pt-10 sm:pt-12 pb-10">
+
+            {/* Heading */}
+            <h2
+              className="font-extrabold text-white leading-tight mb-3"
+              style={{ fontSize: "clamp(26px, 4vw, 48px)", letterSpacing: "-0.025em" }}
+            >
+              Ready to Start Your Journey?
+            </h2>
+
+            {/* Subtitle */}
+            <p className="text-white/70 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
+              Join thousands of happy travellers who trust BookTick for their travel experiences.
+              Let our experts plan your perfect trip.
+            </p>
+
+            {/* Divider */}
+            <div className="border-t mb-8" style={{ borderColor: "rgba(255,255,255,0.18)" }} />
+
+            {/* Bottom row */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+
+              {/* Left — icon + title + desc */}
+              <div className="flex items-start gap-4">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: "rgba(255,255,255,0.14)" }}
+                >
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-white font-bold text-base sm:text-lg leading-snug">Send a Free Enquiry</p>
+                  <p className="text-sm mt-0.5" style={{ color: "rgba(255,255,255,0.60)" }}>
+                    — Get a personalised itinerary from our experts within 24 hours
+                  </p>
+                </div>
+              </div>
+
+              {/* Right — buttons */}
+              <div className="flex flex-col xs:flex-row gap-3 shrink-0">
+                <Link
+                  href="/packages"
+                  className="px-6 py-3 rounded-xl font-bold text-sm text-center transition-all hover:opacity-80 active:scale-95"
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.12)",
+                    color: "#fff",
+                    border: "1px solid rgba(255,255,255,0.22)",
+                  }}
+                >
+                  Browse Packages
+                </Link>
+                <Link
+                  href="/contact"
+                  className="px-6 py-3 rounded-xl font-bold text-sm text-center bg-white transition-all hover:bg-white/90 active:scale-95"
+                  style={{ color: "#0d6677" }}
+                >
+                  Contact Us Today
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

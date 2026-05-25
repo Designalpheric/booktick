@@ -225,32 +225,38 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          {/* ── Left column ───────────────────────────────────────────── */}
+          {/* ── Left column — enhanced ────────────────────────────────── */}
           <div className="relative">
 
-            {/* Dotted pattern — top right */}
+            {/* Soft teal glow — top left */}
             <div
-              className="absolute -top-4 right-0 w-36 h-36 pointer-events-none"
+              className="absolute -top-16 -left-16 w-72 h-72 rounded-full pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(31,140,158,0.09) 0%, transparent 70%)" }}
+            />
+
+            {/* Dot pattern — top right */}
+            <div
+              className="absolute top-0 right-0 w-32 h-32 pointer-events-none opacity-60"
               style={{
-                backgroundImage: "radial-gradient(circle, rgba(52,52,52,0.18) 1.5px, transparent 1.5px)",
-                backgroundSize: "14px 14px",
+                backgroundImage: "radial-gradient(circle, rgba(31,140,158,0.35) 1.5px, transparent 1.5px)",
+                backgroundSize: "12px 12px",
               }}
             />
 
-            {/* CONTACT badge */}
-            <div className="inline-flex items-center mb-6">
-              <span
-                className="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5"
-                style={{ border: "1px solid rgba(52,52,52,0.22)", color: "#343434", borderRadius: "6px" }}
-              >
-                Contact
+            {/* Badge — teal pill with live dot */}
+            <div className="inline-flex items-center gap-2 mb-7 px-3.5 py-1.5 rounded-full"
+              style={{ backgroundColor: "rgba(31,140,158,0.08)", border: "1px solid rgba(31,140,158,0.18)" }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "#1F8C9E" }} />
+              <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "#1F8C9E" }}>
+                Contact Us
               </span>
             </div>
 
             {/* Headline */}
             <h2
-              className="font-extrabold leading-[1.08] mb-5"
-              style={{ fontSize: "clamp(26px, 3.2vw, 42px)", color: "#343434", letterSpacing: "-0.025em" }}
+              className="font-extrabold leading-[1.06] mb-5"
+              style={{ fontSize: "clamp(30px, 3.8vw, 50px)", color: "#343434", letterSpacing: "-0.028em" }}
             >
               Every trip is unique,<br />
               we craft journeys<br />
@@ -260,61 +266,95 @@ export default function ContactPage() {
             </h2>
 
             {/* Description */}
-            <p
-              className="leading-relaxed mb-8 max-w-sm"
-              style={{ color: "rgba(52,52,52,0.55)", fontSize: "15px" }}
-            >
+            <p className="leading-relaxed mb-8 max-w-sm" style={{ color: "rgba(52,52,52,0.52)", fontSize: "15px" }}>
               Share your travel goals with us. Our experts reply with a
               personalised itinerary within 2 hours, Mon–Sat.
             </p>
 
-            {/* Trusted by box */}
+            {/* Stats grid — premium teal-tinted card */}
             <div
-              className="mb-8 p-5 bg-white"
-              style={{ border: "1px solid rgba(52,52,52,0.10)", borderRadius: "14px" }}
+              className="mb-8 rounded-2xl overflow-hidden"
+              style={{ border: "1px solid rgba(31,140,158,0.14)" }}
             >
-              <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
-                Trusted by Travellers
-              </p>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              {/* Header bar */}
+              <div className="px-5 py-3 flex items-center gap-2"
+                style={{ backgroundColor: "rgba(31,140,158,0.07)", borderBottom: "1px solid rgba(31,140,158,0.10)" }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#1F8C9E" }} />
+                <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#1F8C9E" }}>
+                  Trusted by Travellers
+                </p>
+              </div>
+
+              {/* 2×2 stat cells separated by hairlines */}
+              <div className="grid grid-cols-2" style={{ backgroundColor: "rgba(31,140,158,0.06)" }}>
                 {[
                   { value: "10,000+", label: "Happy Travellers" },
-                  { value: "4.8 ★",  label: "Average Rating"   },
-                  { value: "500+",   label: "Packages"          },
-                  { value: "50+",    label: "Destinations"      },
-                ].map((s) => (
-                  <div key={s.label}>
-                    <p className="font-extrabold text-lg leading-tight" style={{ color: "#343434" }}>{s.value}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{s.label}</p>
+                  { value: "4.8 ★",   label: "Average Rating"   },
+                  { value: "500+",    label: "Packages"          },
+                  { value: "50+",     label: "Destinations"      },
+                ].map((s, i) => (
+                  <div
+                    key={s.label}
+                    className="bg-white px-5 py-4"
+                    style={{
+                      borderRight:  i % 2 === 0 ? "1px solid rgba(31,140,158,0.10)" : "none",
+                      borderBottom: i < 2       ? "1px solid rgba(31,140,158,0.10)" : "none",
+                    }}
+                  >
+                    <p className="font-extrabold text-xl leading-none mb-1" style={{ color: "#1F8C9E" }}>{s.value}</p>
+                    <p className="text-xs text-gray-400">{s.label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Quick contact links */}
-            <div className="space-y-3">
-              <a href="tel:+919876543210"
-                className="flex items-center gap-3 text-sm font-semibold transition-opacity hover:opacity-70"
-                style={{ color: "#1F8C9E" }}
+            {/* Contact channels — premium mini-cards */}
+            <div className="space-y-2.5">
+              <a
+                href="tel:+919876543210"
+                className="group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all hover:shadow-md hover:-translate-y-0.5"
+                style={{ backgroundColor: "#fff", border: "1px solid rgba(20,20,20,0.07)" }}
               >
-                <Phone className="w-4 h-4 shrink-0" />
-                +91 98765 43210
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(31,140,158,0.10)" }}>
+                  <Phone className="w-4 h-4" style={{ color: "#1F8C9E" }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Phone</p>
+                  <p className="text-sm font-semibold" style={{ color: "#343434" }}>+91 98765 43210</p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-gray-300 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: "#1F8C9E" }} />
               </a>
-              <a href="mailto:info@booktick.in"
-                className="flex items-center gap-3 text-sm font-semibold transition-opacity hover:opacity-70"
-                style={{ color: "#1F8C9E" }}
+
+              <a
+                href="mailto:info@booktick.in"
+                className="group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all hover:shadow-md hover:-translate-y-0.5"
+                style={{ backgroundColor: "#fff", border: "1px solid rgba(20,20,20,0.07)" }}
               >
-                <Mail className="w-4 h-4 shrink-0" />
-                info@booktick.in
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(31,140,158,0.10)" }}>
+                  <Mail className="w-4 h-4" style={{ color: "#1F8C9E" }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Email</p>
+                  <p className="text-sm font-semibold" style={{ color: "#343434" }}>info@booktick.in</p>
+                </div>
+                <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: "#1F8C9E" }} />
               </a>
+
               <a
                 href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
                 target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm font-semibold transition-opacity hover:opacity-70"
-                style={{ color: "#16a34a" }}
+                className="group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all hover:shadow-md hover:-translate-y-0.5"
+                style={{ backgroundColor: "#fff", border: "1px solid rgba(20,20,20,0.07)" }}
               >
-                <WaIcon className="w-4 h-4 shrink-0" />
-                Chat on WhatsApp
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(37,211,102,0.10)" }}>
+                  <WaIcon className="w-4 h-4 text-[#25d366]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">WhatsApp</p>
+                  <p className="text-sm font-semibold" style={{ color: "#343434" }}>Chat instantly · 24/7</p>
+                </div>
+                <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" style={{ color: "#22c55e" }} />
               </a>
             </div>
           </div>

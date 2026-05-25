@@ -10,14 +10,14 @@ import { getWhatsAppUrl, packageEnquiryMessage } from "@/lib/whatsapp";
 import EnquiryModal from "@/components/ui/EnquiryModal";
 
 const badgeColors: Record<string, { bg: string; text: string }> = {
-  "Best Seller":       { bg: "rgba(31,140,158,0.08)",  text: "#1a8fa0" },
-  "Top Rated":         { bg: "rgba(124,58,237,0.08)",  text: "#7c4dcc" },
-  "Luxury Pick":       { bg: "rgba(242,169,59,0.09)",  text: "#b07a10" },
-  "Honeymoon Special": { bg: "rgba(236,72,153,0.08)",  text: "#c2206e" },
-  "Heritage Special":  { bg: "rgba(13,148,136,0.08)",  text: "#0e8a80" },
-  "Adventure Pick":    { bg: "rgba(22,163,74,0.08)",   text: "#1a9048" },
-  "Premium Luxury":    { bg: "rgba(37,99,235,0.08)",   text: "#2554cc" },
-  "Trending":          { bg: "rgba(234,88,12,0.08)",   text: "#c44c10" },
+  "Best Seller":       { bg: "rgba(31,140,158,0.08)",  text: "#343434" },
+  "Top Rated":         { bg: "rgba(124,58,237,0.08)",  text: "#343434" },
+  "Luxury Pick":       { bg: "rgba(242,169,59,0.09)",  text: "#343434" },
+  "Honeymoon Special": { bg: "rgba(236,72,153,0.08)",  text: "#343434" },
+  "Heritage Special":  { bg: "rgba(13,148,136,0.08)",  text: "#343434" },
+  "Adventure Pick":    { bg: "rgba(22,163,74,0.08)",   text: "#343434" },
+  "Premium Luxury":    { bg: "rgba(37,99,235,0.08)",   text: "#343434" },
+  "Trending":          { bg: "rgba(234,88,12,0.08)",   text: "#343434" },
 };
 
 export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
@@ -46,10 +46,10 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
             )}
             <div className="absolute top-3 right-3 flex flex-col items-end gap-1">
               {pkg.discount && (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap" style={{ backgroundColor: "rgba(242,169,59,0.10)", color: "#b07a10" }}>{pkg.discount}% OFF</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap" style={{ backgroundColor: "rgba(242,169,59,0.10)", color: "#343434" }}>{pkg.discount}% OFF</span>
               )}
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap"
-                style={pkg.category === "international" ? { backgroundColor: "rgba(79,107,255,0.08)", color: "#3b60d4" } : { backgroundColor: "rgba(31,140,158,0.08)", color: "#1a8fa0" }}
+                style={pkg.category === "international" ? { backgroundColor: "rgba(79,107,255,0.08)", color: "#343434" } : { backgroundColor: "rgba(31,140,158,0.08)", color: "#343434" }}
               >{pkg.category === "international" ? "International" : "National"}</span>
             </div>
           </div>

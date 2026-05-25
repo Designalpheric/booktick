@@ -204,7 +204,10 @@ export default function CustomerReviews() {
             className="text-4xl sm:text-5xl font-extrabold leading-tight mb-4"
             style={{ color: "#343434" }}
           >
-            What Our Travellers Say
+            What Our{" "}
+            <span className="font-serif italic" style={{ fontWeight: 400 }}>
+              Travellers Say
+            </span>
           </h2>
           <p className="text-gray-500 text-lg leading-relaxed">
             Real experiences from real people who trusted BookTick

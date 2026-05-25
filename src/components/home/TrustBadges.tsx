@@ -88,9 +88,12 @@ export default function TrustBadges() {
           </p>
           <h2
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-3"
-            style={{ color: "#12004D" }}
+            style={{ color: "#343434" }}
           >
-            Travel with Complete Confidence
+            Travel with{" "}
+            <span className="font-serif italic" style={{ fontWeight: 400 }}>
+              Complete Confidence
+            </span>
           </h2>
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-xl">
             Everything you need for a seamless travel experience
@@ -117,7 +120,7 @@ export default function TrustBadges() {
               <div className="pt-1">
                 <h3
                   className="font-bold text-base mb-1.5 leading-snug"
-                  style={{ color: "#12004D" }}
+                  style={{ color: "#343434" }}
                 >
                   {badge.title}
                 </h3>

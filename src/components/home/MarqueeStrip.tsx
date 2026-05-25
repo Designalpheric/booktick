@@ -68,10 +68,10 @@ export default function MarqueeStrip() {
           <MarqueeRow reverse />
         </div>
 
-        {/* ── Teal strip — front, straight, same vertical center ── */}
+        {/* ── Gold strip — front, straight, same vertical center ── */}
         <div
           className="absolute inset-0 overflow-hidden z-10"
-          style={{ backgroundColor: "#1F8C9E" }}
+          style={{ backgroundColor: "#F2A93B" }}
         >
           <MarqueeRow />
         </div>

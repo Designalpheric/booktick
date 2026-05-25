@@ -134,9 +134,9 @@ export default function AboutPage() {
               className="font-extrabold text-white leading-tight mb-3"
               style={{ fontSize: "clamp(26px, 4vw, 48px)", letterSpacing: "-0.025em" }}
             >
-              Ready to Start{" "}
+              Ready to{" "}
               <span className="font-serif italic" style={{ fontWeight: 400 }}>
-                Your Journey?
+                start Your Journey?
               </span>
             </h2>
 

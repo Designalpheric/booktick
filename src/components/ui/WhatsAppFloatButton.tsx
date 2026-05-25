@@ -1,10 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
 export default function WhatsAppFloatButton() {
   const [showTooltip, setShowTooltip] = useState(true);
+
+  // Auto-dismiss tooltip after 5 seconds
+  useEffect(() => {
+    const id = setTimeout(() => setShowTooltip(false), 5000);
+    return () => clearTimeout(id);
+  }, []);
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">

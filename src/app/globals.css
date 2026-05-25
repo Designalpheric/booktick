@@ -1,46 +1,62 @@
 @import "tailwindcss";
 
-/* ─── Brand Theme Override ────────────────────────────────────────────────────
-   Tailwind v4 @theme remaps entire colour scales — every existing `orange-*`
-   utility now uses brand Cyan, every `amber-*` uses brand Gold, and
-   `gray-900/800` become Deep Navy. Zero component changes required.
+/* ─── Open Horizon — Brand Token System ───────────────────────────────────────
+   The `@theme` block remaps Tailwind's color scales so existing utilities
+   keep working with the new palette:
+     • orange-*  → Lagoon (primary brand — replaces former cyan)
+     • amber-*   → Sun    (warm accent)
+     • gray-900/800 → Ink (#343434) for text utilities
 ────────────────────────────────────────────────────────────────────────────── */
 @theme {
-  /* ── Brand Cyan  (replaces orange across the whole UI) ── */
-  --color-orange-50:  #E7F9FC;
-  --color-orange-100: #C4EFF6;
-  --color-orange-200: #93E3F0;
-  --color-orange-300: #62D6EA;
-  --color-orange-400: #50CCE1;
-  --color-orange-500: #43C6D9;   /* Primary Cyan */
-  --color-orange-600: #35B5CA;
-  --color-orange-700: #289BAD;
-  --color-orange-800: #1C7E8F;
-  --color-orange-900: #115E6D;
+  /* ── Lagoon — primary brand (replaces orange/cyan utilities) ── */
+  --color-orange-50:  #E3F2F4;
+  --color-orange-100: #C0E3E8;
+  --color-orange-200: #8BCAD2;
+  --color-orange-300: #5BB1BD;
+  --color-orange-400: #3D9DAB;
+  --color-orange-500: #1F8C9E;   /* Lagoon — primary */
+  --color-orange-600: #176D7B;   /* Lagoon — hover */
+  --color-orange-700: #11586A;
+  --color-orange-800: #0E4756;
+  --color-orange-900: #0A3742;
 
-  /* ── Brand Gold  (replaces amber across the whole UI) ── */
-  --color-amber-50:   #FFF8E1;
-  --color-amber-100:  #FEEFB3;
-  --color-amber-200:  #FDE275;
-  --color-amber-300:  #FBD23A;
-  --color-amber-400:  #F5B61A;   /* Primary Gold  */
-  --color-amber-500:  #E0A010;
-  --color-amber-600:  #C48A08;
-  --color-amber-700:  #9E6E05;
+  /* ── Sun — warm accent (replaces amber utilities) ── */
+  --color-amber-50:   #FFF6E1;
+  --color-amber-100:  #FEEAB3;
+  --color-amber-200:  #FDD675;
+  --color-amber-300:  #F8C24F;
+  --color-amber-400:  #F2A93B;   /* Sun — primary */
+  --color-amber-500:  #D88E1C;
+  --color-amber-600:  #B47C1C;
+  --color-amber-700:  #8C5E10;
 
-  /* ── Deep Navy  (replaces gray-900/800 dark surfaces) ── */
-  --color-gray-900:   #12004D;   /* Primary Navy  */
-  --color-gray-800:   #1B0A6B;   /* Lighter navy  */
+  /* ── Ink — replaces gray-900/800 for text utilities ── */
+  --color-gray-900:   #343434;
+  --color-gray-800:   #343434;
 }
 
-/* ─── Base resets ─────────────────────────────────────────────────────────────
-   MUST be in @layer base so Tailwind utility classes (mx-auto, px-4, mb-8 …)
-   always win in the cascade. Unlayered CSS beats @layer utilities in CSS v4.
-────────────────────────────────────────────────────────────────────────────── */
+/* ─── Base resets + brand variables ──────────────────────────────────────── */
 @layer base {
-  *, *::before, *::after {
-    box-sizing: border-box;
+  :root {
+    /* Surface tokens */
+    --ink:      #343434;
+    --cream:    #FAF7F2;
+    --mist:     #EDE9E0;
+    --lagoon:   #1F8C9E;
+    --lagoon-dark: #176D7B;
+    --glacier:  #9FD8E2;
+    --sun:      #F2A93B;
+    --pine:     #28443A;
+    --ember:    #C2533C;
+
+    /* Editorial shadows */
+    --shadow-soft: 0 1px 2px rgba(20, 20, 20, 0.04),
+                   0 24px 32px -16px rgba(20, 20, 20, 0.14);
+    --shadow-lift: 0 2px 4px rgba(20, 20, 20, 0.05),
+                   0 32px 48px -20px rgba(20, 20, 20, 0.20);
   }
+
+  *, *::before, *::after { box-sizing: border-box; }
 
   html {
     scroll-behavior: smooth;
@@ -49,33 +65,30 @@
   }
 
   body {
-    /* Urbanist body font injected via --font-body CSS var from next/font */
-    font-family: var(--font-body), 'Urbanist', -apple-system, BlinkMacSystemFont,
+    font-family: var(--font-body), 'Inter', -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, sans-serif;
-    color: #2B2B2B;
-    background: #ffffff;
+    color: var(--ink);
+    background: var(--cream);
     line-height: 1.6;
     letter-spacing: -0.01em;
   }
 
-  /* All headings use Instrument Sans — modern, clean, bold */
+  /* All headings use Instrument Sans by default — geometric clarity */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading), 'Arial', sans-serif;
+    font-family: var(--font-heading), 'Inter', sans-serif;
     letter-spacing: -0.02em;
-    line-height: 1.2;
+    line-height: 1.18;
+    color: var(--ink);
   }
 
-  /* Custom scrollbar */
+  /* Custom scrollbar — Lagoon */
   ::-webkit-scrollbar        { width: 6px; }
-  ::-webkit-scrollbar-track  { background: #f1f5f9; }
-  ::-webkit-scrollbar-thumb  { background: #43C6D9; border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #35B5CA; }
+  ::-webkit-scrollbar-track  { background: var(--mist); }
+  ::-webkit-scrollbar-thumb  { background: var(--lagoon); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--lagoon-dark); }
 
-  /* Focus outlines use brand cyan */
-  input:focus,
-  select:focus,
-  textarea:focus {
-    outline: 2px solid #43C6D9;
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--lagoon);
     outline-offset: -2px;
   }
 }
@@ -85,12 +98,10 @@
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-8px); }
 }
-
 @keyframes ping-slow {
   0%   { transform: scale(0.9); opacity: 1; }
   100% { transform: scale(2);   opacity: 0; }
@@ -98,71 +109,130 @@
 
 /* ─── Utility helpers ─────────────────────────────────────────────────────── */
 @layer utilities {
-  .animate-fadeInUp {
-    animation: fadeInUp 0.5s ease forwards;
-  }
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-  .animate-ping-slow {
-    animation: ping-slow 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-  }
+  .animate-fadeInUp { animation: fadeInUp 0.5s ease forwards; }
+  .animate-float    { animation: float 3s ease-in-out infinite; }
+  .animate-ping-slow{ animation: ping-slow 2s cubic-bezier(0.215,0.61,0.355,1) infinite; }
 
-  /* Hero gradient — deep navy → subtle cyan */
-  .hero-gradient {
-    background: linear-gradient(
-      135deg,
-      rgba(18, 0, 77, 0.92) 0%,
-      rgba(27, 10, 107, 0.72) 55%,
-      rgba(67, 198, 217, 0.22) 100%
-    );
-  }
-
-  /* Card lift on hover */
-  .card-hover {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
+  /* Soft "floating paper" card — replaces older hard shadows */
+  .card-hover { transition: transform 0.28s ease, box-shadow 0.28s ease; box-shadow: var(--shadow-soft); }
   .card-hover:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(18, 0, 77, 0.12);
+    box-shadow: var(--shadow-lift);
   }
 
   /* Text truncation */
   .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    overflow: hidden; display: -webkit-box;
+    -webkit-box-orient: vertical; -webkit-line-clamp: 2;
   }
   .line-clamp-3 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    overflow: hidden; display: -webkit-box;
+    -webkit-box-orient: vertical; -webkit-line-clamp: 3;
   }
 
-  /* Badge gradients */
-  .badge-bestseller { background: linear-gradient(135deg, #43C6D9, #289BAD); }
-  .badge-toprated   { background: linear-gradient(135deg, #8b5cf6, #3b82f6); }
-  .badge-luxury     { background: linear-gradient(135deg, #F5B61A, #C48A08); }
+  /* Badge gradients — re-keyed to new palette */
+  .badge-bestseller { background: linear-gradient(135deg, #1F8C9E, #155F6B); }
+  .badge-toprated   { background: linear-gradient(135deg, #28443A, #1F8C9E); }
+  .badge-luxury     { background: linear-gradient(135deg, #F2A93B, #B47C1C); }
 
   /* Active tab underline */
   .tab-active {
-    border-bottom: 3px solid #43C6D9;
-    color: #43C6D9;
+    border-bottom: 3px solid var(--lagoon);
+    color: var(--lagoon);
   }
 
   /* Section separator accent */
   .section-divider {
     height: 4px;
-    background: linear-gradient(90deg, #43C6D9, #F5B61A, #43C6D9);
+    background: linear-gradient(90deg, #1F8C9E, #F2A93B, #1F8C9E);
     border-radius: 2px;
   }
 
-  /* Convenience helpers for the brand palette */
-  .bg-navy        { background-color: #12004D; }
-  .bg-navy-light  { background-color: #1B0A6B; }
-  .text-navy      { color: #12004D; }
-  .text-gold      { color: #F5B61A; }
-  .font-heading   { font-family: var(--font-heading), 'Georgia', serif; }
+  /* ── Surface utilities ── */
+  .bg-cream     { background-color: var(--cream); }
+  .bg-mist      { background-color: var(--mist); }
+  .bg-ink       { background-color: var(--ink); }
+  .bg-lagoon    { background-color: var(--lagoon); }
+  .bg-sun       { background-color: var(--sun); }
+  .bg-pine      { background-color: var(--pine); }
+  .border-mist  { border-color: var(--mist); }
+
+  /* ── Text utilities ── */
+  .text-ink     { color: var(--ink); }
+  .text-lagoon  { color: var(--lagoon); }
+  .text-sun     { color: var(--sun); }
+  .text-pine    { color: var(--pine); }
+  .text-ember   { color: var(--ember); }
+
+  /* Legacy "navy" utilities kept for compatibility — now point to Ink */
+  .bg-navy        { background-color: var(--ink); }
+  .bg-navy-light  { background-color: var(--ink); }
+  .text-navy      { color: var(--ink); }
+
+  /* ── Type families ── */
+  .font-heading { font-family: var(--font-heading), 'Inter', sans-serif; }
+  .font-display { font-family: var(--font-display), 'Georgia', serif; }
+  .font-serif   { font-family: var(--font-serif), 'Georgia', serif; }
+  .font-body    { font-family: var(--font-body), 'Inter', sans-serif; }
+
+  /* Editorial italic accent — for emotive words in display headlines */
+  .display-italic {
+    font-family: var(--font-display), 'Georgia', serif;
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* ─── Marquee strip — infinite horizontal scroll ─────────────────────────── */
+@keyframes marquee-ltr {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-rtl {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.animate-marquee     { animation: marquee-ltr 28s linear infinite; width: max-content; will-change: transform; }
+.animate-marquee-rev { animation: marquee-rtl 34s linear infinite; width: max-content; will-change: transform; }
+
+/* ─── Testimonial carousel — Swiper customisation ────────────────────────── */
+.testimonial-swiper { padding: 24px 4px 56px; overflow: visible; }
+.testimonial-swiper .swiper-slide {
+  transition: opacity 0.5s ease;
+  opacity: 0.45;
+  height: auto;
+}
+.testimonial-swiper .swiper-slide-active { opacity: 1; z-index: 2; }
+.testimonial-swiper .swiper-slide-prev,
+.testimonial-swiper .swiper-slide-next { opacity: 0.72; }
+
+/* Scale applied to inner card so Swiper's own transforms aren't disturbed */
+.testimonial-card-wrap {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.9);
+  transform-origin: center center;
+  height: 100%;
+}
+.testimonial-swiper .swiper-slide-prev .testimonial-card-wrap,
+.testimonial-swiper .swiper-slide-next .testimonial-card-wrap { transform: scale(0.94); }
+.testimonial-swiper .swiper-slide-active .testimonial-card-wrap { transform: scale(1.04); }
+.testimonial-swiper .swiper-pagination {
+  position: relative;
+  bottom: auto;
+  margin-top: 28px;
+}
+.testimonial-swiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  border: 1.5px solid rgba(31, 140, 158, 0.55);
+  opacity: 1;
+  margin: 0 6px !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.testimonial-swiper .swiper-pagination-bullet:hover { transform: scale(1.15); }
+.testimonial-swiper .swiper-pagination-bullet-active {
+  background: #1F8C9E;
+  border-color: #1F8C9E;
 }

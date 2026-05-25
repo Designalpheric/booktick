@@ -5,6 +5,7 @@ import FeaturedPackages from "@/components/home/FeaturedPackages";
 import DealsSection from "@/components/home/DealsSection";
 import CustomerReviews from "@/components/home/CustomerReviews";
 import TrustBadges from "@/components/home/TrustBadges";
+import MarqueeStrip from "@/components/home/MarqueeStrip";
 import EnquiryCTA from "@/components/home/EnquiryCTA";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function HomePage() {
       <FeaturedPackages />
       <DealsSection />
       <TrustBadges />
+      <MarqueeStrip />
       <CustomerReviews />
       <EnquiryCTA />
     </>

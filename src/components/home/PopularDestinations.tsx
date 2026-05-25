@@ -1,128 +1,116 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
-import { destinations } from "@/data/destinations";
+
+/* ── Top Destinations data ────────────────────────────────────────────────── */
+const topDestinations = [
+  {
+    slug: "goa",
+    name: "Goa",
+    trips: 12,
+    image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=700&h=950&fit=crop",
+  },
+  {
+    slug: "kerala",
+    name: "Kerala",
+    trips: 10,
+    image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=700&h=950&fit=crop",
+  },
+  {
+    slug: "dubai",
+    name: "Dubai",
+    trips: 15,
+    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=700&h=950&fit=crop",
+  },
+  {
+    slug: "bali",
+    name: "Bali",
+    trips: 9,
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700&h=950&fit=crop",
+  },
+  {
+    slug: "maldives",
+    name: "Maldives",
+    trips: 11,
+    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=700&h=950&fit=crop",
+  },
+];
+
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function PopularDestinations() {
-  const popular = destinations.filter((d) => d.popular).slice(0, 6);
-
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-cream">
+      <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* ── Header: heading left · description + CTA right ── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+        {/* ── Centered heading ──────────────────────────────────────── */}
+        <div className="text-center mb-10">
+          <h2
+            className="font-heading text-4xl sm:text-5xl lg:text-6xl mb-3"
+            style={{ letterSpacing: "-0.03em", lineHeight: 1.05, fontWeight: 700, color: "#343434" }}
+          >
+            Top Destinations
+          </h2>
 
-          {/* Left — heading */}
-          <div className="flex-1">
-            <p
-              className="text-xs font-bold uppercase tracking-widest mb-3"
-              style={{ color: "#43C6D9" }}
-            >
-              Explore
-            </p>
-            <h2
-              className="text-4xl sm:text-5xl font-extrabold leading-tight"
-              style={{ color: "#12004D" }}
-            >
-              Popular Destinations
-            </h2>
-          </div>
-
-          {/* Right — description + CTA */}
-          <div className="flex flex-col items-start lg:items-end gap-4 lg:max-w-sm">
-            <p className="text-gray-400 text-base leading-relaxed lg:text-right">
-              Handpicked destinations loved by thousands of travellers
-            </p>
-            <Link
-              href="/destinations"
-              className="inline-flex items-center gap-2 text-white text-sm font-bold px-6 py-3 rounded-full transition-all hover:opacity-90 active:scale-95 shadow-md"
-              style={{ backgroundColor: "#12004D" }}
-            >
-              View all <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+          <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+            Explore our most loved travel spots and curated experiences.
+          </p>
         </div>
 
-        {/* ── Three-column card grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {popular.map((dest, i) => (
+        {/* ── Single-row destination grid (5 uniform cards) ────────── */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+          {topDestinations.map((dest) => (
             <Link
-              key={dest.id}
+              key={dest.slug}
               href={`/destinations/${dest.slug}`}
-              className="group block"
+              className="group relative overflow-hidden rounded-2xl block transition-all duration-500 ease-out hover:-translate-y-1.5"
+              style={{
+                boxShadow:
+                  "0 1px 2px rgba(20,20,20,0.04), 0 18px 32px -16px rgba(20,20,20,0.22)",
+                aspectRatio: "3 / 4",
+              }}
             >
-              {/* Image */}
+              {/* Image — smooth zoom on hover */}
+              <Image
+                src={dest.image}
+                alt={dest.name}
+                fill
+                className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-110"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+              />
+
+              {/* Base bottom gradient — always visible */}
               <div
-                className="relative overflow-hidden rounded-3xl mb-4"
-                style={{ height: 260 }}
-              >
-                <Image
-                  src={dest.image}
-                  alt={dest.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
+                className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 40%, rgba(8,28,30,0.55) 75%, rgba(6,20,28,0.92) 100%)",
+                }}
+              />
 
-                {/* "Most Popular" badge */}
-                {i === 0 && (
-                  <div className="absolute top-4 left-4">
-                    <span
-                      className="text-white text-xs font-bold px-3 py-1.5 rounded-full"
-                      style={{ backgroundColor: "#43C6D9" }}
-                    >
-                      Most Popular
-                    </span>
-                  </div>
-                )}
+              {/* Hover darken layer */}
+              <div
+                className="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(15,40,50,0.10) 0%, rgba(15,40,55,0.45) 100%)",
+                }}
+              />
 
-                {/* Package count pill — bottom right on image */}
-                <div
-                  className="absolute bottom-4 right-4 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm"
-                  style={{ backgroundColor: "rgba(18,0,77,0.65)" }}
+              {/* Bottom text */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 transition-transform duration-500 ease-out group-hover:-translate-y-1">
+                <h3
+                  className="text-white text-xl sm:text-[22px] font-bold mb-1 tracking-tight leading-tight"
+                  style={{ textShadow: "0 2px 12px rgba(0,0,0,0.35)" }}
                 >
-                  {dest.packageCount} packages
-                </div>
-              </div>
-
-              {/* ── Card content ── */}
-              <div className="px-1">
-
-                {/* Title row: name left · country right */}
-                <div className="flex items-center justify-between mb-2">
-                  <h3
-                    className="font-extrabold text-xl leading-snug group-hover:opacity-80 transition-opacity"
-                    style={{ color: "#12004D" }}
-                  >
-                    {dest.name}
-                  </h3>
-                  <div className="flex items-center gap-1 text-gray-400 text-sm shrink-0 ml-2">
-                    <MapPin className="w-3.5 h-3.5" style={{ color: "#43C6D9" }} />
-                    <span>{dest.country}</span>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed line-clamp-2">
-                  {dest.description}
+                  {dest.name}
+                </h3>
+                <p className="text-white/85 text-xs sm:text-sm font-medium tracking-wide">
+                  {pad(dest.trips)} Trips
                 </p>
               </div>
             </Link>
           ))}
         </div>
-
-        {/* Mobile CTA */}
-        <div className="text-center mt-10 lg:hidden">
-          <Link
-            href="/destinations"
-            className="inline-flex items-center gap-2 text-white text-sm font-bold px-8 py-3 rounded-full transition-all hover:opacity-90"
-            style={{ backgroundColor: "#12004D" }}
-          >
-            View all destinations <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
       </div>
     </section>
   );

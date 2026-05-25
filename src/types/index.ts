@@ -42,7 +42,7 @@ export interface TravelPackage {
   title: string;
   destination: string;
   country: string;
-  category: "domestic" | "international";
+  category: "national" | "international";
   type: string[];
   duration: string;
   durationDays: number;

@@ -7,7 +7,7 @@ export const packages: TravelPackage[] = [
     title: "Goa Beach Bliss",
     destination: "Goa",
     country: "India",
-    category: "domestic",
+    category: "national",
     type: ["Beach", "Relaxation", "Nightlife"],
     duration: "5 Days / 4 Nights",
     durationDays: 5,
@@ -48,7 +48,7 @@ export const packages: TravelPackage[] = [
     isFeatured: true,
     minTravellers: 1,
     maxTravellers: 20,
-    tags: ["beach", "goa", "domestic", "water sports"],
+    tags: ["beach", "goa", "national", "water sports"],
   },
   {
     id: "p2",
@@ -56,7 +56,7 @@ export const packages: TravelPackage[] = [
     title: "Kerala Backwaters & Hills",
     destination: "Kerala",
     country: "India",
-    category: "domestic",
+    category: "national",
     type: ["Nature", "Backwaters", "Hill Station"],
     duration: "7 Days / 6 Nights",
     durationDays: 7,
@@ -203,7 +203,7 @@ export const packages: TravelPackage[] = [
     title: "Rajasthan Royal Heritage Tour",
     destination: "Rajasthan",
     country: "India",
-    category: "domestic",
+    category: "national",
     type: ["Heritage", "Culture", "Desert", "Wildlife"],
     duration: "6 Days / 5 Nights",
     durationDays: 6,
@@ -299,7 +299,7 @@ export const packages: TravelPackage[] = [
     title: "Ladakh High Altitude Adventure",
     destination: "Ladakh",
     country: "India",
-    category: "domestic",
+    category: "national",
     type: ["Adventure", "Mountain", "Offbeat", "Biking"],
     duration: "8 Days / 7 Nights",
     durationDays: 8,
@@ -390,3 +390,7 @@ export const packages: TravelPackage[] = [
     tags: ["maldives", "luxury", "honeymoon", "diving"],
   },
 ];
+
+/* ── Separate typed arrays ─────────────────────────────────────────────────── */
+export const nationalPackages = packages.filter((p) => p.category === "national");
+export const internationalPackages = packages.filter((p) => p.category === "international");

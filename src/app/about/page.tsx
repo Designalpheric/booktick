@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Shield, Award, Users, Globe, Heart, Headphones } from "lucide-react";
 import type { Metadata } from "next";
+import CoreValuesTimeline from "@/components/about/CoreValuesTimeline";
 
 export const metadata: Metadata = {
   title: "About Us — BookTick Travel",
@@ -67,32 +67,8 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Values */}
-        <div className="mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-extrabold text-gray-900">Our Core Values</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: Heart, title: "Passion for Travel", desc: "We live and breathe travel. Our team is made up of avid explorers who genuinely care about your experience.", color: "bg-red-50 text-red-600" },
-              { icon: Shield, title: "Trust & Transparency", desc: "No hidden fees, no surprises. We believe in complete transparency in all our interactions and pricing.", color: "bg-blue-50 text-blue-600" },
-              { icon: Users, title: "Personal Touch", desc: "Every enquiry gets individual attention. We design itineraries tailored specifically to your unique preferences.", color: "bg-green-50 text-green-600" },
-              { icon: Globe, title: "Global Expertise", desc: "With expertise across 50+ destinations, our consultants bring local knowledge and global connections to every trip.", color: "bg-purple-50 text-purple-600" },
-              { icon: Award, title: "Excellence in Service", desc: "We hold ourselves to the highest standards. Our 4.8/5 rating reflects our unwavering commitment to quality.", color: "bg-amber-50 text-amber-600" },
-              { icon: Headphones, title: "Always Here for You", desc: "From planning to return, our support team is available 24/7 to assist with any need or concern.", color: "bg-teal-50 text-teal-600" },
-            ].map((val) => (
-              <div key={val.title} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex gap-4">
-                <div className={`w-12 h-12 ${val.color} rounded-xl flex items-center justify-center shrink-0`}>
-                  <val.icon className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-1">{val.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{val.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Values — zig-zag timeline */}
+        <CoreValuesTimeline />
 
         {/* Team */}
         <div className="mb-16">

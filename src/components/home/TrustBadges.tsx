@@ -5,43 +5,43 @@ const badges = [
     icon: Shield,
     title: "100% Safe & Secure",
     desc: "Your personal data and enquiries are fully protected with enterprise-grade security.",
-    iconBg: "rgba(67,198,217,0.12)",
-    iconColor: "#43C6D9",
+    iconBg: "rgba(31,140,158,0.10)",
+    iconColor: "#1F8C9E",
   },
   {
     icon: Award,
     title: "Award-Winning Agency",
     desc: "Recognised as one of India's top travel agencies for 3 consecutive years.",
-    iconBg: "rgba(245,182,26,0.12)",
-    iconColor: "#E0A010",
+    iconBg: "rgba(31,140,158,0.10)",
+    iconColor: "#1F8C9E",
   },
   {
     icon: Headphones,
     title: "24/7 Travel Support",
     desc: "Our expert team is available round the clock via phone, WhatsApp, and email.",
-    iconBg: "rgba(34,197,94,0.12)",
-    iconColor: "#16a34a",
+    iconBg: "rgba(31,140,158,0.10)",
+    iconColor: "#1F8C9E",
   },
   {
     icon: RefreshCw,
     title: "Flexible Cancellation",
     desc: "Plans change — we offer flexible rescheduling and cancellation policies.",
-    iconBg: "rgba(139,92,246,0.12)",
-    iconColor: "#7c3aed",
+    iconBg: "rgba(31,140,158,0.10)",
+    iconColor: "#1F8C9E",
   },
   {
     icon: Users,
     title: "Expert Travel Planners",
     desc: "Dedicated travel consultants with 10+ years of experience in each destination.",
-    iconBg: "rgba(249,115,22,0.12)",
-    iconColor: "#ea580c",
+    iconBg: "rgba(31,140,158,0.10)",
+    iconColor: "#1F8C9E",
   },
   {
     icon: Star,
     title: "Best Price Guarantee",
     desc: "We match or beat any comparable quote. Get the best deal — guaranteed.",
-    iconBg: "rgba(239,68,68,0.12)",
-    iconColor: "#dc2626",
+    iconBg: "rgba(31,140,158,0.10)",
+    iconColor: "#1F8C9E",
   },
 ];
 
@@ -72,7 +72,7 @@ export default function TrustBadges() {
             >
               <p
                 className="text-3xl font-extrabold leading-none mb-1"
-                style={{ color: "#43C6D9" }}
+                style={{ color: "#1F8C9E" }}
               >
                 {stat.value}
               </p>
@@ -85,7 +85,7 @@ export default function TrustBadges() {
         <div className="mb-12">
           <p
             className="text-xs font-bold uppercase tracking-widest mb-3"
-            style={{ color: "#43C6D9" }}
+            style={{ color: "#1F8C9E" }}
           >
             Why BookTick
           </p>

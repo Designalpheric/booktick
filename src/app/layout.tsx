@@ -1,19 +1,41 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Urbanist } from "next/font/google";
+import { Suspense } from "react";
+import { Fraunces, Inter, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloatButton from "@/components/ui/WhatsAppFloatButton";
 
-/* ── Brand Fonts ──────────────────────────────────────────────────────────── */
+/* ── Brand Fonts ──────────────────────────────────────────────────────────────
+   Display: Fraunces — italic-capable serif for emotive headlines
+   Heading: Instrument Sans — geometric clarity for section titles
+   Body:    Inter — workhorse readability
+────────────────────────────────────────────────────────────────────────────── */
+const fraunces = Fraunces({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 const instrumentSans = Instrument_Sans({
   variable: "--font-heading",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const urbanist = Urbanist({
+const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -26,12 +48,12 @@ export const metadata: Metadata = {
     template: "%s | BookTick Travel",
   },
   description:
-    "Discover amazing travel packages, flights, and holiday deals with BookTick. Explore domestic and international destinations. Enquire today for the best travel experience.",
+    "Discover amazing travel packages, flights, and holiday deals with BookTick. Explore national and international destinations. Enquire today for the best travel experience.",
   keywords: [
     "travel packages",
     "holiday deals",
     "flights",
-    "domestic tours",
+    "national tours",
     "international tours",
     "Goa",
     "Kerala",
@@ -69,8 +91,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${instrumentSans.variable} ${urbanist.variable} antialiased`}>
-        <Header />
+      <body className={`${fraunces.variable} ${instrumentSans.variable} ${instrumentSerif.variable} ${inter.variable} antialiased`}>
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
         <main>{children}</main>
         <Footer />
         <WhatsAppFloatButton />

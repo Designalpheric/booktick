@@ -3,62 +3,66 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  MapPin, Plane, Globe, Star, Shield, Clock,
-  ChevronDown, ArrowRight, Users, Calendar, Search,
+  MapPin, Star, Shield, BadgeCheck,
+  Calendar, Search, Compass, ChevronDown,
+  PlaneTakeoff, PlaneLanding, Users,
 } from "lucide-react";
 
-/* ── Static data ──────────────────────────────────────────────────────────── */
-const tabs = [
-  { id: "packages",     label: "Packages"     },
-  { id: "flights",      label: "Flights"      },
-  { id: "destinations", label: "Destinations" },
-] as const;
-type TabId = typeof tabs[number]["id"];
-
-const months = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December",
+/* ── Data ─────────────────────────────────────────────────────────────────── */
+const dateRanges = [
+  "This Month", "Next Month", "In 1–3 Months", "In 3–6 Months", "Flexible Dates",
 ];
-const travellerOptions = ["Solo (1 Person)","2 People","3–4 People","5–8 People","Group (9+)"];
-const categoryOptions  = ["Beaches","Mountains","Heritage","Adventure","Wildlife","Luxury","Pilgrimage"];
+const activityTypes = [
+  "Hiking & Trekking", "Wildlife & Safari", "Cultural & Heritage",
+  "Beach & Islands", "Snow & Mountains", "Food & Local Life",
+  "Photography Tours", "Wellness Retreats",
+];
+const cabinClasses = ["Economy", "Premium Economy", "Business", "First Class"];
+// const passengerOptions = ["1 Adult", "2 Adults", "3 Adults", "4 Adults", "Family (2A+2C)"];
 
-const popularFilters: Record<TabId, string[]> = {
-  packages:     ["Goa","Kerala","Bali","Rajasthan","Maldives","Ladakh","Thailand"],
-  flights:      ["Delhi → Dubai","Mumbai → Bali","Delhi → Bangkok","Chennai → Singapore"],
-  destinations: ["Beaches","Mountains","Heritage","Adventure","Luxury"],
-};
+type Tab = "packages" | "flights";
 
-/* ── Search-panel sub-components ──────────────────────────────────────────── */
-function FieldWrap({
-  icon: Icon,
-  label,
-  children,
+/* ── Shared field wrapper ─────────────────────────────────────────────────── */
+function Field({
+  icon: Icon, label, children,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3 bg-gray-100 rounded-2xl px-4 py-3.5 flex-1 min-w-0">
-      <Icon className="w-5 h-5 shrink-0" style={{ color: "#43C6D9" }} />
+    <div className="flex items-center gap-3 flex-1 min-w-0 px-5 py-4 bg-white rounded-xl">
+      <Icon className="w-[18px] h-[18px] shrink-0 text-gray-400" />
       <div className="flex-1 min-w-0">
-        <p className="text-[11px] font-semibold uppercase tracking-wide mb-1 text-gray-400">
-          {label}
-        </p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-1">{label}</p>
         {children}
       </div>
     </div>
   );
 }
 
-function TextField({
-  placeholder,
-  value,
-  onChange,
-}: {
-  placeholder: string;
-  value: string;
-  onChange: (v: string) => void;
+function SelectInput({ value, onChange, placeholder, options }: {
+  value: string; onChange: (v: string) => void;
+  placeholder: string; options: string[];
+}) {
+  return (
+    <div className="relative flex items-center">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full text-[15px] font-semibold bg-transparent focus:outline-none appearance-none cursor-pointer leading-tight pr-5"
+        style={{ color: value ? "#343434" : "#9ca3af" }}
+      >
+        <option value="" disabled>{placeholder}</option>
+        {options.map((o) => <option key={o} value={o} style={{ color: "#343434" }}>{o}</option>)}
+      </select>
+      <ChevronDown className="absolute right-0 w-4 h-4 text-gray-400 pointer-events-none shrink-0" />
+    </div>
+  );
+}
+
+function TextInput({ value, onChange, placeholder }: {
+  value: string; onChange: (v: string) => void; placeholder: string;
 }) {
   return (
     <input
@@ -66,262 +70,197 @@ function TextField({
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full text-sm font-medium text-gray-800 placeholder-gray-400 bg-transparent focus:outline-none"
+      className="w-full text-[15px] font-semibold bg-transparent focus:outline-none placeholder-gray-300 leading-tight"
+      style={{ color: "#343434" }}
     />
-  );
-}
-
-function SelectField({
-  placeholder,
-  options,
-  value,
-  onChange,
-}: {
-  placeholder: string;
-  options: string[];
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div className="relative flex items-center">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`w-full text-sm font-medium bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 ${
-          value ? "text-gray-800" : "text-gray-400"
-        }`}
-      >
-        <option value="" disabled>{placeholder}</option>
-        {options.map((o) => (
-          <option key={o} value={o} className="text-gray-800">{o}</option>
-        ))}
-      </select>
-      <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-    </div>
   );
 }
 
 /* ── Main component ───────────────────────────────────────────────────────── */
 export default function HeroBanner() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<TabId>("packages");
+  const [activeTab, setActiveTab] = useState<Tab>("packages");
 
-  const [pkgDest,   setPkgDest]   = useState("");
-  const [pkgMonth,  setPkgMonth]  = useState("");
-  const [pkgPeople, setPkgPeople] = useState("");
-  const [fltFrom,   setFltFrom]   = useState("");
-  const [fltTo,     setFltTo]     = useState("");
-  const [fltMonth,  setFltMonth]  = useState("");
-  const [dstSearch, setDstSearch] = useState("");
-  const [dstCat,    setDstCat]    = useState("");
-  const [dstStyle,  setDstStyle]  = useState("");
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  /* Packages state */
+  const [pkgWhere,    setPkgWhere]    = useState("");
+  const [pkgWhen,     setPkgWhen]     = useState("");
+  const [pkgActivity, setPkgActivity] = useState("");
+
+  /* Flights state */
+  const [flFrom,    setFlFrom]    = useState("");
+  const [flTo,      setFlTo]      = useState("");
+  const [flDate,    setFlDate]    = useState("");
+  const [flCabin,   setFlCabin]   = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (activeTab === "packages") {
-      const q = pkgDest.trim();
-      router.push(`/packages${q ? `?search=${encodeURIComponent(q)}` : ""}`);
-    } else if (activeTab === "flights") {
-      const q = [fltFrom, fltTo].filter(Boolean).join(" ");
-      router.push(`/flights${q ? `?search=${encodeURIComponent(q)}` : ""}`);
+      const p = new URLSearchParams();
+      if (pkgWhere) p.set("search", pkgWhere);
+      router.push(`/packages${p.toString() ? `?${p}` : ""}`);
     } else {
-      const q = dstSearch.trim() || dstCat;
-      router.push(`/destinations${q ? `?search=${encodeURIComponent(q)}` : ""}`);
-    }
-  };
-
-  const handleFilter = (f: string) => {
-    const toggled = f === activeFilter;
-    setActiveFilter(toggled ? null : f);
-    if (activeTab === "packages") {
-      setPkgDest(toggled ? "" : f);
-    } else if (activeTab === "flights") {
-      if (toggled) { setFltFrom(""); setFltTo(""); }
-      else if (f.includes("→")) {
-        const [from, to] = f.split("→").map((s) => s.trim());
-        setFltFrom(from); setFltTo(to);
-      }
-    } else {
-      setDstSearch(toggled ? "" : f);
-      setDstCat(toggled ? "" : f);
+      const p = new URLSearchParams();
+      if (flFrom) p.set("from", flFrom);
+      if (flTo)   p.set("to",   flTo);
+      router.push(`/flights${p.toString() ? `?${p}` : ""}`);
     }
   };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
-      {/* Background image */}
+      {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1920&h=1080&fit=crop')`,
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=1920&h=1280&fit=crop')` }}
       />
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 hero-gradient" />
-      {/* Subtle dot pattern */}
+      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.78) 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.40) 100%)" }} />
+
       <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-        }}
-      />
+        className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center"
+        style={{ paddingTop: "clamp(80px, 14vh, 140px)", paddingBottom: "clamp(48px, 8vh, 80px)" }}
+      >
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 py-24 text-center w-full">
-
-        {/* Trust badge */}
-        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6">
-          <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-          Trusted by 10,000+ happy travellers across India
+        {/* Glass pill badge */}
+        <div
+          className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-semibold tracking-wide px-5 py-2 rounded-full mb-8"
+          style={{ backgroundColor: "rgba(255,255,255,0.10)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.18)" }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#F2A93B" }} />
+          Curated Tours
         </div>
 
-        {/* Headline — two lines, gold accent on "Your Way!" */}
-        <h1 className="font-extrabold leading-tight mb-4">
-          <span className="block text-4xl sm:text-5xl lg:text-6xl text-white">
-            Explore the World,
+        {/* Headline */}
+        <h1
+          className="text-white mb-6 w-full"
+          style={{ lineHeight: 1.04, letterSpacing: "-0.03em", textShadow: "0 2px 24px rgba(0,0,0,0.30)" }}
+        >
+          <span className="block font-extrabold" style={{ fontSize: "clamp(28px, 8vw, 64px)" }}>
+            Unforgettable{" "}
+            <span className="font-heading font-extrabold not-italic" style={{ color: "#F2A93B" }}>
+              Experiences
+            </span>
           </span>
-          <span className="block text-4xl sm:text-5xl lg:text-6xl" style={{ color: "#F5B61A" }}>
-            Your Way!
+          <span className="block font-extrabold" style={{ fontSize: "clamp(28px, 8vw, 64px)" }}>
+            Await You
           </span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-          Discover handcrafted travel packages and flight options. Enquire instantly —{" "}
-          our experts handle the rest.
+        <p className="text-white/80 mb-10 mx-auto leading-relaxed" style={{ fontSize: "clamp(15px, 1.5vw, 18px)", maxWidth: "560px" }}>
+          Skip the tourist traps. Book extraordinary, expert-led tours and immersive activities designed for the modern explorer.
         </p>
 
-        {/* ── Search Panel ────────────────────────────────────────────────── */}
-        <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-4xl mx-auto text-left">
-
-          {/* Tabs */}
-          <div className="flex gap-2 mb-6 flex-wrap">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => { setActiveTab(tab.id); setActiveFilter(null); }}
-                className="px-5 py-2 rounded-full text-sm font-semibold transition-all"
-                style={
-                  activeTab === tab.id
-                    ? { backgroundColor: "#12004D", color: "#ffffff" }
-                    : { color: "#6b7280" }
-                }
-              >
-                {tab.label}
-              </button>
-            ))}
+        {/* ── Search card ───────────────────────────────────────────────── */}
+        <div
+          className="w-full rounded-3xl text-left"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.97)",
+            backdropFilter: "blur(20px) saturate(160%)",
+            WebkitBackdropFilter: "blur(20px) saturate(160%)",
+            boxShadow: "0 24px 56px -16px rgba(0,0,0,0.50), 0 2px 6px rgba(0,0,0,0.06)",
+            border: "1px solid rgba(255,255,255,0.70)",
+            padding: "20px",
+          }}
+        >
+          {/* ── Tabs ── */}
+          <div
+            className="inline-flex gap-1 p-1 mb-5 rounded-full"
+            style={{ backgroundColor: "#f3f4f6" }}
+          >
+            {([
+              { id: "packages" as Tab, label: "Packages",  icon: <Compass className="w-3.5 h-3.5" /> },
+              { id: "flights"  as Tab, label: "Flights",   icon: <PlaneTakeoff className="w-3.5 h-3.5" /> },
+            ]).map(({ id, label, icon }) => {
+              const active = activeTab === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setActiveTab(id)}
+                  className="flex items-center gap-1.5 px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap"
+                  style={
+                    active
+                      ? { backgroundColor: "rgba(31,140,158,0.13)", color: "#1F8C9E", boxShadow: "0 1px 3px rgba(31,140,158,0.12)" }
+                      : { color: "#6b7280" }
+                  }
+                >
+                  {icon}
+                  {label}
+                </button>
+              );
+            })}
           </div>
 
+          {/* ── Fields ── */}
           <form onSubmit={handleSearch}>
-            {/* Input row */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-5">
+            <div
+              className="flex flex-col sm:flex-row items-stretch gap-2"
+              style={{ backgroundColor: "#f3f4f6", borderRadius: "14px", padding: "6px" }}
+            >
 
-              {activeTab === "packages" && (
+              {activeTab === "packages" ? (
                 <>
-                  <FieldWrap icon={MapPin} label="Destination">
-                    <TextField placeholder="Goa, Kerala, Dubai…" value={pkgDest} onChange={setPkgDest} />
-                  </FieldWrap>
-                  <FieldWrap icon={Calendar} label="Travel Month">
-                    <SelectField placeholder="Select month" options={months} value={pkgMonth} onChange={setPkgMonth} />
-                  </FieldWrap>
-                  <FieldWrap icon={Users} label="Travellers">
-                    <SelectField placeholder="Select travellers" options={travellerOptions} value={pkgPeople} onChange={setPkgPeople} />
-                  </FieldWrap>
+                  <Field icon={MapPin} label="Where to?">
+                    <TextInput value={pkgWhere} onChange={setPkgWhere} placeholder="Bali, Alps, Kyoto…" />
+                  </Field>
+
+                  <Field icon={Calendar} label="When?">
+                    <SelectInput value={pkgWhen} onChange={setPkgWhen} placeholder="Select dates" options={dateRanges} />
+                  </Field>
+
+                  <Field icon={Compass} label="Experience">
+                    <SelectInput value={pkgActivity} onChange={setPkgActivity} placeholder="Activity type" options={activityTypes} />
+                  </Field>
+                </>
+              ) : (
+                <>
+                  <Field icon={PlaneTakeoff} label="From">
+                    <TextInput value={flFrom} onChange={setFlFrom} placeholder="Delhi, Mumbai…" />
+                  </Field>
+
+                  <Field icon={PlaneLanding} label="To">
+                    <TextInput value={flTo} onChange={setFlTo} placeholder="Dubai, Bangkok…" />
+                  </Field>
+
+                  <Field icon={Calendar} label="Departure">
+                    <SelectInput value={flDate} onChange={setFlDate} placeholder="Select dates" options={dateRanges} />
+                  </Field>
+
+                  <Field icon={Users} label="Cabin class">
+                    <SelectInput value={flCabin} onChange={setFlCabin} placeholder="Economy" options={cabinClasses} />
+                  </Field>
                 </>
               )}
 
-              {activeTab === "flights" && (
-                <>
-                  <FieldWrap icon={Plane} label="From">
-                    <TextField placeholder="Departure city" value={fltFrom} onChange={setFltFrom} />
-                  </FieldWrap>
-                  <FieldWrap icon={MapPin} label="To">
-                    <TextField placeholder="Destination city" value={fltTo} onChange={setFltTo} />
-                  </FieldWrap>
-                  <FieldWrap icon={Calendar} label="Travel Month">
-                    <SelectField placeholder="Select month" options={months} value={fltMonth} onChange={setFltMonth} />
-                  </FieldWrap>
-                </>
-              )}
-
-              {activeTab === "destinations" && (
-                <>
-                  <FieldWrap icon={Search} label="Search">
-                    <TextField placeholder="Mountains, Beaches, Heritage…" value={dstSearch} onChange={setDstSearch} />
-                  </FieldWrap>
-                  <FieldWrap icon={Globe} label="Category">
-                    <SelectField placeholder="Select category" options={categoryOptions} value={dstCat} onChange={setDstCat} />
-                  </FieldWrap>
-                  <FieldWrap icon={Users} label="Travel Style">
-                    <SelectField
-                      placeholder="Solo, Couple, Family…"
-                      options={["Solo","Couple","Family","Group","Honeymoon"]}
-                      value={dstStyle}
-                      onChange={setDstStyle}
-                    />
-                  </FieldWrap>
-                </>
-              )}
-            </div>
-
-            {/* Filters + Search button */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 shrink-0">
-                  Filters:
-                </span>
-                {popularFilters[activeTab].map((f) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => handleFilter(f)}
-                    className="text-xs px-4 py-1.5 rounded-full border font-semibold transition-all"
-                    style={
-                      activeFilter === f
-                        ? { backgroundColor: "#12004D", color: "#fff", borderColor: "#12004D" }
-                        : { color: "#374151", borderColor: "#e5e7eb", backgroundColor: "transparent" }
-                    }
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-
+              {/* Search button */}
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 text-white text-sm font-bold px-7 py-3.5 rounded-2xl transition-all hover:opacity-90 active:scale-95 shadow-lg w-full sm:w-auto shrink-0 whitespace-nowrap"
-                style={{ backgroundColor: "#12004D" }}
+                aria-label="Search"
+                className="flex items-center justify-center rounded-xl transition-all hover:opacity-90 active:scale-95 shrink-0 py-4 sm:py-0 sm:px-7"
+                style={{ backgroundColor: "#1F8C9E", minWidth: "64px" }}
               >
-                Search Now
-                <ArrowRight className="w-4 h-4" />
+                <Search className="w-5 h-5 text-white" />
               </button>
             </div>
           </form>
         </div>
 
-        {/* Trust indicators */}
-        <div className="mt-10 flex flex-wrap justify-center gap-6 text-white/80 text-sm">
-          {[
-            { icon: Shield, text: "100% Secure Enquiry" },
-            { icon: Clock,  text: "Response in 2 Hours"  },
-            { icon: Star,   text: "4.8★ Rated Service"   },
-          ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2">
-              <Icon className="w-4 h-4 text-orange-300" />
-              <span>{text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/50">
-        <span className="text-xs">Scroll to explore</span>
-        <div className="w-5 h-8 border-2 border-white/30 rounded-full flex justify-center pt-1.5">
-          <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce" />
+        {/* Trust strip */}
+        <div className="mt-10 flex flex-wrap justify-center items-center gap-x-10 gap-y-3 text-white/85 text-sm">
+          <div className="flex items-center gap-2">
+            <BadgeCheck className="w-[17px] h-[17px]" style={{ color: "#F2A93B" }} />
+            <span className="font-medium">Expert Local Guides</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Shield className="w-[17px] h-[17px]" style={{ color: "#F2A93B" }} />
+            <span className="font-medium">Flexible Cancellation</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Star className="w-[17px] h-[17px] fill-current" style={{ color: "#F2A93B" }} />
+            <span className="font-medium">4.9/5 Average Rating</span>
+          </div>
         </div>
       </div>
     </section>

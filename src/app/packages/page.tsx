@@ -164,7 +164,7 @@ function PackagesContent() {
                 <div>
                   <h3 className="font-semibold text-gray-800 text-sm mb-3">Category</h3>
                   <div className="flex flex-col gap-1.5">
-                    {["all", "domestic", "international"].map((c) => (
+                    {["all", "national", "international"].map((c) => (
                       <label key={c} className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="radio"

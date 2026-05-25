@@ -9,13 +9,7 @@ const items = [
   "Wanderlust",
 ];
 
-function MarqueeRow({
-  reverse = false,
-  textColor = "text-white",
-}: {
-  reverse?: boolean;
-  textColor?: string;
-}) {
+function MarqueeRow({ reverse = false }: { reverse?: boolean }) {
   const repeated = [...items, ...items];
 
   return (
@@ -27,7 +21,7 @@ function MarqueeRow({
       {repeated.map((item, i) => (
         <div key={i} className="flex items-center">
           <span
-            className={`font-serif italic ${textColor} px-6 sm:px-8`}
+            className="font-serif italic text-white px-6 sm:px-8"
             style={{
               fontSize: "clamp(20px, 3.2vw, 36px)",
               lineHeight: 1,
@@ -37,7 +31,7 @@ function MarqueeRow({
             {item}
           </span>
           <Asterisk
-            className={`${textColor} opacity-80 shrink-0`}
+            className="text-white/85 shrink-0"
             style={{
               width: "clamp(14px, 2vw, 22px)",
               height: "clamp(14px, 2vw, 22px)",
@@ -51,39 +45,46 @@ function MarqueeRow({
 }
 
 export default function MarqueeStrip() {
-  const stripHeight = "clamp(52px, 5.2vw, 72px)";
+  const stripH = "clamp(52px, 5.2vw, 70px)";
 
   return (
-    <section className="relative py-10 sm:py-12 overflow-hidden bg-cream flex flex-col gap-4">
-
-      {/* ── Strip 1 — Black, rotated left ── */}
+    <section
+      className="relative overflow-hidden bg-cream"
+      style={{ height: "clamp(180px, 18vw, 220px)" }}
+    >
+      {/* ── Gold strip — rotated -8deg, scrolls reverse ── */}
       <div
-        className="relative overflow-hidden"
+        className="absolute overflow-hidden"
         style={{
-          backgroundColor: "#0E1424",
-          height: stripHeight,
-          transform: "rotate(-3deg)",
-          marginLeft: "-6%",
-          marginRight: "-6%",
+          backgroundColor: "#F2A93B",
+          height: stripH,
+          left: "-12%",
+          right: "-12%",
+          top: "50%",
+          transform: "translateY(-50%) rotate(-8deg)",
+          transformOrigin: "center center",
+          zIndex: 10,
         }}
       >
         <MarqueeRow reverse />
       </div>
 
-      {/* ── Strip 2 — Teal, rotated right ── */}
+      {/* ── Teal strip — rotated +8deg, scrolls forward — sits on top ── */}
       <div
-        className="relative overflow-hidden"
+        className="absolute overflow-hidden"
         style={{
           backgroundColor: "#1F8C9E",
-          height: stripHeight,
-          transform: "rotate(3deg)",
-          marginLeft: "-6%",
-          marginRight: "-6%",
+          height: stripH,
+          left: "-12%",
+          right: "-12%",
+          top: "50%",
+          transform: "translateY(-50%) rotate(8deg)",
+          transformOrigin: "center center",
+          zIndex: 20,
         }}
       >
         <MarqueeRow />
       </div>
-
     </section>
   );
 }

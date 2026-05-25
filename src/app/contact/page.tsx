@@ -221,15 +221,132 @@ export default function ContactPage() {
       </div>
 
       {/* ── Main content ─────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8 items-start">
+      <div style={{ backgroundColor: "#F7F6F3" }} className="py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          {/* ── Left: Contact sidebar ──────────────────────────────────── */}
-          <div className="flex flex-col gap-5">
+          {/* ── Left column ───────────────────────────────────────────── */}
+          <div className="relative">
 
-            {/* Info card */}
+            {/* Dotted pattern — top right */}
             <div
-              className="bg-white rounded-3xl p-6"
+              className="absolute -top-4 right-0 w-36 h-36 pointer-events-none"
+              style={{
+                backgroundImage: "radial-gradient(circle, rgba(52,52,52,0.18) 1.5px, transparent 1.5px)",
+                backgroundSize: "14px 14px",
+              }}
+            />
+
+            {/* CONTACT badge */}
+            <div className="inline-flex items-center mb-6">
+              <span
+                className="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5"
+                style={{ border: "1px solid rgba(52,52,52,0.22)", color: "#343434", borderRadius: "6px" }}
+              >
+                Contact
+              </span>
+            </div>
+
+            {/* Headline */}
+            <h2
+              className="font-extrabold leading-[1.08] mb-5"
+              style={{ fontSize: "clamp(26px, 3.2vw, 42px)", color: "#343434", letterSpacing: "-0.025em" }}
+            >
+              Every trip is unique,<br />
+              we craft journeys<br />
+              <span className="font-serif italic" style={{ fontWeight: 400, color: "#1F8C9E" }}>
+                beyond bookings.
+              </span>
+            </h2>
+
+            {/* Description */}
+            <p
+              className="leading-relaxed mb-8 max-w-sm"
+              style={{ color: "rgba(52,52,52,0.55)", fontSize: "15px" }}
+            >
+              Share your travel goals with us. Our experts reply with a
+              personalised itinerary within 2 hours, Mon–Sat.
+            </p>
+
+            {/* Trusted by box */}
+            <div
+              className="mb-8 p-5 bg-white"
+              style={{ border: "1px solid rgba(52,52,52,0.10)", borderRadius: "14px" }}
+            >
+              <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">
+                Trusted by Travellers
+              </p>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                {[
+                  { value: "10,000+", label: "Happy Travellers" },
+                  { value: "4.8 ★",  label: "Average Rating"   },
+                  { value: "500+",   label: "Packages"          },
+                  { value: "50+",    label: "Destinations"      },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <p className="font-extrabold text-lg leading-tight" style={{ color: "#343434" }}>{s.value}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick contact links */}
+            <div className="space-y-3">
+              <a href="tel:+919876543210"
+                className="flex items-center gap-3 text-sm font-semibold transition-opacity hover:opacity-70"
+                style={{ color: "#1F8C9E" }}
+              >
+                <Phone className="w-4 h-4 shrink-0" />
+                +91 98765 43210
+              </a>
+              <a href="mailto:info@booktick.in"
+                className="flex items-center gap-3 text-sm font-semibold transition-opacity hover:opacity-70"
+                style={{ color: "#1F8C9E" }}
+              >
+                <Mail className="w-4 h-4 shrink-0" />
+                info@booktick.in
+              </a>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-3 text-sm font-semibold transition-opacity hover:opacity-70"
+                style={{ color: "#16a34a" }}
+              >
+                <WaIcon className="w-4 h-4 shrink-0" />
+                Chat on WhatsApp
+              </a>
+            </div>
+          </div>
+
+          {/* ── Right column — form ────────────────────────────────────── */}
+          <div className="relative">
+
+            {/* Dotted pattern — bottom right */}
+            <div
+              className="absolute -bottom-10 -right-4 w-44 h-44 pointer-events-none"
+              style={{
+                backgroundImage: "radial-gradient(circle, rgba(52,52,52,0.13) 1.5px, transparent 1.5px)",
+                backgroundSize: "14px 14px",
+              }}
+            />
+
+            {/* Form header */}
+            <div className="mb-6">
+              <h3
+                className="font-extrabold text-xl sm:text-2xl mb-1 leading-tight"
+                style={{ color: "#343434", letterSpacing: "-0.02em" }}
+              >
+                Send Us an Enquiry
+              </h3>
+              <p className="text-sm" style={{ color: "rgba(52,52,52,0.50)" }}>
+                Fill in your details and we&apos;ll craft a personalised itinerary for you.
+              </p>
+            </div>
+
+            {/* ── PLACEHOLDER — original card will be inlined here ── */}
+            <div
+              className="bg-white rounded-3xl overflow-hidden"
               style={{
                 boxShadow: "0 1px 2px rgba(20,20,20,0.04), 0 20px 40px -16px rgba(20,20,20,0.14)",
                 border: "1px solid rgba(20,20,20,0.05)",
@@ -392,18 +509,6 @@ export default function ContactPage() {
               border: "1px solid rgba(20,20,20,0.05)",
             }}
           >
-            {/* Form header */}
-            <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-5 border-b border-gray-100">
-              <h2
-                className="font-extrabold text-xl sm:text-2xl mb-1 leading-tight"
-                style={{ color: "#343434", letterSpacing: "-0.02em" }}
-              >
-                Send Us an Enquiry
-              </h2>
-              <p className="text-gray-400 text-sm">
-                Fill in your details and we&apos;ll craft a personalised itinerary for you.
-              </p>
-            </div>
 
             {isSuccess ? (
               /* ── Success state ── */
@@ -610,6 +715,7 @@ export default function ContactPage() {
               </form>
             )}
           </div>
+        </div>
         </div>
       </div>
 

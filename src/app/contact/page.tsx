@@ -3,7 +3,8 @@
 import { useState } from "react";
 import {
   Phone, Mail, MapPin, Clock, Send, CheckCircle,
-  User, MessageSquare, ArrowRight,
+  User, MessageSquare, ArrowRight, Plane, Package,
+  Heart, Users, Route,
 } from "lucide-react";
 import { EnquiryFormData } from "@/types";
 import { cn } from "@/lib/utils";
@@ -125,6 +126,97 @@ export default function ContactPage() {
             </div>
 
           </div>
+        </div>
+      </div>
+
+      {/* ── We're Open To ────────────────────────────────────────────────── */}
+      <div className="bg-white py-14 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Heading */}
+          <div className="text-center mb-10 sm:mb-12">
+            <h2
+              className="font-extrabold leading-tight mb-4"
+              style={{ fontSize: "clamp(30px, 4vw, 48px)", color: "#343434", letterSpacing: "-0.03em" }}
+            >
+              We&apos;re Open To...
+            </h2>
+            <p
+              className="max-w-xl mx-auto leading-relaxed"
+              style={{ color: "rgba(52,52,52,0.52)", fontSize: "clamp(14px, 1.2vw, 16px)" }}
+            >
+              Whether you have a trip in mind, a question, or just want to explore your
+              options — we&apos;re always happy to help you plan something special.
+            </p>
+          </div>
+
+          {/* Card grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                icon: Route,
+                title: "Planning a New Trip",
+                desc: "Turn your travel ideas into a personalised, ready-to-go itinerary.",
+              },
+              {
+                icon: Package,
+                title: "Booking a Travel Package",
+                desc: "Browse and book from our curated national and international packages.",
+              },
+              {
+                icon: Plane,
+                title: "Flight Assistance",
+                desc: "Let us find you the best flights, timings, and connecting routes.",
+              },
+              {
+                icon: Heart,
+                title: "Honeymoon Getaways",
+                desc: "Romantic escapes crafted with special touches just for couples.",
+              },
+              {
+                icon: Users,
+                title: "Group & Corporate Travel",
+                desc: "Custom travel plans for families, friend groups, and corporate teams.",
+              },
+              {
+                icon: MessageSquare,
+                title: "Just Saying Hello",
+                desc: "Every great journey starts with a conversation — we're listening.",
+              },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="flex flex-col p-6 sm:p-7 bg-white"
+                style={{
+                  border: "1px solid rgba(20,20,20,0.09)",
+                  borderRadius: "16px",
+                }}
+              >
+                {/* Icon box */}
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 shrink-0"
+                  style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
+                >
+                  <Icon className="w-5 h-5" style={{ color: "#1F8C9E" }} />
+                </div>
+
+                {/* Text */}
+                <h3
+                  className="font-bold text-base leading-snug mb-2"
+                  style={{ color: "#343434" }}
+                >
+                  {title}
+                </h3>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "rgba(52,52,52,0.55)" }}
+                >
+                  {desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
 

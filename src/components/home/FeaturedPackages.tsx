@@ -20,7 +20,7 @@ export default function FeaturedPackages() {
 
   return (
     <>
-      <section className="py-20 bg-cream">
+      <section className="py-16 sm:py-20 bg-cream">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* ── Centered header ── */}
@@ -189,7 +189,7 @@ export default function FeaturedPackages() {
                 }}
               >
                 {/* Image */}
-                <div className="relative overflow-hidden" style={{ height: 175 }}>
+                <div className="relative overflow-hidden h-44 sm:h-48 lg:h-44">
                   <Image
                     src={pkg.coverImage}
                     alt={pkg.title}

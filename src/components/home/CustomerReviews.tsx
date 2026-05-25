@@ -86,7 +86,6 @@ function ReviewCard({
         backgroundColor: prominent
           ? "rgba(31,140,158,0.13)"
           : "rgba(31,140,158,0.07)",
-        minHeight: prominent ? 340 : 320,
         boxShadow: prominent
           ? "0 18px 40px -22px rgba(31,140,158,0.45)"
           : "none",
@@ -190,7 +189,7 @@ export default function CustomerReviews() {
   }, [paused, next]);
 
   return (
-    <section className="py-20 bg-cream overflow-hidden">
+    <section className="py-16 sm:py-20 bg-cream overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header — fade-in-up on scroll */}
@@ -222,13 +221,13 @@ export default function CustomerReviews() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <div className="md:mt-12">
+          <div className="hidden md:block md:mt-12">
             <AnimatedSlot review={get(-1)} prominent={false} />
           </div>
           <div className="md:-mt-2">
             <AnimatedSlot review={get(0)} prominent={true} />
           </div>
-          <div className="md:mt-12">
+          <div className="hidden md:block md:mt-12">
             <AnimatedSlot review={get(1)} prominent={false} />
           </div>
         </motion.div>

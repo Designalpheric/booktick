@@ -9,10 +9,10 @@ export default function EnquiryCTA() {
 
   return (
     <>
-      <section className="py-20 bg-cream">
+      <section className="py-16 sm:py-20 bg-cream">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
             {/* ── Left: text + CTAs ─────────────────────────────────── */}
             <div>
@@ -44,12 +44,17 @@ export default function EnquiryCTA() {
               >
                 Ready to Plan Your
                 <br />
-                Dream Holiday?
+                <span
+                  className="font-serif italic"
+                  style={{ fontWeight: 400, letterSpacing: "-0.02em" }}
+                >
+                  Dream Holiday?
+                </span>
               </h2>
 
               {/* Subtitle */}
               <p
-                className="text-base sm:text-lg mb-10 max-w-md leading-relaxed"
+                className="text-base sm:text-lg mb-6 sm:mb-10 max-w-md leading-relaxed"
                 style={{ color: "rgba(20,20,20,0.55)" }}
               >
                 Our travel experts are here to create a personalised itinerary just for you.
@@ -88,8 +93,8 @@ export default function EnquiryCTA() {
 
             {/* ── Right: 3-image grid ────────────────────────────────── */}
             <div
-              className="grid grid-cols-2 gap-4 sm:gap-5"
-              style={{ gridTemplateRows: "1fr 1fr", aspectRatio: "1.2 / 1" }}
+              className="grid grid-cols-2 gap-3 sm:gap-4"
+              style={{ gridTemplateRows: "1fr 1fr", aspectRatio: "1 / 1" }}
             >
               {/* Tall image — Maldives, spans both rows */}
               <div

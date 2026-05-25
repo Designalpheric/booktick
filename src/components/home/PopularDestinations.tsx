@@ -39,8 +39,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function PopularDestinations() {
   return (
-    <section className="py-20 bg-cream">
-      <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-20 bg-cream">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Centered heading ──────────────────────────────────────── */}
         <div className="text-center mb-10">
@@ -57,12 +57,12 @@ export default function PopularDestinations() {
         </div>
 
         {/* ── Single-row destination grid (5 uniform cards) ────────── */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-          {topDestinations.map((dest) => (
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
+          {topDestinations.map((dest, i) => (
             <Link
               key={dest.slug}
               href={`/destinations/${dest.slug}`}
-              className="group relative overflow-hidden rounded-2xl block transition-all duration-500 ease-out hover:-translate-y-1.5"
+              className={`group relative overflow-hidden rounded-2xl block transition-all duration-500 ease-out hover:-translate-y-1.5${i === topDestinations.length - 1 && topDestinations.length % 2 !== 0 ? " col-span-2 lg:col-span-1 max-w-[calc(50%-8px)] lg:max-w-none mx-auto lg:mx-0 w-full" : ""}`}
               style={{
                 boxShadow:
                   "0 1px 2px rgba(20,20,20,0.04), 0 18px 32px -16px rgba(20,20,20,0.22)",

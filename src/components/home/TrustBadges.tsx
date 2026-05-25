@@ -54,35 +54,32 @@ const stats = [
 
 export default function TrustBadges() {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 sm:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Stats row ── */}
         <div
-          className="grid grid-cols-2 lg:grid-cols-4 gap-px mb-16 overflow-hidden"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-px mb-16 overflow-hidden"
           style={{ borderRadius: "20px", boxShadow: "0 2px 24px rgba(18,0,77,0.08)" }}
         >
-          {stats.map((stat, i) => (
+          {stats.map((stat) => (
             <div
               key={stat.label}
-              className="bg-white text-center px-6 py-8 flex flex-col items-center"
-              style={{
-                borderRight: i < stats.length - 1 ? "1px solid rgba(18,0,77,0.06)" : "none",
-              }}
+              className="bg-white text-center px-4 sm:px-6 py-7 sm:py-8 flex flex-col items-center"
             >
               <p
-                className="text-3xl font-extrabold leading-none mb-1"
+                className="text-2xl sm:text-3xl font-extrabold leading-none mb-1"
                 style={{ color: "#1F8C9E" }}
               >
                 {stat.value}
               </p>
-              <p className="text-gray-400 text-sm mt-1">{stat.label}</p>
+              <p className="text-gray-400 text-xs sm:text-sm mt-1">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* ── Left-aligned heading ── */}
-        <div className="mb-12">
+        <div className="mb-10 sm:mb-12">
           <p
             className="text-xs font-bold uppercase tracking-widest mb-3"
             style={{ color: "#1F8C9E" }}
@@ -90,18 +87,18 @@ export default function TrustBadges() {
             Why BookTick
           </p>
           <h2
-            className="text-4xl sm:text-5xl font-extrabold leading-tight mb-3"
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-3"
             style={{ color: "#12004D" }}
           >
             Travel with Complete Confidence
           </h2>
-          <p className="text-gray-400 text-lg leading-relaxed max-w-xl">
+          <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-xl">
             Everything you need for a seamless travel experience
           </p>
         </div>
 
         {/* ── Features grid — open layout, no card borders ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8 sm:gap-x-12 sm:gap-y-10">
           {badges.map((badge) => (
             <div key={badge.title} className="flex gap-4 group">
 

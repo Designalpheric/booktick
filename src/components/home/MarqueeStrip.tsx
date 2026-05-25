@@ -47,9 +47,9 @@ function MarqueeRow({ reverse = false }: { reverse?: boolean }) {
 
 export default function MarqueeStrip() {
   return (
-    <section className="relative py-14 sm:py-16 overflow-hidden bg-cream">
+    <section className="relative py-10 sm:py-12 overflow-hidden bg-cream">
       <div
-        className="relative mx-auto"
+        className="relative mx-auto overflow-hidden"
         style={{ height: "clamp(56px, 5.6vw, 78px)" }}
       >
         {/* ── Black strip — back, taller, rotated, peeks out clearly ── */}

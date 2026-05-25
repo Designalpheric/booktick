@@ -8,9 +8,9 @@ export default function DealsSection() {
   const deals = packages.filter((p) => p.discount).slice(0, 4);
 
   return (
-    <section className="py-20 bg-cream">
+    <section className="py-16 sm:py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 sm:mb-12">
           <div>
             <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 mb-5" style={{ border: "1px solid rgba(20,20,20,0.07)", boxShadow: "0 1px 2px rgba(20,20,20,0.04)" }}>
               <Tag className="w-3.5 h-3.5" style={{ color: "#F2A93B" }} />

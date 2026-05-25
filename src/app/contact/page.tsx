@@ -80,22 +80,58 @@ export default function ContactPage() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div
-        className="py-10 sm:py-14"
-        style={{ background: "linear-gradient(135deg, #0e5f6e 0%, #1F8C9E 60%, #2ba8bd 100%)" }}
+        className="py-16 sm:py-20 lg:py-24 bg-white"
+        style={{
+          background: "linear-gradient(135deg, #ffffff 55%, rgba(31,140,158,0.05) 100%)",
+        }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1
-            className="font-extrabold text-white mb-3 leading-tight tracking-tight"
-            style={{ fontSize: "clamp(28px, 4vw, 48px)", letterSpacing: "-0.025em" }}
-          >
-            Let&apos;s Plan Your{" "}
-            <span className="font-serif italic font-normal" style={{ color: "#F2A93B" }}>
-              Dream Trip
-            </span>
-          </h1>
-          <p className="text-white/80 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-            Share your travel goals with us — our experts will craft a personalised itinerary and call you within 2 hours.
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+
+            {/* Left — large bold heading */}
+            <div>
+              <h1
+                className="font-extrabold leading-none"
+                style={{
+                  fontSize: "clamp(58px, 9vw, 112px)",
+                  color: "#343434",
+                  letterSpacing: "-0.035em",
+                }}
+              >
+                Contact{" "}
+                <span className="font-serif italic" style={{ fontWeight: 400 }}>
+                  Us
+                </span>
+              </h1>
+            </div>
+
+            {/* Right — subtitle + paragraph */}
+            <div>
+              <h2
+                className="font-extrabold leading-snug mb-4"
+                style={{
+                  fontSize: "clamp(20px, 2vw, 26px)",
+                  color: "#343434",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                We&apos;d Love to Hear From You.
+              </h2>
+              <p
+                className="leading-relaxed"
+                style={{
+                  color: "rgba(52,52,52,0.55)",
+                  fontSize: "clamp(15px, 1.3vw, 17px)",
+                }}
+              >
+                Share your travel goals with us — our experts will craft a personalised
+                itinerary and call you within 2 hours. Whether you&apos;re planning a
+                family holiday, a honeymoon escape, or an adventure trip, we&apos;re here
+                to make it seamless and unforgettable.
+              </p>
+            </div>
+
+          </div>
         </div>
       </div>
 

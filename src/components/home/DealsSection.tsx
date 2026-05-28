@@ -103,7 +103,7 @@ export default function DealsSection() {
               <Link
                 key={deal.id}
                 href={`/packages/${deal.slug}`}
-                className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="group flex flex-col rounded-none lg:rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                 style={{
                   background: "#FFFFFF",
                   boxShadow:

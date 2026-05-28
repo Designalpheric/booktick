@@ -57,7 +57,7 @@ export default function FeaturedPackages() {
             </div>
 
             {/* Category tabs */}
-            <div className="flex flex-wrap gap-2 shrink-0">
+            <div className="flex flex-nowrap gap-2 shrink-0 overflow-x-auto scrollbar-hide pb-0.5">
               {categories.map((cat) => {
                 const active = activeCategory === cat;
                 return (

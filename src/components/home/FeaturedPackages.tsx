@@ -65,7 +65,7 @@ export default function FeaturedPackages() {
                     key={cat}
                     type="button"
                     onClick={() => setActiveCategory(cat)}
-                    className="px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 hover:scale-[1.03] shrink-0"
+                    className="px-5 py-3 rounded-full text-[13px] font-semibold transition-all duration-200 hover:scale-[1.03] shrink-0"
                     style={
                       active
                         ? {

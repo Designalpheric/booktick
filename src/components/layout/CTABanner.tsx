@@ -16,7 +16,7 @@ export default function CTABanner() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <div className="relative max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 py-12 xs:py-14 sm:py-16 lg:py-20 2xl:py-24">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
 
           {/* ── Left: headline + subtext ── */}

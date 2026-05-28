@@ -1,26 +1,195 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, forwardRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, Star, Shield, BadgeCheck,
-  Calendar, Search, Compass, ChevronDown,
-  PlaneTakeoff, PlaneLanding, Users,
+  Calendar, ArrowRight, Compass, ChevronDown,
+  PlaneTakeoff, PlaneLanding,
+  ChevronLeft, ChevronRight,
 } from "lucide-react";
+import { destinations } from "@/data/destinations";
 
 /* ── Data ─────────────────────────────────────────────────────────────────── */
-const dateRanges = [
-  "This Month", "Next Month", "In 1–3 Months", "In 3–6 Months", "Flexible Dates",
-];
-const activityTypes = [
-  "Hiking & Trekking", "Wildlife & Safari", "Cultural & Heritage",
-  "Beach & Islands", "Snow & Mountains", "Food & Local Life",
-  "Photography Tours", "Wellness Retreats",
-];
-const cabinClasses = ["Economy", "Premium Economy", "Business", "First Class"];
-// const passengerOptions = ["1 Adult", "2 Adults", "3 Adults", "4 Adults", "Family (2A+2C)"];
+const QUICK_DATES = ["This Month", "Next Month", "In 1–3 Months", "In 3–6 Months", "Flexible Dates"];
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WDAYS  = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+
 
 type Tab = "packages" | "flights";
+
+/* ── useClickOutside ──────────────────────────────────────────────────────── */
+function useClickOutside(refs: React.RefObject<HTMLElement | null>[], handler: () => void) {
+  const cb = useCallback(handler, [handler]);
+  useEffect(() => {
+    const fn = (e: MouseEvent | TouchEvent) => {
+      if (refs.some(r => r.current?.contains(e.target as Node))) return;
+      cb();
+    };
+    document.addEventListener("mousedown", fn);
+    document.addEventListener("touchstart", fn);
+    return () => { document.removeEventListener("mousedown", fn); document.removeEventListener("touchstart", fn); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cb]);
+}
+
+/* ── FloatingPanel ────────────────────────────────────────────────────────── */
+interface FPProps { anchorRef: React.RefObject<HTMLElement | null>; isOpen: boolean; alignRight?: boolean; children: React.ReactNode; }
+const FloatingPanel = forwardRef<HTMLDivElement, FPProps>(({ anchorRef, isOpen, alignRight = false, children }, ref) => {
+  const [mounted, setMounted] = useState(false);
+  const [pos, setPos] = useState<React.CSSProperties>({ position: "fixed", top: 0, left: 0 });
+  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    if (!isOpen || !anchorRef.current) return;
+    const recalc = () => {
+      if (!anchorRef.current) return;
+      const r = anchorRef.current.getBoundingClientRect();
+      const openUp = r.top > window.innerHeight * 0.5;
+      setPos({
+        position: "fixed", zIndex: 9999,
+        ...(openUp ? { bottom: window.innerHeight - r.top + 8 } : { top: r.bottom + 8 }),
+        ...(alignRight ? { right: window.innerWidth - r.right } : { left: r.left }),
+      });
+    };
+    recalc();
+    window.addEventListener("scroll", recalc, true);
+    window.addEventListener("resize", recalc);
+    return () => { window.removeEventListener("scroll", recalc, true); window.removeEventListener("resize", recalc); };
+  }, [isOpen, anchorRef, alignRight]);
+  if (!mounted) return null;
+  return createPortal(<div ref={ref} style={pos}>{children}</div>, document.body);
+});
+FloatingPanel.displayName = "FloatingPanel";
+
+const panelMotion = {
+  hidden: { opacity: 0, y: 8,  scale: 0.97 },
+  show:   { opacity: 1, y: 0,  scale: 1,   transition: { duration: 0.2, ease: [0.22,1,0.36,1] as [number,number,number,number] } },
+  exit:   { opacity: 0, y: 4,  scale: 0.98, transition: { duration: 0.14 } },
+};
+const PANEL_STYLE: React.CSSProperties = {
+  background: "#fff", borderRadius: 20, border: "1px solid rgba(0,0,0,0.08)",
+  boxShadow: "0 4px 6px -1px rgba(0,0,0,0.04),0 20px 60px -10px rgba(0,0,0,0.18),0 8px 24px -6px rgba(0,0,0,0.10)",
+  overflow: "hidden",
+};
+
+/* ── CalendarPicker ───────────────────────────────────────────────────────── */
+function CalendarPicker({ value, onChange, placeholder, isOpen, onToggle, onClose, alignRight = false }: {
+  value: string; onChange: (v: string) => void; placeholder: string;
+  isOpen: boolean; onToggle: () => void; onClose: () => void;
+  alignRight?: boolean;
+}) {
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const panelRef   = useRef<HTMLDivElement>(null);
+  useClickOutside([triggerRef, panelRef], onClose);
+
+  const today = new Date();
+  const [view, setView] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
+  const y = view.getFullYear(), m = view.getMonth();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const startDay    = new Date(y, m, 1).getDay();
+  const fmt    = (d: number) => new Date(y, m, d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  const isPast = (d: number) => new Date(y, m, d) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const isToday    = (d: number) => y === today.getFullYear() && m === today.getMonth() && d === today.getDate();
+  const isSelected = (d: number) => value === fmt(d);
+  const cells: (number | null)[] = [...Array<null>(startDay).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+
+  return (
+    <div ref={triggerRef} className="relative flex items-center gap-1 cursor-pointer w-full" onClick={onToggle}>
+      <span
+        className="flex-1 text-[15px] font-semibold leading-tight truncate"
+        style={{ color: value ? "#fff" : "rgba(255,255,255,0.60)" }}
+      >
+        {value || placeholder}
+      </span>
+      <ChevronDown
+        className="w-3.5 h-3.5 shrink-0 transition-transform duration-300"
+        style={{ color: "rgba(255,255,255,0.75)", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+      />
+
+      <FloatingPanel ref={panelRef} anchorRef={triggerRef} isOpen={isOpen} alignRight={alignRight}>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div variants={panelMotion} initial="hidden" animate="show" exit="exit"
+              style={{ ...PANEL_STYLE, width: 348 }}>
+
+              {/* Calendar header */}
+              <div style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#14667A 100%)", padding: "18px 16px 0" }}>
+                <div className="flex items-center justify-between mb-3">
+                  <button type="button"
+                    onClick={e => { e.stopPropagation(); setView(new Date(y, m - 1, 1)); }}
+                    className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/20 active:scale-90 transition-all"
+                    style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.22)" }}>
+                    <ChevronLeft className="w-4 h-4 text-white" />
+                  </button>
+                  <div className="text-center select-none">
+                    <span className="text-white font-bold text-[19px]">{MONTHS[m]}</span>
+                    <span className="text-white/55 text-[15px] ml-2">{y}</span>
+                  </div>
+                  <button type="button"
+                    onClick={e => { e.stopPropagation(); setView(new Date(y, m + 1, 1)); }}
+                    className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/20 active:scale-90 transition-all"
+                    style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.22)" }}>
+                    <ChevronRight className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-7 pb-3">
+                  {WDAYS.map(d => (
+                    <div key={d} className="flex items-center justify-center h-7">
+                      <span className="text-[11px] font-bold uppercase text-white/50 tracking-wide">{d}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Day grid */}
+              <div className="grid grid-cols-7 px-2 pt-2 pb-2">
+                {cells.map((day, i) => day === null ? <div key={`_${i}`} /> : (
+                  <div key={day} className="flex items-center justify-center" style={{ height: 44 }}>
+                    <button type="button" disabled={isPast(day)}
+                      onClick={e => { e.stopPropagation(); onChange(fmt(day)); onClose(); }}
+                      className={[
+                        "w-9 h-9 flex items-center justify-center rounded-full text-[13.5px] font-medium transition-all select-none",
+                        isSelected(day) ? "text-white font-bold"
+                          : isToday(day) ? "font-bold"
+                          : isPast(day)  ? "text-gray-300 cursor-not-allowed"
+                          : "text-[#222] hover:bg-[rgba(31,140,158,0.10)] hover:text-[#1F8C9E]",
+                      ].join(" ")}
+                      style={
+                        isSelected(day) ? { background: "#1F8C9E", boxShadow: "0 4px 14px rgba(31,140,158,0.45)" }
+                          : isToday(day) ? { background: "rgba(31,140,158,0.12)", color: "#1F8C9E", outline: "2px solid #1F8C9E", outlineOffset: "1px" }
+                          : {}
+                      }
+                    >{day}</button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Quick dates */}
+              <div className="px-3 pt-2 pb-3" style={{ borderTop: "1px solid rgba(0,0,0,0.07)", background: "#f8fafb" }}>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Flexible dates</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {QUICK_DATES.map(qd => {
+                    const sel = value === qd;
+                    return (
+                      <button key={qd} type="button"
+                        onClick={e => { e.stopPropagation(); onChange(qd); onClose(); }}
+                        className="px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all active:scale-95"
+                        style={{ background: sel ? "#1F8C9E" : "#fff", color: sel ? "#fff" : "#555", border: sel ? "1.5px solid #1F8C9E" : "1.5px solid rgba(0,0,0,0.11)" }}>
+                        {qd}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </FloatingPanel>
+    </div>
+  );
+}
 
 /* ── Shared field wrapper ─────────────────────────────────────────────────── */
 function Field({
@@ -31,35 +200,22 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3 flex-1 min-w-0 px-5 py-4 bg-white rounded-xl">
-      <Icon className="w-[18px] h-[18px] shrink-0 text-gray-400" />
+    <div
+      className="flex items-center gap-2.5 flex-1 min-w-0 px-3.5 py-2 rounded-xl transition-all"
+      style={{
+        backgroundColor: "rgba(255,255,255,0.08)",
+        border: "1px solid rgba(255,255,255,0.18)",
+      }}
+    >
+      <Icon className="w-[15px] h-[15px] shrink-0 text-white/90" />
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-1">{label}</p>
+        <p className="text-[9px] font-bold uppercase tracking-[0.15em] mb-0.5" style={{ color: "rgba(255,255,255,0.75)" }}>{label}</p>
         {children}
       </div>
     </div>
   );
 }
 
-function SelectInput({ value, onChange, placeholder, options }: {
-  value: string; onChange: (v: string) => void;
-  placeholder: string; options: string[];
-}) {
-  return (
-    <div className="relative flex items-center">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full text-[15px] font-semibold bg-transparent focus:outline-none appearance-none cursor-pointer leading-tight pr-5"
-        style={{ color: value ? "#343434" : "#9ca3af" }}
-      >
-        <option value="" disabled>{placeholder}</option>
-        {options.map((o) => <option key={o} value={o} style={{ color: "#343434" }}>{o}</option>)}
-      </select>
-      <ChevronDown className="absolute right-0 w-4 h-4 text-gray-400 pointer-events-none shrink-0" />
-    </div>
-  );
-}
 
 function TextInput({ value, onChange, placeholder }: {
   value: string; onChange: (v: string) => void; placeholder: string;
@@ -70,9 +226,116 @@ function TextInput({ value, onChange, placeholder }: {
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full text-[15px] font-semibold bg-transparent focus:outline-none placeholder-gray-300 leading-tight"
-      style={{ color: "#343434" }}
+      className="w-full text-[15px] font-semibold bg-transparent focus:outline-none leading-tight placeholder:text-white/60"
+      style={{ color: "#fff", caretColor: "#fff" }}
     />
+  );
+}
+
+/* ── Destination autocomplete: clean teal MapPin + name + country ─────────── */
+function DestinationAutocomplete({ value, onChange, placeholder }: {
+  value: string; onChange: (v: string) => void; placeholder: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [pos, setPos] = useState({ top: 0, left: 0, width: 0 });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const matches = value.trim()
+    ? destinations.filter(d => {
+        const q = value.toLowerCase();
+        return d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q);
+      })
+    : destinations.filter(d => d.popular);
+
+  // Position the portal panel relative to the input field
+  const reposition = useCallback(() => {
+    const anchor = inputRef.current?.closest("[data-dest-anchor]") as HTMLElement | null;
+    const rect = (anchor ?? inputRef.current)?.getBoundingClientRect();
+    if (rect) {
+      setPos({
+        top: rect.bottom + 8,
+        left: rect.left,
+        width: Math.max(rect.width, 260),
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    reposition();
+    const onScroll = () => reposition();
+    window.addEventListener("scroll", onScroll, true);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll, true);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [open, reposition]);
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (inputRef.current?.contains(t)) return;
+      if (panelRef.current?.contains(t)) return;
+      setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => { onChange(e.target.value); setOpen(true); }}
+        onFocus={() => setOpen(true)}
+        className="w-full text-[15px] font-semibold bg-transparent focus:outline-none leading-tight placeholder:text-white/60"
+        style={{ color: "#fff", caretColor: "#fff" }}
+      />
+      {mounted && open && matches.length > 0 && createPortal(
+        <div
+          ref={panelRef}
+          className="rounded-xl overflow-y-auto dest-dropdown"
+          style={{
+            position: "fixed",
+            top: pos.top,
+            left: pos.left,
+            width: pos.width,
+            maxHeight: 320,
+            backgroundColor: "#fff",
+            boxShadow: "0 12px 32px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.06)",
+            border: "1px solid rgba(0,0,0,0.06)",
+            zIndex: 9999,
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+        >
+          <style>{`.dest-dropdown::-webkit-scrollbar { display: none; }`}</style>
+          {matches.map((d) => (
+            <button
+              key={d.id}
+              type="button"
+              onClick={() => { onChange(d.name); setOpen(false); }}
+              className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-gray-50"
+            >
+              <MapPin className="w-4 h-4 shrink-0" style={{ color: "#1F8C9E" }} />
+              <span className="text-[14px] font-semibold" style={{ color: "#1a1a1a" }}>{d.name}</span>
+              <span className="text-[12px]" style={{ color: "#9ca3af" }}>{d.country}</span>
+            </button>
+          ))}
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 
@@ -82,18 +345,23 @@ export default function HeroBanner() {
   const [activeTab, setActiveTab] = useState<Tab>("packages");
 
   /* Packages state */
-  const [pkgWhere,    setPkgWhere]    = useState("");
-  const [pkgWhen,     setPkgWhen]     = useState("");
-  const [pkgActivity, setPkgActivity] = useState("");
+  const [pkgWhere, setPkgWhere] = useState("");
+  const [pkgWhen,  setPkgWhen]  = useState("");
 
   /* Flights state */
-  const [flFrom,    setFlFrom]    = useState("");
-  const [flTo,      setFlTo]      = useState("");
-  const [flDate,    setFlDate]    = useState("");
-  const [flCabin,   setFlCabin]   = useState("");
+  const [flFrom,  setFlFrom]  = useState("");
+  const [flTo,    setFlTo]    = useState("");
+  const [flDate,  setFlDate]  = useState("");
+
+
+  /* Open calendar/dropdown key */
+  const [open, setOpen] = useState<string | null>(null);
+  const toggle   = (k: string) => setOpen(p => p === k ? null : k);
+  const closeAll = useCallback(() => setOpen(null), []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    closeAll();
     if (activeTab === "packages") {
       const p = new URLSearchParams();
       if (pkgWhere) p.set("search", pkgWhere);
@@ -112,19 +380,19 @@ export default function HeroBanner() {
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
-        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=1920&h=1280&fit=crop')` }}
+        style={{ backgroundImage: `url('/herosection.avif')` }}
       />
       <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.78) 100%)" }} />
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.40) 100%)" }} />
 
       <div
-        className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center"
-        style={{ paddingTop: "clamp(80px, 14vh, 140px)", paddingBottom: "clamp(48px, 8vh, 80px)" }}
+        className="relative z-10 w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center"
+        style={{ paddingTop: "clamp(72px, 13vh, 140px)", paddingBottom: "clamp(28px, 6vh, 80px)" }}
       >
 
         {/* Glass pill badge */}
         <div
-          className="inline-flex items-center gap-2 text-white text-xs sm:text-sm font-semibold tracking-wide px-5 py-2 rounded-full mb-8"
+          className="inline-flex items-center gap-2 text-white text-[11px] xs:text-xs sm:text-sm font-semibold tracking-wide px-4 xs:px-5 py-1.5 xs:py-2 rounded-full mb-4 sm:mb-8"
           style={{ backgroundColor: "rgba(255,255,255,0.10)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.18)" }}
         >
           <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#F2A93B" }} />
@@ -133,85 +401,94 @@ export default function HeroBanner() {
 
         {/* Headline */}
         <h1
-          className="text-white mb-6 w-full"
-          style={{ lineHeight: 1.04, letterSpacing: "-0.03em", textShadow: "0 2px 24px rgba(0,0,0,0.30)" }}
+          className="text-white mb-3 sm:mb-6 w-full"
+          style={{ lineHeight: 1.06, letterSpacing: "-0.03em" }}
         >
-          <span className="block font-extrabold" style={{ fontSize: "clamp(28px, 8vw, 64px)" }}>
+          <span
+            className="block font-extrabold text-[24px] xs:text-[30px] sm:text-[42px] md:text-[52px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
+            style={{
+              textShadow: "0 2px 12px rgba(0,0,0,0.60), 0 6px 40px rgba(0,0,0,0.45)",
+            }}
+          >
             Unforgettable{" "}
             <span className="font-heading font-extrabold not-italic" style={{ color: "#F2A93B" }}>
               Experiences
             </span>
           </span>
-          <span className="block font-extrabold" style={{ fontSize: "clamp(28px, 8vw, 64px)" }}>
+          <span
+            className="block font-extrabold text-[24px] xs:text-[30px] sm:text-[42px] md:text-[52px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
+            style={{
+              textShadow: "0 2px 12px rgba(0,0,0,0.60), 0 6px 40px rgba(0,0,0,0.45)",
+            }}
+          >
             Await You
           </span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-white/80 mb-10 mx-auto leading-relaxed" style={{ fontSize: "clamp(15px, 1.5vw, 18px)", maxWidth: "560px" }}>
+        <p
+          className="mb-6 sm:mb-10 mx-auto leading-relaxed font-medium"
+          style={{
+            fontSize: "clamp(13px, 1.5vw, 18px)",
+            maxWidth: "560px",
+            color: "rgba(255,255,255,0.90)",
+            textShadow: "0 1px 8px rgba(0,0,0,0.55)",
+          }}
+        >
           Skip the tourist traps. Book extraordinary, expert-led tours and immersive activities designed for the modern explorer.
         </p>
 
         {/* ── Search card ───────────────────────────────────────────────── */}
         <div
-          className="w-full rounded-3xl text-left"
+          className="w-full rounded-3xl text-left p-3.5 sm:p-5"
           style={{
-            backgroundColor: "rgba(255,255,255,0.97)",
-            backdropFilter: "blur(20px) saturate(160%)",
-            WebkitBackdropFilter: "blur(20px) saturate(160%)",
-            boxShadow: "0 24px 56px -16px rgba(0,0,0,0.50), 0 2px 6px rgba(0,0,0,0.06)",
-            border: "1px solid rgba(255,255,255,0.70)",
-            padding: "20px",
+            backgroundColor: "rgba(255,255,255,0.06)",
+            backdropFilter: "blur(4px)",
+            WebkitBackdropFilter: "blur(4px)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.20)",
+            border: "1px solid rgba(255,255,255,0.16)",
           }}
         >
-          {/* ── Tabs ── */}
-          <div
-            className="inline-flex gap-1 p-1 mb-5 rounded-full"
-            style={{ backgroundColor: "#f3f4f6" }}
-          >
+          {/* Tabs */}
+          <div className="inline-flex gap-1 p-1 mb-3 sm:mb-5 rounded-full"
+            style={{ backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)" }}>
             {([
-              { id: "packages" as Tab, label: "Packages",  icon: <Compass className="w-3.5 h-3.5" /> },
-              { id: "flights"  as Tab, label: "Flights",   icon: <PlaneTakeoff className="w-3.5 h-3.5" /> },
+              { id: "packages" as Tab, label: "Packages", icon: <Compass className="w-3.5 h-3.5" /> },
+              { id: "flights"  as Tab, label: "Flights",  icon: <PlaneTakeoff className="w-3.5 h-3.5" /> },
             ]).map(({ id, label, icon }) => {
               const active = activeTab === id;
               return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setActiveTab(id)}
+                <button key={id} type="button"
+                  onClick={() => { setActiveTab(id); closeAll(); }}
                   className="flex items-center gap-1.5 px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap"
-                  style={
-                    active
-                      ? { backgroundColor: "rgba(31,140,158,0.13)", color: "#1F8C9E", boxShadow: "0 1px 3px rgba(31,140,158,0.12)" }
-                      : { color: "#6b7280" }
-                  }
-                >
-                  {icon}
-                  {label}
+                  style={active
+                    ? { backgroundColor: "rgba(255,255,255,0.22)", color: "#fff",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.18)" }
+                    : { color: "rgba(255,255,255,0.60)" }}>
+                  {icon}{label}
                 </button>
               );
             })}
           </div>
 
-          {/* ── Fields ── */}
+          {/* Fields */}
           <form onSubmit={handleSearch}>
             <div
               className="flex flex-col sm:flex-row items-stretch gap-2"
-              style={{ backgroundColor: "#f3f4f6", borderRadius: "14px", padding: "6px" }}
             >
-
               {activeTab === "packages" ? (
                 <>
-                  <Field icon={MapPin} label="Where to?">
-                    <TextInput value={pkgWhere} onChange={setPkgWhere} placeholder="Bali, Alps, Kyoto…" />
-                  </Field>
+                  <div data-dest-anchor className="flex-1 min-w-0 flex">
+                    <Field icon={MapPin} label="Where to?">
+                      <DestinationAutocomplete value={pkgWhere} onChange={setPkgWhere} placeholder="Bali, Alps, Kyoto…" />
+                    </Field>
+                  </div>
 
                   <Field icon={Calendar} label="When?">
-                    <SelectInput value={pkgWhen} onChange={setPkgWhen} placeholder="Select dates" options={dateRanges} />
-                  </Field>
-
-                  <Field icon={Compass} label="Experience">
-                    <SelectInput value={pkgActivity} onChange={setPkgActivity} placeholder="Activity type" options={activityTypes} />
+                    <CalendarPicker
+                      value={pkgWhen} onChange={setPkgWhen} placeholder="Select dates"
+                      isOpen={open === "pkgWhen"} onToggle={() => toggle("pkgWhen")} onClose={closeAll}
+                    />
                   </Field>
                 </>
               ) : (
@@ -225,30 +502,39 @@ export default function HeroBanner() {
                   </Field>
 
                   <Field icon={Calendar} label="Departure">
-                    <SelectInput value={flDate} onChange={setFlDate} placeholder="Select dates" options={dateRanges} />
+                    <CalendarPicker
+                      value={flDate} onChange={setFlDate} placeholder="Select dates"
+                      isOpen={open === "flDate"} onToggle={() => toggle("flDate")} onClose={closeAll} alignRight
+                    />
                   </Field>
 
-                  <Field icon={Users} label="Cabin class">
-                    <SelectInput value={flCabin} onChange={setFlCabin} placeholder="Economy" options={cabinClasses} />
-                  </Field>
                 </>
               )}
 
-              {/* Search button */}
+              {/* Explore button */}
               <button
                 type="submit"
-                aria-label="Search"
-                className="flex items-center justify-center rounded-xl transition-all hover:opacity-90 active:scale-95 shrink-0 py-4 sm:py-0 sm:px-7"
-                style={{ backgroundColor: "#1F8C9E", minWidth: "64px" }}
+                className="relative flex items-center justify-center gap-2 rounded-xl font-bold text-[13px] text-white transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] shrink-0 py-2 sm:py-0 sm:px-6 whitespace-nowrap overflow-hidden"
+                style={{
+                  background: "linear-gradient(135deg, #1F8C9E 0%, #155F6B 100%)",
+                  boxShadow: "0 4px 20px rgba(31,140,158,0.50), inset 0 1px 0 rgba(255,255,255,0.20)",
+                  minWidth: "120px",
+                }}
               >
-                <Search className="w-5 h-5 text-white" />
+                {/* shimmer sheen */}
+                <div className="absolute inset-0 pointer-events-none"
+                  style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.22) 0%, transparent 65%)" }} />
+                <span className="relative flex items-center gap-1.5">
+                  Explore
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
               </button>
             </div>
           </form>
         </div>
 
         {/* Trust strip */}
-        <div className="mt-10 flex flex-wrap justify-center items-center gap-x-10 gap-y-3 text-white/85 text-sm">
+        <div className="mt-5 sm:mt-10 flex flex-wrap justify-center items-center gap-x-4 xs:gap-x-6 sm:gap-x-10 gap-y-2 sm:gap-y-3 text-white/85 text-[11px] xs:text-xs sm:text-sm">
           <div className="flex items-center gap-2">
             <BadgeCheck className="w-[17px] h-[17px]" style={{ color: "#F2A93B" }} />
             <span className="font-medium">Expert Local Guides</span>
@@ -263,6 +549,34 @@ export default function HeroBanner() {
           </div>
         </div>
       </div>
+
+      {/* ── Scroll-down indicator ─────────────────────────────────────── */}
+      <button
+        type="button"
+        onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20 cursor-pointer group"
+        aria-label="Scroll down"
+      >
+        <span className="text-[10px] font-semibold uppercase tracking-[0.18em] transition-opacity group-hover:opacity-100"
+          style={{ color: "rgba(255,255,255,0.50)" }}>Scroll</span>
+        <div
+          className="flex items-center justify-center w-8 h-8 rounded-full transition-all group-hover:scale-110"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.12)",
+            border: "1px solid rgba(255,255,255,0.22)",
+            animation: "scrollBounce 1.8s ease-in-out infinite",
+          }}
+        >
+          <ChevronDown className="w-4 h-4" style={{ color: "rgba(255,255,255,0.80)" }} />
+        </div>
+        <style>{`
+          @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.7; }
+            50%       { transform: translateY(5px); opacity: 1; }
+          }
+        `}</style>
+      </button>
+
     </section>
   );
 }

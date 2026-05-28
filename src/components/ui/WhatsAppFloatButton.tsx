@@ -13,7 +13,7 @@ export default function WhatsAppFloatButton() {
   }, []);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+    <div className="fixed bottom-[80px] sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-2">
       {showTooltip && (
         <div className="relative bg-white rounded-2xl shadow-xl p-3.5 pr-8 max-w-[220px] border border-gray-100 animate-fadeInUp">
           <button

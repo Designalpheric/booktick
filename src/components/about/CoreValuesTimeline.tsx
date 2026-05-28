@@ -30,9 +30,9 @@ export default function CoreValuesTimeline() {
   return (
     <div className="mb-16">
       {/* ── Section header ── */}
-      <div className="text-center mb-14">
+      <div className="text-center mb-10 xs:mb-12 sm:mb-14">
         <h2
-          className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight"
+          className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight"
           style={{ letterSpacing: "-0.02em" }}
         >
           Our Core{" "}
@@ -53,7 +53,7 @@ export default function CoreValuesTimeline() {
           }}
         />
 
-        <div className="flex flex-col gap-14 md:gap-20">
+        <div className="flex flex-col gap-10 xs:gap-12 sm:gap-14 md:gap-20">
           {values.map((val, i) => {
             const isLeft = i % 2 === 0;
 
@@ -68,18 +68,17 @@ export default function CoreValuesTimeline() {
                   }}
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-14 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 xs:gap-6 md:gap-14 items-center">
                   {/* ── Image card ── */}
                   <motion.div
                     initial={{ opacity: 0, x: isLeft ? -52 : 52 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-80px 0px" }}
                     transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                    className={`relative rounded-3xl overflow-hidden ${
+                    className={`relative rounded-3xl overflow-hidden h-[200px] xs:h-[224px] sm:h-[248px] md:h-[260px] ${
                       isLeft ? "md:order-1" : "md:order-2"
                     }`}
                     style={{
-                      height: 240,
                       boxShadow:
                         "0 2px 4px rgba(20,20,20,0.04), 0 24px 44px -18px rgba(20,20,20,0.18)",
                     }}
@@ -102,7 +101,7 @@ export default function CoreValuesTimeline() {
                     className={isLeft ? "md:order-2" : "md:order-1"}
                   >
                     <h3
-                      className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3 leading-snug"
+                      className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3 leading-snug"
                       style={{ letterSpacing: "-0.02em" }}
                     >
                       {val.title}

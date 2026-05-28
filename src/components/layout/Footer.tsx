@@ -44,45 +44,6 @@ const socials = [
   { icon: Instagram, href: "#", label: "Instagram" },
 ];
 
-/* ── Payment marks (clean inline SVG badges) ─────────────────────────────── */
-function MastercardMark() {
-  return (
-    <div
-      className="h-7 w-11 rounded-md flex items-center justify-center"
-      style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
-      aria-label="Mastercard"
-    >
-      <span className="w-3.5 h-3.5 rounded-full -mr-1.5 z-10" style={{ backgroundColor: "#EB001B" }} />
-      <span className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: "#F79E1B" }} />
-    </div>
-  );
-}
-function VisaMark() {
-  return (
-    <div
-      className="h-7 w-11 rounded-md flex items-center justify-center"
-      style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
-      aria-label="Visa"
-    >
-      <span className="text-[10px] font-extrabold italic tracking-tight" style={{ color: "#1A1F71" }}>
-        VISA
-      </span>
-    </div>
-  );
-}
-function PayPalMark() {
-  return (
-    <div
-      className="h-7 w-12 rounded-md flex items-center justify-center"
-      style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
-      aria-label="PayPal"
-    >
-      <span className="text-[10px] font-extrabold italic" style={{ color: "#003087" }}>
-        Pay<span style={{ color: "#009CDE" }}>Pal</span>
-      </span>
-    </div>
-  );
-}
 
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 export default function Footer() {
@@ -102,24 +63,24 @@ export default function Footer() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <div className="relative max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 py-12 xs:py-14 sm:py-16 lg:py-20 2xl:py-24">
 
         {/* ── Main grid ──────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-8 xs:gap-6 sm:gap-8 lg:gap-10 xl:gap-14">
 
           {/* Brand column */}
-          <div>
-            <Link href="/" className="inline-block mb-6">
+          <div className="xs:col-span-2 lg:col-span-1">
+            <Link href="/" className="inline-block mb-5 sm:mb-6">
               <Image
                 src="/logo-light.png"
                 alt="BookTick"
                 width={160}
                 height={48}
-                className="h-9 w-auto object-contain"
+                className="h-8 sm:h-9 w-auto object-contain"
               />
             </Link>
 
-            <p className="text-white/55 text-sm leading-relaxed mb-7 max-w-xs">
+            <p className="text-white/55 text-xs xs:text-sm leading-relaxed mb-5 sm:mb-7 max-w-xs lg:max-w-[260px] xl:max-w-xs">
               BookTick is your trusted travel partner for curated holiday packages, flight options,
               and personalised travel experiences across India and the world. We believe travel
               should be simple, memorable, and stress-free.
@@ -187,21 +148,12 @@ export default function Footer() {
 
         {/* ── Bottom strip ───────────────────────────────────────────── */}
         <div
-          className="mt-14 pt-7 flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="mt-10 sm:mt-14 pt-6 sm:pt-7 flex flex-col xs:flex-row items-center justify-between gap-3 xs:gap-4"
           style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
         >
-          <p className="text-white/40 text-sm">
+          <p className="text-white/40 text-xs xs:text-sm">
             Copyright © {year} BookTick. All Rights Reserved.
           </p>
-
-          <div className="flex items-center gap-3">
-            <span className="text-white/45 text-sm">We Accept</span>
-            <div className="flex gap-2">
-              <MastercardMark />
-              <VisaMark />
-              <PayPalMark />
-            </div>
-          </div>
         </div>
       </div>
     </footer>
@@ -218,7 +170,7 @@ function FooterLinkColumn({
 }) {
   return (
     <div>
-      <h4 className="font-heading font-bold text-white text-lg mb-5 tracking-tight">{title}</h4>
+      <h4 className="font-heading font-bold text-white text-base sm:text-lg mb-4 sm:mb-5 tracking-tight">{title}</h4>
       <ul className="space-y-3">
         {links.map((link) => (
           <li key={link.label}>

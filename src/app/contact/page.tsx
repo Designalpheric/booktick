@@ -1,11 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
-  Mail, Send, CheckCircle,
+  Send, CheckCircle, AlertCircle,
   ArrowRight, Plane, Package, Route, Plus, Minus,
 } from "lucide-react";
 import { EnquiryFormData } from "@/types";
+import DateInput from "@/components/ui/DateInput";
+
+/* ── Per-field validation rules ─────────────────────────────────────────── */
+type FieldKey = keyof EnquiryFormData | "budget";
+type ErrorMap = Partial<Record<FieldKey, string>>;
+type TouchMap = Partial<Record<FieldKey, boolean>>;
+
+function validateField(key: FieldKey, value: string | number): string {
+  const s = String(value).trim();
+  switch (key) {
+    case "name":
+      if (!s) return "Full name is required";
+      if (s.length < 2) return "Name must be at least 2 characters";
+      return "";
+    case "mobile":
+      if (!s) return "Mobile number is required";
+      if (!/^\d{10}$/.test(s.replace(/\s/g, ""))) return "Enter a valid 10-digit number";
+      return "";
+    case "email":
+      if (!s) return "Email address is required";
+      if (!/\S+@\S+\.\S+/.test(s)) return "Enter a valid email address";
+      return "";
+    case "destination":
+      if (!s) return "Destination is required";
+      return "";
+    case "travelDate":
+      if (!s) return "Travel date is required";
+      return "";
+    case "travellers":
+      if (!s || Number(value) < 1) return "At least 1 traveller required";
+      if (Number(value) > 50) return "Maximum 50 travellers";
+      return "";
+    default:
+      return "";
+  }
+}
 
 /* ── WhatsApp SVG ──────────────────────────────────────────────────────────── */
 function WaIcon({ className }: { className?: string }) {
@@ -30,6 +66,20 @@ export default function ContactPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof EnquiryFormData, string>>>({});
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleChange = (k: FieldKey, v: string | number) => {
+    if (k === "budget") { setBudgetText(String(v)); return; }
+    setFormData(p => ({ ...p, [k]: v } as EnquiryFormData));
+    const err = validateField(k, v);
+    setErrors(p => ({ ...p, [k]: err || undefined }));
+  };
+
+  const handleBlur = (k: FieldKey) => () => {
+    const value = k === "budget" ? budgetText : (formData[k as keyof EnquiryFormData] as string | number);
+    const err = validateField(k, value);
+    setErrors(p => ({ ...p, [k]: err || undefined }));
+  };
 
   const validate = () => {
     const e: Partial<Record<keyof EnquiryFormData, string>> = {};
@@ -61,22 +111,22 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16" style={{ backgroundColor: "#FFFFFF" }}>
+    <div className="min-h-screen pt-[76px] sm:pt-[88px]" style={{ backgroundColor: "#FFFFFF" }}>
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div
-        className="py-10 sm:py-12 lg:py-16"
+        className="py-6 xs:py-8 sm:py-12 lg:py-16"
         style={{ backgroundColor: "#FFFFFF" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-center">
+        <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-10 lg:gap-16 items-center">
 
             {/* Left — large bold heading */}
             <div>
               <h1
                 className="font-extrabold leading-none"
                 style={{
-                  fontSize: "clamp(48px, 7vw, 82px)",
+                  fontSize: "clamp(32px, 7vw, 82px)",
                   color: "#343434",
                   letterSpacing: "-0.03em",
                 }}
@@ -88,9 +138,9 @@ export default function ContactPage() {
             {/* Right — subtitle + paragraph */}
             <div>
               <h2
-                className="font-extrabold leading-snug mb-3"
+                className="font-extrabold leading-snug mb-2 sm:mb-3"
                 style={{
-                  fontSize: "clamp(18px, 1.8vw, 22px)",
+                  fontSize: "clamp(15px, 1.8vw, 22px)",
                   color: "#343434",
                   letterSpacing: "-0.018em",
                 }}
@@ -101,7 +151,7 @@ export default function ContactPage() {
                 className="leading-relaxed max-w-sm"
                 style={{
                   color: "rgba(52,52,52,0.52)",
-                  fontSize: "clamp(14px, 1.1vw, 15px)",
+                  fontSize: "clamp(13px, 1.1vw, 15px)",
                 }}
               >
                 Got a travel question or ready to plan your next trip? Our experts are
@@ -114,20 +164,20 @@ export default function ContactPage() {
       </div>
 
       {/* ── We're Open To ────────────────────────────────────────────────── */}
-      <div className="py-12 sm:py-16" style={{ backgroundColor: "#F7F6F3" }}>
+      <div className="py-8 xs:py-10 sm:py-16" style={{ backgroundColor: "#F7F6F3" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Heading */}
-          <div className="text-center mb-8 sm:mb-10">
+          <div className="text-center mb-5 sm:mb-10">
             <h2
-              className="font-extrabold leading-tight mb-3"
-              style={{ fontSize: "clamp(28px, 4vw, 44px)", color: "#343434", letterSpacing: "-0.03em" }}
+              className="font-extrabold leading-tight mb-2 sm:mb-3"
+              style={{ fontSize: "clamp(22px, 4vw, 44px)", color: "#343434", letterSpacing: "-0.03em" }}
             >
               We&apos;re Open To...
             </h2>
             <p
               className="max-w-lg mx-auto leading-relaxed"
-              style={{ color: "rgba(52,52,52,0.52)", fontSize: "clamp(14px, 1.1vw, 15px)" }}
+              style={{ color: "rgba(52,52,52,0.52)", fontSize: "clamp(13px, 1.1vw, 15px)" }}
             >
               Whether you have a trip in mind, a question, or just want to explore your
               options — we&apos;re always happy to help.
@@ -135,7 +185,7 @@ export default function ContactPage() {
           </div>
 
           {/* Card grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
             {[
               {
                 icon: Route,
@@ -155,30 +205,32 @@ export default function ContactPage() {
             ].map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex flex-col p-6 bg-white"
+                className="flex flex-row sm:flex-col items-start gap-3 sm:gap-0 p-4 sm:p-6 bg-white"
                 style={{
                   border: "1px solid rgba(20,20,20,0.07)",
                   borderRadius: "14px",
                 }}
               >
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 shrink-0"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center sm:mb-4 shrink-0"
                   style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
                 >
-                  <Icon className="w-5 h-5" style={{ color: "#1F8C9E" }} />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#1F8C9E" }} />
                 </div>
-                <h3
-                  className="font-bold text-base leading-snug mb-2"
-                  style={{ color: "#343434" }}
-                >
-                  {title}
-                </h3>
-                <p
-                  className="text-sm leading-relaxed"
-                  style={{ color: "rgba(52,52,52,0.52)" }}
-                >
-                  {desc}
-                </p>
+                <div>
+                  <h3
+                    className="font-bold text-sm sm:text-base leading-snug mb-1 sm:mb-2"
+                    style={{ color: "#343434" }}
+                  >
+                    {title}
+                  </h3>
+                  <p
+                    className="text-xs sm:text-sm leading-relaxed"
+                    style={{ color: "rgba(52,52,52,0.52)" }}
+                  >
+                    {desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -186,10 +238,11 @@ export default function ContactPage() {
         </div>
       </div>
 
+
       {/* ── Main content ─────────────────────────────────────────────────── */}
-      <div style={{ backgroundColor: "#F7F6F3" }} className="py-14 sm:py-20">
+      <div style={{ backgroundColor: "#F7F6F3" }} className="py-8 xs:py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
 
             {/* ── Left column ──────────────────────────────────────────── */}
             <div className="relative lg:pt-2">
@@ -202,29 +255,29 @@ export default function ContactPage() {
                 style={{ backgroundImage: "radial-gradient(circle, rgba(31,140,158,0.32) 1.5px, transparent 1.5px)", backgroundSize: "12px 12px" }} />
 
               {/* Headline */}
-              <h2 className="font-extrabold leading-[1.05] mb-5"
-                style={{ fontSize: "clamp(34px, 4.5vw, 58px)", color: "#343434", letterSpacing: "-0.030em" }}>
+              <h2 className="font-extrabold leading-[1.05] mb-3 sm:mb-5"
+                style={{ fontSize: "clamp(22px, 4.5vw, 58px)", color: "#343434", letterSpacing: "-0.030em" }}>
                 Every trip is unique,<br />
                 we craft journeys<br />
                 <span className="font-serif italic" style={{ fontWeight: 400, color: "#1F8C9E" }}>beyond bookings.</span>
               </h2>
 
               {/* Description */}
-              <p className="leading-relaxed mb-8 max-w-md" style={{ color: "rgba(52,52,52,0.55)", fontSize: "15px" }}>
+              <p className="leading-relaxed mb-5 sm:mb-8 max-w-md" style={{ color: "rgba(52,52,52,0.55)", fontSize: "clamp(13px,1.1vw,15px)" }}>
                 Share your travel goals with us. Our experts reply with a personalised
                 itinerary within 2 hours, Mon–Sat.
               </p>
 
               {/* CTA buttons */}
-              <div className="flex flex-wrap gap-3 mb-10">
+              <div className="flex flex-wrap gap-3 mb-6 sm:mb-10">
                 <a href="/packages"
-                  className="inline-flex items-center px-6 py-3 rounded-xl font-bold text-sm transition-all hover:bg-gray-100 active:scale-95"
+                  className="inline-flex items-center px-6 py-3 rounded-full font-bold text-sm transition-all hover:bg-gray-100 active:scale-95"
                   style={{ border: "1.5px solid rgba(52,52,52,0.18)", color: "#343434", backgroundColor: "transparent" }}>
                   Browse Packages
                 </a>
                 <a href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
                   target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white transition-all hover:opacity-90 active:scale-95"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white transition-all hover:opacity-90 active:scale-95"
                   style={{ backgroundColor: "#1F8C9E" }}>
                   <WaIcon className="w-4 h-4" />
                   Chat on WhatsApp
@@ -232,10 +285,10 @@ export default function ContactPage() {
               </div>
 
               {/* Divider */}
-              <div className="border-t mb-8" style={{ borderColor: "rgba(52,52,52,0.10)" }} />
+              <div className="border-t mb-5 sm:mb-8" style={{ borderColor: "rgba(52,52,52,0.10)" }} />
 
               {/* 3-column feature highlights */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              <div className="grid grid-cols-3 gap-2 sm:gap-5">
                 {[
                   {
                     title: "What We Offer",
@@ -251,14 +304,14 @@ export default function ContactPage() {
                   },
                 ].map(({ title, items }) => (
                   <div key={title}>
-                    <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3"
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center mb-2 sm:mb-3"
                       style={{ backgroundColor: "rgba(31,140,158,0.12)" }}>
-                      <CheckCircle className="w-4 h-4" style={{ color: "#1F8C9E" }} />
+                      <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" style={{ color: "#1F8C9E" }} />
                     </div>
-                    <p className="font-bold text-sm mb-2.5" style={{ color: "#343434" }}>{title}</p>
-                    <ul className="space-y-1.5">
+                    <p className="font-bold text-[11px] sm:text-sm mb-1.5 sm:mb-2.5" style={{ color: "#343434" }}>{title}</p>
+                    <ul className="space-y-1 sm:space-y-1.5">
                       {items.map((item) => (
-                        <li key={item} className="text-xs leading-relaxed" style={{ color: "rgba(52,52,52,0.55)" }}>{item}</li>
+                        <li key={item} className="text-[10px] sm:text-xs leading-relaxed" style={{ color: "rgba(52,52,52,0.55)" }}>{item}</li>
                       ))}
                     </ul>
                   </div>
@@ -289,7 +342,7 @@ export default function ContactPage() {
                       Thank you, <span className="font-semibold text-gray-700">{formData.name}</span>! Our travel expert will call you on{" "}
                       <span className="font-semibold text-gray-700">{formData.mobile}</span> within 2 hours.
                     </p>
-                    <button onClick={() => { setIsSuccess(false); setFormData(initialState); }}
+                    <button onClick={() => { setIsSuccess(false); setFormData(initialState); setBudgetText(""); setErrors({}); setTouched({}); }}
                       className="inline-flex items-center gap-2 font-bold px-8 py-3.5 rounded-full text-white transition-all hover:opacity-90 active:scale-95"
                       style={{ backgroundColor: "#1F8C9E" }}>
                       Send Another Enquiry <ArrowRight className="w-4 h-4" />
@@ -298,7 +351,7 @@ export default function ContactPage() {
                 ) : (
                   <>
                     {/* Card header */}
-                    <div className="px-7 pt-7 pb-5" style={{ borderBottom: "1px solid rgba(20,20,20,0.06)" }}>
+                    <div className="px-4 sm:px-7 pt-5 sm:pt-7 pb-4 sm:pb-5" style={{ borderBottom: "1px solid rgba(20,20,20,0.06)" }}>
                       <h3 className="font-extrabold mb-1 leading-tight"
                         style={{ fontSize: "clamp(18px, 1.8vw, 22px)", color: "#343434", letterSpacing: "-0.022em" }}>
                         Send Us an{" "}
@@ -310,7 +363,7 @@ export default function ContactPage() {
                     </div>
 
                     {/* Form — floating label inputs */}
-                    <form onSubmit={handleSubmit} className="px-7 pt-7 pb-7 space-y-3">
+                    <form onSubmit={handleSubmit} className="px-4 sm:px-7 pt-4 sm:pt-7 pb-5 sm:pb-7 space-y-3">
 
                       {/* Row 1: Name + Mobile */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -323,7 +376,7 @@ export default function ContactPage() {
                           </label>
                           <input type="text" placeholder="Enter full name" value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
+                            className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
                             style={{ border: errors.name ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }} />
                           {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
                         </div>
@@ -334,7 +387,7 @@ export default function ContactPage() {
                             style={{ color: "#343434", backgroundColor: "#fff" }}>
                             Phone Number <span style={{ color: "#f87171" }}>*</span>
                           </label>
-                          <div className="flex overflow-hidden"
+                          <div className="flex overflow-hidden rounded-xl"
                             style={{ border: errors.mobile ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }}>
                             <span className="flex items-center px-3 text-[13px] font-semibold shrink-0 select-none"
                               style={{ backgroundColor: "rgba(31,140,158,0.06)", borderRight: "1.5px solid rgba(20,20,20,0.10)", color: "#343434" }}>
@@ -387,11 +440,12 @@ export default function ContactPage() {
                         <div className="relative pt-2.5">
                           <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
                             style={{ color: "#343434", backgroundColor: "#fff" }}>Travel Date</label>
-                          <input type="date" value={formData.travelDate}
+                          <DateInput
+                            value={formData.travelDate}
                             min={new Date().toISOString().split("T")[0]}
-                            onChange={(e) => setFormData({ ...formData, travelDate: e.target.value })}
-                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
-                            style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
+                            onChange={(v) => setFormData({ ...formData, travelDate: v })}
+                            placeholder="Select date"
+                          />
                         </div>
                         <div className="relative pt-2.5">
                           <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
@@ -430,7 +484,7 @@ export default function ContactPage() {
                       {/* Submit */}
                       <div className="space-y-2.5 pt-1">
                         <button type="submit" disabled={isSubmitting}
-                          className="w-full flex items-center justify-center gap-2.5 font-bold py-4 rounded-xl text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
+                          className="w-full flex items-center justify-center gap-2.5 font-bold py-4 rounded-full text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
                           style={{ backgroundColor: "#343434", color: "#fff" }}>
                           {isSubmitting ? (
                             <>
@@ -458,113 +512,31 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* ── Ready to Talk ───────────────────────────────────────────────── */}
-      <div className="py-14 sm:py-20" style={{ backgroundColor: "#F7F6F3" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center bg-white px-8 sm:px-12 py-10 sm:py-14"
-            style={{ border: "1.5px solid rgba(31,140,158,0.30)" }}
-          >
 
-            {/* Left */}
-            <div>
-              <h2
-                className="font-extrabold leading-[1.05] mb-4"
-                style={{ fontSize: "clamp(36px, 5vw, 64px)", color: "#343434", letterSpacing: "-0.03em" }}
-              >
-                Ready to{" "}
-                <span className="font-serif italic" style={{ fontWeight: 400, color: "#1F8C9E" }}>talk?</span>
-              </h2>
-              <p className="mb-6" style={{ color: "rgba(52,52,52,0.55)", fontSize: "15px" }}>
-                I want to travel to your experts in:
-              </p>
-              <div className="relative">
-                <select
-                  className="w-full px-4 py-3.5 text-[13px] bg-white outline-none appearance-none cursor-pointer transition-all focus:ring-2 focus:ring-[#1F8C9E]/15"
-                  style={{
-                    border: "none",
-                    borderBottom: "2px solid #1F8C9E",
-                    color: "#343434",
-                    backgroundColor: "transparent",
-                  }}
-                  defaultValue=""
-                >
-                  <option value="" disabled>Select a travel type</option>
-                  <option>Honeymoon Packages</option>
-                  <option>Family Tours</option>
-                  <option>International Tours</option>
-                  <option>Adventure & Trekking</option>
-                  <option>Beach Getaways</option>
-                  <option>Luxury Escapes</option>
-                  <option>Corporate Travel</option>
-                  <option>Solo Travel</option>
-                  <option>Flight Booking</option>
-                </select>
-                <svg
-                  className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4"
-                  fill="none" stroke="#1F8C9E" strokeWidth={2} viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
 
-            {/* Right */}
-            <div>
-              <p
-                className="leading-relaxed mb-6 max-w-md"
-                style={{ color: "rgba(52,52,52,0.60)", fontSize: "clamp(15px, 1.3vw, 17px)" }}
-              >
-                We work as one team to help you plan the perfect journey — with personalised itineraries, expert advice, and zero stress.
-              </p>
-
-              {/* Email input */}
-              <input
-                type="email"
-                placeholder="Your Email"
-                className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300 mb-4"
-                style={{ border: "1.5px solid rgba(20,20,20,0.14)" }}
-              />
-
-              {/* Button */}
-              <a
-                href="/contact#enquiry"
-                className="inline-flex items-center gap-2 font-bold text-[15px] text-white transition-all hover:opacity-90 active:scale-95 px-8 py-4"
-                style={{ backgroundColor: "#343434" }}
-              >
-                Contact Us
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M7 7h10v10" />
-                </svg>
-              </a>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
       {/* ── FAQ Section ──────────────────────────────────────────────────── */}
-      <div className="py-14 sm:py-20" style={{ backgroundColor: "#ffffff" }}>
+      <div className="py-8 xs:py-12 sm:py-20" style={{ backgroundColor: "#ffffff" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-start">
 
             {/* Left — heading block */}
-            <div className="lg:sticky lg:top-28">
+            <div className="lg:sticky lg:top-28 mb-2 lg:mb-0">
               <h2
-                className="font-extrabold leading-[1.0] mb-2"
-                style={{ fontSize: "clamp(38px, 5.5vw, 68px)", color: "#343434", letterSpacing: "-0.035em" }}
+                className="font-extrabold leading-[1.0] mb-1 sm:mb-2"
+                style={{ fontSize: "clamp(26px, 5.5vw, 68px)", color: "#343434", letterSpacing: "-0.035em" }}
               >
                 Got Questions?
               </h2>
               <p
-                className="font-serif italic leading-tight mb-6"
-                style={{ fontSize: "clamp(32px, 4.5vw, 58px)", color: "#343434", fontWeight: 400 }}
+                className="font-serif italic leading-tight mb-3 sm:mb-6"
+                style={{ fontSize: "clamp(22px, 4.5vw, 58px)", color: "#343434", fontWeight: 400 }}
               >
                 We&apos;ve Got Answers
               </p>
               <p
                 className="leading-relaxed max-w-xs"
-                style={{ color: "rgba(52,52,52,0.50)", fontSize: "clamp(14px, 1.1vw, 15px)" }}
+                style={{ color: "rgba(52,52,52,0.50)", fontSize: "clamp(13px, 1.1vw, 15px)" }}
               >
                 If you&apos;re exploring travel options with BookTick, reach out and we&apos;ll walk you through everything you need to know.
               </p>

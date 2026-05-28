@@ -20,9 +20,9 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gray-50 pt-[70px] xs:pt-[72px] sm:pt-[82px] lg:pt-[84px]">
       {/* Hero */}
-      <div className="relative h-72 sm:h-96">
+      <div className="relative h-56 xs:h-64 sm:h-80 md:h-96">
         <Image
           src={dest.image}
           alt={dest.name}
@@ -32,12 +32,12 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <div className="absolute bottom-0 left-0 right-0 max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pb-6 xs:pb-7 sm:pb-8">
           <Link href="/destinations" className="inline-flex items-center gap-1.5 text-white/80 hover:text-white text-sm mb-4">
             <ArrowLeft className="w-4 h-4" />
             All Destinations
           </Link>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white">{dest.name}</h1>
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl font-extrabold text-white">{dest.name}</h1>
           <div className="flex items-center gap-4 mt-2">
             <div className="flex items-center gap-1.5 text-white/80 text-sm">
               <MapPin className="w-4 h-4" />
@@ -51,7 +51,7 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 py-8 xs:py-10 sm:py-12">
         {/* Description */}
         <div className="bg-white rounded-2xl p-6 shadow-sm mb-8">
           <h2 className="text-xl font-bold text-gray-900 mb-3">About {dest.name}</h2>
@@ -65,13 +65,13 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
         </div>
 
         {/* Packages */}
-        <h2 className="text-2xl font-extrabold text-gray-900 mb-6">
+        <h2 className="text-xl xs:text-2xl font-extrabold text-gray-900 mb-5 xs:mb-6">
           Packages to {dest.name}
           <span className="text-sm font-normal text-gray-500 ml-2">({destPackages.length} available)</span>
         </h2>
 
         {destPackages.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-5 sm:gap-6">
             {destPackages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
             ))}

@@ -7,9 +7,10 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppFloatButton from "@/components/ui/WhatsAppFloatButton";
 
 /* ── Brand Fonts ──────────────────────────────────────────────────────────────
-   Display: Fraunces — italic-capable serif for emotive headlines
-   Heading: Instrument Sans — geometric clarity for section titles
-   Body:    Inter — workhorse readability
+   Display:  Fraunces        — italic serif for emotive accent words
+   Heading:  Urbanist        — headings, titles, highlighted text
+   Body:     Instrument Sans — body copy, descriptions, buttons, nav
+   Accent:   Instrument Serif — italic serif decorative accents only
 ────────────────────────────────────────────────────────────────────────────── */
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -27,18 +28,20 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
-const instrumentSans = Instrument_Sans({
+/* Urbanist — headings, titles, highlighted text */
+const urbanist = Urbanist({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
-const urbanist = Urbanist({
+/* Instrument Sans — body, descriptions, buttons, navigation */
+const instrumentSans = Instrument_Sans({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 

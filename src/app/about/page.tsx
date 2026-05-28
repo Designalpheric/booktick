@@ -17,9 +17,9 @@ const team = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gray-50 pt-[70px] xs:pt-[72px] sm:pt-[82px] lg:pt-[84px]">
       {/* Hero */}
-      <div className="relative h-64 sm:h-80">
+      <div className="relative h-52 xs:h-64 sm:h-80 md:h-96 lg:h-[420px] xl:h-[480px]">
         <Image
           src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&h=800&fit=crop"
           alt="About BookTick"
@@ -30,16 +30,16 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-3">About BookTick</h1>
-          <p className="text-white/80 text-lg max-w-2xl">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-2 xs:mb-3">About BookTick</h1>
+          <p className="text-white/80 text-base xs:text-lg sm:text-xl max-w-2xl">
             Your trusted travel partner for handcrafted journeys since 2015
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 py-10 xs:py-12 sm:py-14 lg:py-16">
         {/* Story */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 xs:gap-10 mb-12 xs:mb-14 sm:mb-16">
           <div>
             <p className="text-orange-500 font-semibold text-sm mb-2 uppercase tracking-wide">Our Story</p>
             <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Crafting Journeys, Creating Memories</h2>
@@ -52,11 +52,11 @@ export default function AboutPage() {
             <p className="text-gray-600 leading-relaxed mb-6">
               From beachside resorts in Goa to luxury overwater villas in Maldives, from the desert dunes of Rajasthan to the misty mountains of Ladakh — we&apos;ve helped over 10,000 families and solo travellers experience the world&apos;s most beautiful destinations.
             </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-xl transition-colors">
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-full transition-colors">
               Plan Your Trip With Us
             </Link>
           </div>
-          <div className="relative h-64 lg:h-auto rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative h-56 xs:h-64 sm:h-80 lg:h-auto rounded-2xl overflow-hidden shadow-xl">
             <Image
               src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=800&h=600&fit=crop"
               alt="Team at work"
@@ -76,7 +76,7 @@ export default function AboutPage() {
             <h2 className="text-2xl font-extrabold text-gray-900">Meet Our Team</h2>
             <p className="text-gray-500 mt-2">The people who make your travel dreams possible</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-5 sm:gap-6">
             {team.map((member) => (
               <div key={member.name} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
                 <Image
@@ -129,6 +129,14 @@ export default function AboutPage() {
           {/* Content */}
           <div className="relative px-8 sm:px-12 pt-10 sm:pt-12 pb-10">
 
+            {/* Badge pill — same as EnquiryCTA */}
+            <div
+              className="inline-flex items-center px-4 py-1.5 rounded-full mb-5"
+              style={{ backgroundColor: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.22)" }}
+            >
+              <span className="text-sm font-medium text-white">Free Consultation</span>
+            </div>
+
             {/* Heading */}
             <h2
               className="font-extrabold text-white leading-tight mb-3"
@@ -150,7 +158,7 @@ export default function AboutPage() {
             <div className="border-t mb-8" style={{ borderColor: "rgba(255,255,255,0.18)" }} />
 
             {/* Bottom row */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 sm:gap-6">
 
               {/* Left — icon + title + desc */}
               <div className="flex items-start gap-4">
@@ -171,10 +179,10 @@ export default function AboutPage() {
               </div>
 
               {/* Right — buttons */}
-              <div className="flex flex-col xs:flex-row gap-3 shrink-0">
+              <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                 <Link
                   href="/packages"
-                  className="px-6 py-3 rounded-xl font-bold text-sm text-center transition-all hover:opacity-80 active:scale-95"
+                  className="px-6 py-3 rounded-full font-bold text-sm text-center transition-all hover:opacity-80 active:scale-95"
                   style={{
                     backgroundColor: "rgba(255,255,255,0.12)",
                     color: "#fff",
@@ -185,7 +193,7 @@ export default function AboutPage() {
                 </Link>
                 <Link
                   href="/contact"
-                  className="px-6 py-3 rounded-xl font-bold text-sm text-center bg-white transition-all hover:bg-white/90 active:scale-95"
+                  className="px-6 py-3 rounded-full font-bold text-sm text-center bg-white transition-all hover:bg-white/90 active:scale-95"
                   style={{ color: "#0d6677" }}
                 >
                   Contact Us Today

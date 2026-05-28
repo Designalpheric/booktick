@@ -39,30 +39,30 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function PopularDestinations() {
   return (
-    <section className="py-16 sm:py-20 bg-cream">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 xs:py-14 sm:py-16 lg:py-20 2xl:py-24 bg-cream">
+      <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
 
         {/* ── Centered heading ──────────────────────────────────────── */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-8 sm:mb-10 lg:mb-12">
           <h2
-            className="font-heading text-4xl sm:text-5xl lg:text-6xl mb-3"
+            className="font-heading text-3xl xs:text-4xl sm:text-5xl lg:text-6xl 2xl:text-7xl mb-3"
             style={{ letterSpacing: "-0.03em", lineHeight: 1.05, fontWeight: 700, color: "#343434" }}
           >
             Top Destinations
           </h2>
 
-          <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-gray-500 text-sm xs:text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
             Explore our most loved travel spots and curated experiences.
           </p>
         </div>
 
         {/* ── Single-row destination grid (5 uniform cards) ────────── */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 xs:gap-4 sm:gap-5 2xl:gap-6">
           {topDestinations.map((dest, i) => (
             <Link
               key={dest.slug}
               href={`/destinations/${dest.slug}`}
-              className={`group relative overflow-hidden rounded-2xl block transition-all duration-500 ease-out hover:-translate-y-1.5${i === topDestinations.length - 1 && topDestinations.length % 2 !== 0 ? " col-span-2 lg:col-span-1 max-w-[calc(50%-8px)] lg:max-w-none mx-auto lg:mx-0 w-full" : ""}`}
+              className={`group relative overflow-hidden rounded-2xl block transition-all duration-500 ease-out hover:-translate-y-1.5${i === topDestinations.length - 1 && topDestinations.length % 2 !== 0 ? " col-span-2 sm:col-span-1 max-w-[calc(50%-8px)] xs:max-w-[calc(50%-8px)] sm:max-w-none mx-auto sm:mx-0 w-full" : ""}`}
               style={{
                 boxShadow:
                   "0 1px 2px rgba(20,20,20,0.04), 0 18px 32px -16px rgba(20,20,20,0.22)",
@@ -99,7 +99,7 @@ export default function PopularDestinations() {
               {/* Bottom text */}
               <div className="absolute bottom-0 left-0 right-0 p-5 transition-transform duration-500 ease-out group-hover:-translate-y-1">
                 <h3
-                  className="text-white text-xl sm:text-[22px] font-bold mb-1 tracking-tight leading-tight"
+                  className="text-white text-base xs:text-lg sm:text-xl xl:text-[22px] font-bold mb-1 tracking-tight leading-tight"
                   style={{ textShadow: "0 2px 12px rgba(0,0,0,0.35)" }}
                 >
                   {dest.name}

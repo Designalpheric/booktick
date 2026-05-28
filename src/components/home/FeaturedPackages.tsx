@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Clock, MapPin, Star } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowRight, ArrowUpRight, Clock, MapPin, Tag } from "lucide-react";
 import { packages } from "@/data/packages";
 import EnquiryModal from "@/components/ui/EnquiryModal";
 import { formatCurrency } from "@/lib/utils";
@@ -12,272 +13,411 @@ import { TravelPackage } from "@/types";
 const categories = ["All", "National", "International", "Honeymoon", "Adventure", "Luxury"];
 
 export default function FeaturedPackages() {
-  const featured = packages.filter((p) => p.isFeatured).slice(0, 5);
-  const hero = featured[0];
-  const rest = featured.slice(1, 5);
-
+  const router = useRouter();
+  const [activeCategory, setActiveCategory] = useState<string>("All");
   const [enquiryPkg, setEnquiryPkg] = useState<TravelPackage | null>(null);
+
+  const allFeatured = packages.filter((p) => p.isFeatured);
+  const matchesCategory = (p: TravelPackage) => {
+    if (activeCategory === "All") return true;
+    const lc = activeCategory.toLowerCase();
+    if (lc === "national" || lc === "international") return p.category === lc;
+    return p.type?.some((t) => t.toLowerCase() === lc);
+  };
+  const filtered = allFeatured.filter(matchesCategory).slice(0, 5);
+  const hero = filtered[0];
+  const rest = filtered.slice(1, 5);
 
   return (
     <>
-      <section className="py-16 sm:py-20 bg-cream">
+      <section className="py-20 sm:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* ── Centered header ── */}
-          <div className="text-center mb-10">
-            <h2 className="font-extrabold leading-tight mb-4">
-              <span
-                className="font-heading block text-4xl sm:text-5xl"
-                style={{ color: "#343434", fontWeight: 700, letterSpacing: "-0.02em" }}
-              >
-                Expertly Crafted Travel
-              </span>
-              <span
-                className="font-serif italic block text-5xl sm:text-6xl"
-                style={{ color: "#1F8C9E", fontWeight: 400, letterSpacing: "-0.01em", lineHeight: 1.1 }}
-              >
-                Packages for Every Traveller
-              </span>
-            </h2>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed">
-              Handpicked itineraries across India and the world — beaches, mountains, culture and adventure.
-            </p>
-          </div>
+          {/* ── Header ── */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-10">
+            {/* Heading */}
+            <div>
+              <h2 className="leading-none">
+                <span
+                  className="block font-extrabold"
+                  style={{ fontSize: "clamp(28px,3.4vw,46px)", color: "#0F172A", letterSpacing: "-0.03em", lineHeight: 1.06 }}
+                >
+                  Expertly Crafted Travel
+                </span>
+                <span
+                  className="block font-serif italic font-normal"
+                  style={{ fontSize: "clamp(30px,3.8vw,50px)", color: "#1F8C9E", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                >
+                  Packages for Every Traveller
+                </span>
+              </h2>
+              <p className="mt-2.5 text-[15px] text-gray-400 max-w-md">
+                Handpicked itineraries across India and the world.
+              </p>
+            </div>
 
-          {/* ── Category tabs ── */}
-          <div className="flex items-center justify-between mb-8 gap-4">
-            <div className="relative flex-1 overflow-hidden">
-              <div className="flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
-                {categories.map((cat) => (
-                  <Link
+            {/* Category tabs */}
+            <div className="flex flex-wrap gap-2 shrink-0">
+              {categories.map((cat) => {
+                const active = activeCategory === cat;
+                return (
+                  <button
                     key={cat}
-                    href={`/packages${cat !== "All" ? `?category=${cat === "National" ? "national" : cat.toLowerCase()}` : ""}`}
-                    className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all hover:opacity-80"
-                    style={{ backgroundColor: "#f3f4f6", border: "1px solid #e5e7eb", color: "#374151" }}
+                    type="button"
+                    onClick={() => setActiveCategory(cat)}
+                    className="px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 hover:scale-[1.03] shrink-0"
+                    style={
+                      active
+                        ? {
+                            background: "#fff",
+                            border: "1.5px solid #9CA3AF",
+                            color: "#1F2937",
+                          }
+                        : {
+                            background: "#fff",
+                            border: "1px solid #E5E7EB",
+                            color: "#374151",
+                          }
+                    }
                   >
                     {cat}
-                  </Link>
-                ))}
-              </div>
-              <div className="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-[#FAF7F2] to-transparent pointer-events-none sm:hidden" />
+                  </button>
+                );
+              })}
             </div>
-            <Link
-              href="/packages"
-              className="hidden sm:flex items-center gap-1.5 text-sm font-semibold shrink-0 transition-opacity hover:opacity-70"
-              style={{ color: "#1F8C9E" }}
-            >
-              View all <ArrowRight className="w-4 h-4" />
-            </Link>
           </div>
 
-          {/* ── Bento grid ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr_1fr] gap-5 lg:auto-rows-fr">
+          {/* ── Grid ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr] gap-5">
 
-            {/* ── Large hero card — spans both rows ── */}
-            {hero && (
-              <div
-                onClick={() => setEnquiryPkg(hero)}
-                className="relative lg:row-span-2 group cursor-pointer rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-1"
-                style={{
-                  boxShadow:
-                    "0 2px 4px rgba(20,20,20,0.04), 0 28px 48px -20px rgba(20,20,20,0.22)",
-                  minHeight: 480,
-                }}
-              >
-                <Image
-                  src={hero.coverImage}
-                  alt={hero.title}
-                  fill
-                  className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-                {/* Dark gradient */}
+            {/* ── HERO CARD ── */}
+            {hero && (() => {
+              const origPrice = hero.discount
+                ? Math.round(hero.priceFrom / (1 - hero.discount / 100))
+                : null;
+              const savings = origPrice ? origPrice - hero.priceFrom : null;
+              return (
+                <>
+                  {/* ── MOBILE + TABLET (< lg): same white-card style as the other cards ── */}
+                  <div
+                    className="lg:hidden bg-white group rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
+                    style={{
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 8px 28px -6px rgba(0,0,0,0.12)",
+                      border: "1px solid #F1F5F9",
+                    }}
+                    onClick={() => router.push(`/packages/${hero.slug}`)}
+                  >
+                    {/* Image */}
+                    <div className="relative overflow-hidden" style={{ height: 168 }}>
+                      <Image
+                        src={hero.coverImage} alt={hero.title} fill priority
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                        sizes="100vw"
+                      />
+                      {/* Discount badge — top right */}
+                      {hero.discount && (
+                        <div
+                          className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-black px-2.5 py-1.5 rounded-full text-white z-10"
+                          style={{ background: "linear-gradient(135deg,#F59E0B,#D97706)", boxShadow: "0 2px 10px rgba(245,158,11,0.45)" }}
+                        >
+                          <Tag className="w-2.5 h-2.5" />{hero.discount}% OFF
+                        </div>
+                      )}
+                      {/* Duration — bottom left */}
+                      <div
+                        className="absolute bottom-3 left-3 inline-flex items-center gap-1 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full z-10"
+                        style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}
+                      >
+                        <Clock className="w-3 h-3" />{hero.duration}
+                      </div>
+                      {/* Badge — top left */}
+                      {hero.badge && (
+                        <div
+                          className="absolute top-3 left-3 inline-flex items-center text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full z-10"
+                          style={{ background: "#FFFFFF", color: "#1A1A1A" }}
+                        >
+                          ★ {hero.badge}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Card body */}
+                    <div className="flex flex-col flex-1 px-4 py-3.5">
+                      <h3
+                        className="font-bold line-clamp-1 mb-1"
+                        style={{ fontSize: "14px", color: "#0F172A", letterSpacing: "-0.01em", lineHeight: 1.4 }}
+                      >
+                        {hero.title}
+                      </h3>
+                      <div className="flex items-center gap-1 mb-2.5">
+                        <MapPin className="w-3 h-3 shrink-0 text-gray-300" />
+                        <span className="text-[11px] text-gray-400 truncate">{hero.destination}, {hero.country}</span>
+                      </div>
+                      <div className="h-px bg-gray-100 mb-3" />
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">From</p>
+                          <span className="font-black text-[17px] leading-none" style={{ color: "#0F172A" }}>
+                            {formatCurrency(hero.priceFrom)}
+                          </span>
+                          {origPrice && (
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              <span className="text-[11px] line-through text-gray-300">{formatCurrency(origPrice)}</span>
+                              {savings && (
+                                <span
+                                  className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                                  style={{ background: "rgba(31,140,158,0.08)", color: "#1F8C9E" }}
+                                >
+                                  Save {formatCurrency(savings)}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); router.push(`/packages/${hero.slug}`); }}
+                          className="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
+                          style={{ backgroundColor: "#fff", color: "#1F2937", border: "1px solid #E5E7EB" }}
+                        >
+                          Enquire
+                          <ArrowUpRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── DESKTOP (≥ lg): full dark-overlay image style ── */}
+                  <div
+                    onClick={() => router.push(`/packages/${hero.slug}`)}
+                    className="hidden lg:block relative lg:col-span-1 lg:row-span-2 group cursor-pointer rounded-3xl overflow-hidden"
+                    style={{
+                      minHeight: 520,
+                      boxShadow: "0 4px 6px rgba(0,0,0,0.04), 0 24px 56px -12px rgba(0,0,0,0.22)",
+                    }}
+                  >
+                    <Image
+                      src={hero.coverImage} alt={hero.title} fill priority
+                      className="object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.05]"
+                      sizes="(max-width:1024px) 100vw, 52vw"
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: "linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 35%,rgba(0,0,0,0.65) 65%,rgba(2,8,22,0.97) 100%)" }}
+                    />
+
+                    {/* Top */}
+                    <div className="absolute top-5 left-5 right-5 flex items-start justify-between z-10">
+                      <div className="flex flex-col gap-2">
+                        {hero.badge && (
+                          <span
+                            className="self-start text-[11px] font-black tracking-wider px-3 py-1.5 rounded-full text-white uppercase"
+                            style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6878)", boxShadow: "0 3px 12px rgba(31,140,158,0.45)" }}
+                          >
+                            ★ {hero.badge}
+                          </span>
+                        )}
+                        {hero.discount && (
+                          <span
+                            className="self-start inline-flex items-center gap-1 text-[11px] font-black px-3 py-1.5 rounded-full text-white"
+                            style={{ background: "linear-gradient(135deg,#F59E0B,#D97706)", boxShadow: "0 3px 12px rgba(245,158,11,0.40)" }}
+                          >
+                            <Tag className="w-3 h-3" />{hero.discount}% OFF
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className="inline-flex items-center gap-1.5 text-white text-[12px] font-semibold px-3 py-1.5 rounded-full shrink-0"
+                        style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.12)" }}
+                      >
+                        <Clock className="w-3.5 h-3.5 opacity-75" />
+                        {hero.duration}
+                      </div>
+                    </div>
+
+                    {/* Bottom content */}
+                    <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-6">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-3"
+                        style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.14)" }}>
+                        <MapPin className="w-3 h-3" style={{ color: "#1F8C9E" }} />
+                        <span className="text-[11px] font-semibold text-white/75">{hero.destination}, {hero.country}</span>
+                      </div>
+                      <h3
+                        className="text-white font-extrabold leading-tight mb-4"
+                        style={{ fontSize: "clamp(20px,2.2vw,30px)", letterSpacing: "-0.028em", textShadow: "0 2px 12px rgba(0,0,0,0.4)" }}
+                      >
+                        {hero.title}
+                      </h3>
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: "rgba(255,255,255,0.40)" }}>Starting from</p>
+                          <div className="flex items-baseline gap-2">
+                            <span className="font-black text-white" style={{ fontSize: "clamp(22px,2vw,28px)", letterSpacing: "-0.025em" }}>
+                              {formatCurrency(hero.priceFrom)}
+                            </span>
+                            {origPrice && (
+                              <span className="text-[13px] line-through" style={{ color: "rgba(255,255,255,0.25)" }}>{formatCurrency(origPrice)}</span>
+                            )}
+                            <span className="text-[11px]" style={{ color: "rgba(255,255,255,0.35)" }}>/ person</span>
+                          </div>
+                          {savings && (
+                            <div className="inline-flex items-center gap-1 mt-1.5 px-2.5 py-0.5 rounded-full"
+                              style={{ background: "rgba(110,231,183,0.12)", border: "1px solid rgba(110,231,183,0.20)" }}>
+                              <span className="text-[10px] font-bold" style={{ color: "#6EE7B7" }}>✓ Save {formatCurrency(savings)}</span>
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); router.push(`/packages/${hero.slug}`); }}
+                          className="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
+                          style={{ backgroundColor: "#fff", color: "#1F2937", border: "1px solid #E5E7EB" }}
+                        >
+                          Enquire
+                          <ArrowUpRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+
+            {/* ── 4 CLEAN WHITE CARDS ── */}
+            {rest.map((pkg) => {
+              const origPrice = pkg.discount
+                ? Math.round(pkg.priceFrom / (1 - pkg.discount / 100))
+                : null;
+              const savings = origPrice ? origPrice - pkg.priceFrom : null;
+
+              return (
                 <div
-                  className="absolute inset-0"
+                  key={pkg.id}
+                  className="bg-white group rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
                   style={{
-                    background:
-                      "linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.10) 45%, rgba(8,15,30,0.85) 100%)",
-                  }}
-                />
-
-                {/* Top badges */}
-                <div className="absolute top-5 left-5 flex gap-2 z-10">
-                  {hero.badge && (
-                    <span
-                      className="text-xs font-bold px-3 py-1.5 rounded-full"
-                      style={{ backgroundColor: "rgba(255,255,255,0.88)", color: "#1f2937", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
-                    >
-                      {hero.badge}
-                    </span>
-                  )}
-                  {hero.discount && (
-                    <span
-                      className="text-xs font-bold px-3 py-1.5 rounded-full"
-                      style={{ backgroundColor: "rgba(255,255,255,0.88)", color: "#1f2937", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
-                    >
-                      {hero.discount}% OFF
-                    </span>
-                  )}
-                </div>
-
-                {/* Top-right duration */}
-                <div
-                  className="absolute top-5 right-5 z-10 inline-flex items-center gap-1.5 text-white text-xs font-semibold px-3 py-1.5 rounded-full"
-                  style={{
-                    backgroundColor: "rgba(15,20,35,0.65)",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 8px 28px -6px rgba(0,0,0,0.12)",
+                    border: "1px solid #F1F5F9",
                   }}
                 >
-                  <Clock className="w-3.5 h-3.5" />
-                  {hero.duration}
-                </div>
+                  {/* ── Image ── */}
+                  <div className="relative overflow-hidden" style={{ height: 168 }}>
+                    <Image
+                      src={pkg.coverImage} alt={pkg.title} fill
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                      sizes="(max-width:1024px) 100vw, 28vw"
+                    />
 
-                {/* Bottom content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 z-10">
-                  <div className="flex items-center gap-1.5 text-white/85 text-sm mb-3">
-                    <MapPin className="w-4 h-4" />
-                    {hero.destination}, {hero.country}
-                  </div>
-                  <h3
-                    className="text-white font-extrabold mb-1.5 leading-[1.05]"
-                    style={{ fontSize: "clamp(28px, 3.6vw, 44px)", letterSpacing: "-0.02em" }}
-                  >
-                    {hero.title}
-                  </h3>
-                  <p className="text-white/80 text-sm mb-6 line-clamp-2">{hero.highlights[0]}</p>
+                    {/* Single discount badge — top right only */}
+                    {pkg.discount && (
+                      <div
+                        className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-black px-2.5 py-1.5 rounded-full text-white z-10"
+                        style={{
+                          background: "linear-gradient(135deg,#F59E0B,#D97706)",
+                          boxShadow: "0 2px 10px rgba(245,158,11,0.45)",
+                        }}
+                      >
+                        <Tag className="w-2.5 h-2.5" />
+                        {pkg.discount}% OFF
+                      </div>
+                    )}
 
-                  <div className="flex items-end justify-between gap-3 flex-wrap">
-                    <div>
-                      <p className="text-white/60 text-xs mb-0.5">Starting from</p>
-                      <p className="text-white text-3xl font-extrabold leading-none">
-                        {formatCurrency(hero.priceFrom)}
-                        <span className="text-sm font-normal text-white/65 ml-1">/ person</span>
-                      </p>
+                    {/* Duration pill — bottom left */}
+                    <div
+                      className="absolute bottom-3 left-3 inline-flex items-center gap-1 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full z-10"
+                      style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}
+                    >
+                      <Clock className="w-3 h-3" />
+                      {pkg.duration}
                     </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEnquiryPkg(hero);
+
+                    {/* Category pill — top left */}
+                    <div
+                      className="absolute top-3 left-3 inline-flex items-center text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full z-10"
+                      style={{
+                        background: "#FFFFFF",
+                        color: "#1A1A1A",
                       }}
-                      className="inline-flex items-center gap-2 text-sm font-bold px-5 py-3 rounded-full transition-all hover:scale-105 active:scale-95"
-                      style={{ backgroundColor: "#f9cc72", color: "#5a3d00" }}
                     >
-                      Enquire Now <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* ── 4 small cards (2 × 2) ── */}
-            {rest.map((pkg) => (
-              <div
-                key={pkg.id}
-                className="bg-white rounded-3xl overflow-hidden flex flex-col group transition-all duration-500 hover:-translate-y-1"
-                style={{
-                  boxShadow:
-                    "0 1px 2px rgba(20,20,20,0.04), 0 18px 32px -16px rgba(20,20,20,0.18)",
-                  border: "1px solid rgba(20,20,20,0.04)",
-                }}
-              >
-                {/* Image */}
-                <div className="relative overflow-hidden h-44 sm:h-48 lg:h-44">
-                  <Image
-                    src={pkg.coverImage}
-                    alt={pkg.title}
-                    fill
-                    className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-110"
-                    sizes="(max-width: 1024px) 100vw, 25vw"
-                  />
-                  {/* Category badge */}
-                  <span
-                    className="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full"
-                    style={{
-                      backgroundColor: "rgba(255,255,255,0.88)",
-                      color: "#1f2937",
-                      backdropFilter: "blur(6px)",
-                      WebkitBackdropFilter: "blur(6px)",
-                    }}
-                  >
-                    {pkg.category === "international" ? "International" : "National"}
-                  </span>
-                  {/* Duration pill */}
-                  <div
-                    className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full"
-                    style={{
-                      backgroundColor: "rgba(15,20,35,0.65)",
-                      backdropFilter: "blur(10px)",
-                      WebkitBackdropFilter: "blur(10px)",
-                    }}
-                  >
-                    <Clock className="w-3 h-3" />
-                    {pkg.duration}
-                  </div>
-                </div>
-
-                {/* Body */}
-                <div className="p-5 flex flex-col flex-1">
-                  {/* Rating */}
-                  <div className="flex items-center gap-1 text-xs mb-2">
-                    <Star className="w-3.5 h-3.5 fill-current" style={{ color: "#F2A93B" }} />
-                    <span className="font-bold" style={{ color: "#343434" }}>
-                      {pkg.rating}
-                    </span>
-                    <span className="text-gray-400">({pkg.reviewCount})</span>
-                  </div>
-
-                  <h3
-                    className="font-bold text-base leading-snug mb-1 line-clamp-2"
-                    style={{ color: "#343434" }}
-                  >
-                    {pkg.title}
-                  </h3>
-                  <p className="text-gray-500 text-xs leading-relaxed line-clamp-1 mb-4">
-                    {pkg.highlights[0]}
-                  </p>
-
-                  {/* Bottom: price + CTA */}
-                  <div
-                    className="mt-auto pt-4 flex items-end justify-between gap-2"
-                    style={{ borderTop: "1px solid rgba(20,20,20,0.07)" }}
-                  >
-                    <div>
-                      <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">From</p>
-                      <p className="text-base font-extrabold leading-none" style={{ color: "#343434" }}>
-                        {formatCurrency(pkg.priceFrom)}
-                        <span className="text-[10px] font-normal text-gray-400 ml-1">/ person</span>
-                      </p>
+                      {pkg.category === "international" ? "International" : "National"}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setEnquiryPkg(pkg)}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
-                      style={{ backgroundColor: "rgba(31,140,158,0.12)", color: "#0d6677" }}
+                  </div>
+
+                  {/* ── Card body ── */}
+                  <div className="flex flex-col flex-1 px-4 py-3.5">
+                    <h3
+                      className="font-bold line-clamp-1 mb-1"
+                      style={{ fontSize: "14px", color: "#0F172A", letterSpacing: "-0.01em", lineHeight: 1.4 }}
                     >
-                      Enquire <ArrowRight className="w-3 h-3" />
-                    </button>
+                      {pkg.title}
+                    </h3>
+
+                    {/* Location */}
+                    <div className="flex items-center gap-1 mb-2.5">
+                      <MapPin className="w-3 h-3 shrink-0 text-gray-300" />
+                      <span className="text-[11px] text-gray-400 truncate">{pkg.destination}, {pkg.country}</span>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="h-px bg-gray-100 mb-3" />
+
+                    {/* Price + CTA */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">From</p>
+                        <span className="font-black text-[17px] leading-none" style={{ color: "#0F172A" }}>
+                          {formatCurrency(pkg.priceFrom)}
+                        </span>
+                        {origPrice && (
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-[11px] line-through text-gray-300">{formatCurrency(origPrice)}</span>
+                            {savings && (
+                              <span
+                                className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                                style={{ background: "rgba(31,140,158,0.08)", color: "#1F8C9E" }}
+                              >
+                                Save {formatCurrency(savings)}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => router.push(`/packages/${pkg.slug}`)}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
+                        style={{ backgroundColor: "#fff", color: "#1F2937", border: "1px solid #E5E7EB" }}
+                      >
+                        Enquire
+                        <ArrowUpRight className="w-3 h-3" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* ── Bottom CTA ── */}
-          <div className="text-center mt-12">
+          <div className="mt-14 text-center">
             <Link
               href="/packages"
-              className="inline-flex items-center gap-2 text-sm font-bold px-8 py-3.5 rounded-full transition-all hover:opacity-80 active:scale-95"
-              style={{ backgroundColor: "#daf0f3", color: "#0d6677", border: "1px solid #a8d8e2" }}
+              className="group inline-flex items-center gap-2.5 text-[15px] font-semibold px-9 py-3.5 rounded-full transition-opacity duration-150 hover:opacity-85 active:scale-[0.97]"
+              style={{
+                backgroundColor: "#1F8C9E",
+                color: "#fff",
+                boxShadow: "0 2px 10px rgba(31,140,158,0.25)",
+              }}
             >
-              Browse All Packages <ArrowRight className="w-4 h-4" />
+              Browse All Packages
             </Link>
+            <p className="mt-3 text-[13px] text-gray-400">
+              50+ destinations &nbsp;·&nbsp; Customisable itineraries &nbsp;·&nbsp; 24/7 support
+            </p>
           </div>
+
         </div>
       </section>
 
-      {/* Enquiry Modal */}
       {enquiryPkg && (
         <EnquiryModal
           isOpen={!!enquiryPkg}

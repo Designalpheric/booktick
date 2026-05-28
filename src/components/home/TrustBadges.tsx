@@ -54,13 +54,13 @@ const stats = [
 
 export default function TrustBadges() {
   return (
-    <section className="py-16 sm:py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-14 xs:py-16 sm:py-20 bg-gray-50">
+      <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
 
         {/* ── Left-aligned heading ── */}
         <div className="mb-10 sm:mb-12">
           <h2
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-3"
+            className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl font-extrabold leading-tight mb-3"
             style={{ color: "#343434" }}
           >
             Travel with{" "}
@@ -74,7 +74,7 @@ export default function TrustBadges() {
         </div>
 
         {/* ── Features grid — open layout, no card borders ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8 sm:gap-x-12 sm:gap-y-10">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-x-6 xs:gap-x-8 sm:gap-x-10 lg:gap-x-12 gap-y-7 xs:gap-y-8 sm:gap-y-10">
           {badges.map((badge) => (
             <div key={badge.title} className="flex gap-4 group">
 

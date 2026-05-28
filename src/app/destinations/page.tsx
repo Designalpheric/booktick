@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Package } from "lucide-react";
+import { Package, ArrowUpRight } from "lucide-react";
 import { destinations } from "@/data/destinations";
 import type { Metadata } from "next";
 
@@ -14,28 +14,28 @@ export default function DestinationsPage() {
   const others = destinations.filter((d) => !d.popular);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gray-50 pt-[70px] xs:pt-[72px] sm:pt-[82px] lg:pt-[84px]">
       {/* Header */}
-      <div className="bg-gradient-to-r from-teal-700 to-teal-600 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">Explore Destinations</h1>
-          <p className="text-teal-100">From pristine beaches to snow-capped peaks — discover your next adventure</p>
+      <div className="bg-gradient-to-r from-teal-700 to-teal-600 py-10 xs:py-12 sm:py-14 lg:py-16">
+        <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 text-center">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-2">Explore Destinations</h1>
+          <p className="text-teal-100 text-sm xs:text-base">From pristine beaches to snow-capped peaks — discover your next adventure</p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h2 className="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
+      <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 py-8 xs:py-10 sm:py-12">
+        <h2 className="text-xl xs:text-2xl font-extrabold text-gray-900 mb-5 xs:mb-6 flex items-center gap-2">
           <span className="text-orange-500">⭐</span> Most Popular Destinations
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-5 sm:gap-6 mb-10 xs:mb-12">
           {popular.map((dest) => (
             <Link
               key={dest.id}
               href={`/destinations/${dest.slug}`}
               className="group bg-white rounded-2xl overflow-hidden shadow-sm card-hover border border-gray-100"
             >
-              <div className="relative h-48">
+              <div className="relative h-40 xs:h-44 sm:h-48">
                 <Image
                   src={dest.image}
                   alt={dest.name}
@@ -56,22 +56,22 @@ export default function DestinationsPage() {
                     <Package className="w-4 h-4" />
                     {dest.packageCount} packages
                   </div>
-                  <span className="text-orange-500 text-sm font-medium group-hover:underline">View →</span>
+                  <span className="text-orange-500 text-sm font-medium inline-flex items-center gap-1 group-hover:underline">View <ArrowUpRight className="w-3.5 h-3.5" /></span>
                 </div>
               </div>
             </Link>
           ))}
         </div>
 
-        <h2 className="text-2xl font-extrabold text-gray-900 mb-6">More Destinations</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <h2 className="text-xl xs:text-2xl font-extrabold text-gray-900 mb-5 xs:mb-6">More Destinations</h2>
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-5 sm:gap-6">
           {others.map((dest) => (
             <Link
               key={dest.id}
               href={`/destinations/${dest.slug}`}
               className="group bg-white rounded-2xl overflow-hidden shadow-sm card-hover border border-gray-100"
             >
-              <div className="relative h-40">
+              <div className="relative h-36 xs:h-38 sm:h-40">
                 <Image
                   src={dest.image}
                   alt={dest.name}

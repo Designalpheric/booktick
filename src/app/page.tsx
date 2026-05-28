@@ -3,8 +3,10 @@ import HeroBanner from "@/components/home/HeroBanner";
 import PopularDestinations from "@/components/home/PopularDestinations";
 import FeaturedPackages from "@/components/home/FeaturedPackages";
 import DealsSection from "@/components/home/DealsSection";
+import WhyUs from "@/components/home/WhyUs";
+import ReasonsSection from "@/components/home/ReasonsSection";
+import PhotoGallery from "@/components/home/PhotoGallery";
 import CustomerReviews from "@/components/home/CustomerReviews";
-import TrustBadges from "@/components/home/TrustBadges";
 import MarqueeStrip from "@/components/home/MarqueeStrip";
 import EnquiryCTA from "@/components/home/EnquiryCTA";
 
@@ -19,10 +21,12 @@ export default function HomePage() {
     <>
       <HeroBanner />
       <PopularDestinations />
-      <FeaturedPackages />
       <DealsSection />
-      <TrustBadges />
+      <WhyUs />
+      <PhotoGallery />
+      <FeaturedPackages />
       <MarqueeStrip />
+      <ReasonsSection />
       <CustomerReviews />
       <EnquiryCTA />
     </>

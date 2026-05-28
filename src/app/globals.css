@@ -8,6 +8,10 @@
      • gray-900/800 → Ink (#343434) for text utilities
 ────────────────────────────────────────────────────────────────────────────── */
 @theme {
+  /* ── Custom screen breakpoints ── */
+  --breakpoint-xs: 480px;   /* between mobile and sm */
+  --breakpoint-3xl: 1920px; /* ultra-wide / 4K  */
+
   /* ── Lagoon — primary brand (replaces orange/cyan utilities) ── */
   --color-orange-50:  #E3F2F4;
   --color-orange-100: #C0E3E8;
@@ -65,7 +69,7 @@
   }
 
   body {
-    font-family: var(--font-body), 'Urbanist', -apple-system, BlinkMacSystemFont,
+    font-family: var(--font-body), 'Instrument Sans', -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, sans-serif;
     font-size: 16px;
     color: #4B4B4B;
@@ -74,9 +78,9 @@
     letter-spacing: -0.01em;
   }
 
-  /* All headings use Instrument Sans by default — geometric clarity */
+  /* All headings use Urbanist — strong geometric clarity for brand identity */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading), 'Inter', sans-serif;
+    font-family: var(--font-heading), 'Urbanist', sans-serif;
     letter-spacing: -0.02em;
     line-height: 1.18;
     color: var(--ink);
@@ -171,10 +175,10 @@
   .text-navy      { color: var(--ink); }
 
   /* ── Type families ── */
-  .font-heading { font-family: var(--font-heading), 'Inter', sans-serif; }
+  .font-heading { font-family: var(--font-heading), 'Urbanist', sans-serif; }
   .font-display { font-family: var(--font-display), 'Georgia', serif; }
   .font-serif   { font-family: var(--font-serif), 'Georgia', serif; }
-  .font-body    { font-family: var(--font-body), 'Urbanist', sans-serif; }
+  .font-body    { font-family: var(--font-body), 'Instrument Sans', sans-serif; }
 
   /* Editorial italic accent — for emotive words in display headlines */
   .display-italic {
@@ -187,15 +191,33 @@
 
 /* ─── Marquee strip — infinite horizontal scroll ─────────────────────────── */
 @keyframes marquee-ltr {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 @keyframes marquee-rtl {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
-.animate-marquee     { animation: marquee-ltr 28s linear infinite; width: max-content; will-change: transform; }
-.animate-marquee-rev { animation: marquee-rtl 34s linear infinite; width: max-content; will-change: transform; }
+
+/* Row 1 (→ left) slightly faster than Row 2 (→ right) — staggered feel     */
+.animate-marquee {
+  display: flex;
+  animation: marquee-ltr 30s linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+.animate-marquee-rev {
+  display: flex;
+  animation: marquee-rtl 36s linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+
+/* Pause both rows when the user hovers anywhere inside the wrapper           */
+.marquee-wrapper:hover .animate-marquee,
+.marquee-wrapper:hover .animate-marquee-rev {
+  animation-play-state: paused;
+}
 
 /* ─── Testimonial carousel — Swiper customisation ────────────────────────── */
 .testimonial-swiper { padding: 24px 4px 56px; overflow: visible; }

@@ -71,13 +71,13 @@ export default function PopularDestinationsBento() {
 
   return (
     <>
-      <section className="py-20 bg-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-14 xs:py-16 sm:py-20 bg-cream">
+        <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
 
           {/* Header — left aligned */}
-          <div className="mb-10">
+          <div className="mb-8 xs:mb-10">
             <h2
-              className="font-heading text-4xl sm:text-5xl mb-3"
+              className="font-heading text-2xl xs:text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl mb-3"
               style={{ color: "#343434", fontWeight: 700, letterSpacing: "-0.03em" }}
             >
               Popular Destinations

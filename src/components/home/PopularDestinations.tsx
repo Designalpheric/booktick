@@ -62,7 +62,7 @@ export default function PopularDestinations() {
             <Link
               key={dest.slug}
               href={`/destinations/${dest.slug}`}
-              className={`group relative overflow-hidden rounded-2xl block transition-all duration-500 ease-out hover:-translate-y-1.5${i === topDestinations.length - 1 && topDestinations.length % 2 !== 0 ? " col-span-2 sm:col-span-1 max-w-[calc(50%-8px)] xs:max-w-[calc(50%-8px)] sm:max-w-none mx-auto sm:mx-0 w-full" : ""}`}
+              className={`group relative overflow-hidden rounded-none lg:rounded-2xl block transition-all duration-500 ease-out hover:-translate-y-1.5${i === topDestinations.length - 1 && topDestinations.length % 2 !== 0 ? " col-span-2 sm:col-span-1 max-w-[calc(50%-8px)] xs:max-w-[calc(50%-8px)] sm:max-w-none mx-auto sm:mx-0 w-full" : ""}`}
               style={{
                 boxShadow:
                   "0 1px 2px rgba(20,20,20,0.04), 0 18px 32px -16px rgba(20,20,20,0.22)",

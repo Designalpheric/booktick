@@ -100,7 +100,7 @@ export default function FeaturedPackages() {
                 <>
                   {/* ── MOBILE + TABLET (< lg): same white-card style as the other cards ── */}
                   <div
-                    className="lg:hidden bg-white group rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
+                    className="lg:hidden bg-white group rounded-none overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
                     style={{
                       boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 8px 28px -6px rgba(0,0,0,0.12)",
                       border: "1px solid #F1F5F9",
@@ -293,7 +293,7 @@ export default function FeaturedPackages() {
               return (
                 <div
                   key={pkg.id}
-                  className="bg-white group rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
+                  className="bg-white group rounded-none lg:rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
                   style={{
                     boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 8px 28px -6px rgba(0,0,0,0.12)",
                     border: "1px solid #F1F5F9",

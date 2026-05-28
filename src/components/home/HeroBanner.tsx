@@ -115,7 +115,7 @@ function CalendarPicker({ value, onChange, placeholder, isOpen, onToggle, onClos
               style={{ ...PANEL_STYLE, width: 348 }}>
 
               {/* Calendar header */}
-              <div style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#14667A 100%)", padding: "18px 16px 0" }}>
+              <div style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)", padding: "18px 16px 0" }}>
                 <div className="flex items-center justify-between mb-3">
                   <button type="button"
                     onClick={e => { e.stopPropagation(); setView(new Date(y, m - 1, 1)); }}
@@ -401,11 +401,11 @@ export default function HeroBanner() {
 
         {/* Headline */}
         <h1
-          className="text-white mb-3 sm:mb-6 w-full"
-          style={{ lineHeight: 1.06, letterSpacing: "-0.03em" }}
+          className="text-white mb-3 sm:mb-6 w-full whitespace-nowrap"
+          style={{ lineHeight: 1.06, letterSpacing: "-0.035em" }}
         >
           <span
-            className="block font-extrabold text-[24px] xs:text-[30px] sm:text-[42px] md:text-[52px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
+            className="block font-extrabold text-[28px] xs:text-[34px] sm:text-[46px] md:text-[54px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
             style={{
               textShadow: "0 2px 12px rgba(0,0,0,0.60), 0 6px 40px rgba(0,0,0,0.45)",
             }}
@@ -416,7 +416,7 @@ export default function HeroBanner() {
             </span>
           </span>
           <span
-            className="block font-extrabold text-[24px] xs:text-[30px] sm:text-[42px] md:text-[52px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
+            className="block font-extrabold text-[28px] xs:text-[34px] sm:text-[46px] md:text-[54px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
             style={{
               textShadow: "0 2px 12px rgba(0,0,0,0.60), 0 6px 40px rgba(0,0,0,0.45)",
             }}
@@ -516,7 +516,7 @@ export default function HeroBanner() {
                 type="submit"
                 className="relative flex items-center justify-center gap-2 rounded-xl font-bold text-[13px] text-white transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] shrink-0 py-2 sm:py-0 sm:px-6 whitespace-nowrap overflow-hidden"
                 style={{
-                  background: "linear-gradient(135deg, #1F8C9E 0%, #155F6B 100%)",
+                  background: "linear-gradient(135deg, #1F8C9E 0%, #0E6F7F 100%)",
                   boxShadow: "0 4px 20px rgba(31,140,158,0.50), inset 0 1px 0 rgba(255,255,255,0.20)",
                   minWidth: "120px",
                 }}

@@ -212,7 +212,7 @@ export default function FeaturedPackages() {
                         {hero.badge && (
                           <span
                             className="self-start text-[11px] font-black tracking-wider px-3 py-1.5 rounded-full text-white uppercase"
-                            style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6878)", boxShadow: "0 3px 12px rgba(31,140,158,0.45)" }}
+                            style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6F7F)", boxShadow: "0 3px 12px rgba(31,140,158,0.45)" }}
                           >
                             ★ {hero.badge}
                           </span>
@@ -333,10 +333,11 @@ export default function FeaturedPackages() {
                     {/* Category pill — top left */}
                     <div
                       className="absolute top-3 left-3 inline-flex items-center text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full z-10"
-                      style={{
-                        background: "#FFFFFF",
-                        color: "#1A1A1A",
-                      }}
+                      style={
+                        pkg.category === "international"
+                          ? { background: "#DBEAFE", color: "#1D4ED8" }
+                          : { background: "#DCFCE7", color: "#15803D" }
+                      }
                     >
                       {pkg.category === "international" ? "International" : "National"}
                     </div>

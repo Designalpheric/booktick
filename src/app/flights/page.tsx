@@ -184,7 +184,7 @@ export default function FlightsPage() {
           <div className="relative w-14 h-14 mx-auto mb-3">
             <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ background: "#1F8C9E" }} />
             <div className="relative w-14 h-14 rounded-full flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg,#1F8C9E,#0A5A6B)", boxShadow: "0 6px 20px rgba(31,140,158,0.40)" }}>
+              style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6F7F)", boxShadow: "0 6px 20px rgba(31,140,158,0.40)" }}>
               <CheckCircle2 className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
           </div>
@@ -392,7 +392,7 @@ export default function FlightsPage() {
 
               {/* FROM / TO row with centred swap pill */}
               <div className="flex flex-col sm:flex-row sm:items-stretch"
-                style={{ border: "1.5px solid rgba(20,20,20,0.13)", borderRadius: "16px", overflow: "hidden" }}>
+                style={{ border: "1.5px solid rgba(20,20,20,0.13)", overflow: "hidden" }}>
 
                 {/* FROM */}
                 <div className="flex-1 flex items-center gap-3 px-4 py-3.5">
@@ -466,11 +466,11 @@ export default function FlightsPage() {
                 style={{ color: "rgba(52,52,52,0.38)" }}>Trip Details</p>
 
               {/* Trip Type — pill segmented control */}
-              <div className="inline-flex p-1 mb-3 sm:mb-4 rounded-full w-full sm:w-auto"
+              <div className="inline-flex p-1 mb-3 sm:mb-4 w-full sm:w-auto"
                 style={{ backgroundColor: "#F0F0EE" }}>
                 {tripTypes.map((t) => (
                   <button key={t} type="button" onClick={() => setTripType(t)}
-                    className="flex-1 sm:flex-none px-2 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-[13px] font-semibold transition-all duration-200 whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-2 sm:px-5 py-1.5 sm:py-2 text-[11px] sm:text-[13px] font-semibold transition-all duration-200 whitespace-nowrap"
                     style={tripType === t
                       ? { backgroundColor: "#fff", color: "#343434",
                           boxShadow: "0 1px 4px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)" }
@@ -490,7 +490,15 @@ export default function FlightsPage() {
                   <DateInput
                     value={depart}
                     min={new Date().toISOString().split("T")[0]}
-                    onChange={(v) => { setDepart(v); handleFieldChange("depart", v); }}
+                    onChange={(v) => {
+                      setDepart(v);
+                      handleFieldChange("depart", v);
+                      // If new departure is after current return, clear return
+                      if (tripType === "Round Trip" && returnD && v && returnD < v) {
+                        setReturnD("");
+                        handleFieldChange("returnD", "");
+                      }
+                    }}
                     error={!!errors.depart}
                     placeholder="Select date"
                   />
@@ -524,7 +532,7 @@ export default function FlightsPage() {
                     <label className="absolute top-0 left-3.5 text-[13px] font-semibold px-1 z-10"
                       style={{ color: "#343434", backgroundColor: "#fff" }}>Flexibility</label>
                     <input type="text" placeholder="e.g. ± 2 days"
-                      className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
+                      className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
                       style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
                   </div>
                 )}
@@ -544,13 +552,13 @@ export default function FlightsPage() {
                   { label: "Infants",  sub: "Under 2",  val: infants,  min: 0, inc: () => setInfants(i => i  + 1), dec: () => setInfants(i  => Math.max(0, i  - 1)) },
                 ].map(({ label, sub, val, min, inc, dec }) => (
                   <div key={label}
-                    className="flex-1 flex items-center justify-between sm:flex-col sm:items-center sm:justify-between px-3 py-2.5 sm:py-3 rounded-xl bg-white"
+                    className="flex-1 flex items-center justify-between gap-3 px-3 py-3 rounded-xl bg-white"
                     style={{ border: "1px solid rgba(20,20,20,0.08)" }}>
-                    <div>
-                      <p className="text-[13px] font-semibold leading-none" style={{ color: "#343434" }}>{label}</p>
-                      <p className="text-[11px] mt-0.5 leading-none" style={{ color: "rgba(52,52,52,0.42)" }}>{sub}</p>
+                    <div className="min-w-0">
+                      <p className="text-[13px] font-semibold leading-tight" style={{ color: "#343434" }}>{label}</p>
+                      <p className="text-[11px] leading-tight mt-0.5" style={{ color: "rgba(52,52,52,0.42)" }}>{sub}</p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 shrink-0">
                       <button type="button" onClick={dec} disabled={val <= min}
                         className="w-7 h-7 rounded-full flex items-center justify-center text-[15px] font-bold transition-all hover:scale-110 disabled:opacity-30"
                         style={{ backgroundColor: "rgba(31,140,158,0.10)", color: "#1F8C9E" }}>−</button>
@@ -570,7 +578,7 @@ export default function FlightsPage() {
               <div className="flex flex-wrap gap-2">
                 {cabins.map((c) => (
                   <button key={c} type="button" onClick={() => setCabin(c)}
-                    className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-[12px] font-semibold transition-all duration-150 hover:scale-[1.03] active:scale-[0.97]"
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-[12px] font-semibold transition-all duration-150 hover:scale-[1.03] active:scale-[0.97]"
                     style={cabin === c
                       ? { backgroundColor: "#1F8C9E", color: "#fff",
                           boxShadow: "0 2px 10px rgba(31,140,158,0.30)" }
@@ -606,7 +614,7 @@ export default function FlightsPage() {
                       type="text" placeholder="e.g. Rahul Sharma" value={name}
                       onChange={(e) => { setName(e.target.value); handleFieldChange("name", e.target.value); }}
                       onBlur={handleFieldBlur("name")}
-                      className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
+                      className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
                       style={{ border: errors.name ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }} />
                     {errors.name && (
                       <p className="flex items-center gap-1 mt-1 text-xs" style={{ color: "#f87171" }}>
@@ -623,7 +631,7 @@ export default function FlightsPage() {
                     </label>
                     <div
                       data-has-error={!!errors.phone}
-                      className="flex overflow-hidden rounded-xl"
+                      className="flex overflow-hidden"
                       style={{ border: errors.phone ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }}>
                       <span className="flex items-center px-3 text-[13px] font-semibold shrink-0 select-none"
                         style={{
@@ -634,8 +642,10 @@ export default function FlightsPage() {
                         +91
                       </span>
                       <input
-                        type="tel" placeholder="10-digit number" maxLength={10} value={phone}
-                        onChange={(e) => { const v = e.target.value.replace(/\D/g, ""); setPhone(v); handleFieldChange("phone", v); }}
+                        type="tel" inputMode="numeric" pattern="[0-9]*"
+                        placeholder="10-digit number" maxLength={10} value={phone}
+                        onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 10); setPhone(v); handleFieldChange("phone", v); }}
+                        onKeyDown={(e) => { if (["e","E","+","-",".",",", " "].includes(e.key)) e.preventDefault(); }}
                         onBlur={handleFieldBlur("phone")}
                         className="flex-1 px-3 py-3.5 text-[13px] bg-white outline-none placeholder-gray-300" />
                     </div>
@@ -658,7 +668,7 @@ export default function FlightsPage() {
                     type="email" placeholder="you@example.com" value={email}
                     onChange={(e) => { setEmail(e.target.value); handleFieldChange("email", e.target.value); }}
                     onBlur={handleFieldBlur("email")}
-                    className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
+                    className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
                     style={{ border: errors.email ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }} />
                   {errors.email && (
                     <p className="flex items-center gap-1 mt-1 text-xs" style={{ color: "#f87171" }}>
@@ -675,7 +685,7 @@ export default function FlightsPage() {
                   </label>
                   <input type="text" placeholder="e.g. window seat, veg meal" value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
+                    className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
                     style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
                 </div>
               </div>
@@ -688,7 +698,7 @@ export default function FlightsPage() {
               <button
                 type="submit" disabled={loading}
                 className="w-full sm:w-auto sm:mx-auto flex items-center justify-center gap-2.5 font-bold py-3.5 sm:py-4 px-6 sm:px-10 rounded-full text-[14px] sm:text-[15px] transition-all hover:brightness-105 active:scale-[0.99] disabled:opacity-60 overflow-hidden relative"
-                style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#155F6B 100%)", color: "#fff",
+                style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)", color: "#fff",
                   boxShadow: "0 4px 20px rgba(31,140,158,0.35)" }}
               >
                 {/* Shimmer sheen */}

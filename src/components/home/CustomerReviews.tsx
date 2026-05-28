@@ -326,7 +326,7 @@ export default function CustomerReviews() {
             <button
               onClick={next}
               className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-              style={{ background: "linear-gradient(135deg,#1F8C9E,#14677A)", boxShadow: "0 4px 14px rgba(31,140,158,0.50)", color: "#fff" }}
+              style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6F7F)", boxShadow: "0 4px 14px rgba(31,140,158,0.50)", color: "#fff" }}
               aria-label="Next"
             >
               <ChevronRight className="w-4 h-4" />

@@ -130,7 +130,7 @@ export default function DealsSection() {
                   {deal.badge && (
                     <div
                       className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black text-white tracking-wide uppercase"
-                      style={{ background: "linear-gradient(135deg,#1F8C9E,#14677A)" }}
+                      style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6F7F)" }}
                     >
                       {deal.badge}
                     </div>

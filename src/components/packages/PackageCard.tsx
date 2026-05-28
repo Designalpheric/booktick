@@ -52,7 +52,11 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap" style={{ backgroundColor: BADGE_BG, color: BADGE_TEXT }}>{pkg.discount}% OFF</span>
               )}
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap"
-                style={{ backgroundColor: BADGE_BG, color: BADGE_TEXT }}
+                style={
+                  pkg.category === "international"
+                    ? { backgroundColor: "#DBEAFE", color: "#1D4ED8" }
+                    : { backgroundColor: "#DCFCE7", color: "#15803D" }
+                }
               >{pkg.category === "international" ? "International" : "National"}</span>
             </div>
             {/* Duration — bottom-left of image, text only (gradient below provides readability) */}
@@ -120,7 +124,7 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
                 className="text-[13px] font-bold leading-none tabular-nums"
                 style={{ color: "#111827" }}
               >
-                {pkg.rating.toFixed(1)}
+                {(pkg.rating ?? 0).toFixed(1)}
               </span>
               <span className="text-[11px] leading-none tabular-nums" style={{ color: "#9ca3af" }}>
                 ({pkg.reviewCount})

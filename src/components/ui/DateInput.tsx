@@ -150,14 +150,14 @@ export default function DateInput({ value, onChange, placeholder = "Select date"
         onClick={() => setOpen((o) => !o)}
         className={
           className ??
-          "w-full flex items-center gap-2 px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all text-left"
+          "w-full flex items-center gap-2 px-4 py-3.5 text-[13px] bg-white outline-none transition-all text-left"
         }
         style={{
           border: error ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)",
           color: value ? "#343434" : "#9ca3af",
         }}
       >
-        <Calendar className="w-4 h-4 shrink-0" style={{ color: "#1F8C9E" }} />
+        <Calendar className="w-4 h-4 shrink-0" style={{ color: "#374151" }} />
         <span className="flex-1 truncate">{value ? formatDisplay(value) : placeholder}</span>
       </button>
 

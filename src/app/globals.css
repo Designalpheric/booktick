@@ -136,7 +136,7 @@
   }
 
   /* Badge gradients — re-keyed to new palette */
-  .badge-bestseller { background: linear-gradient(135deg, #1F8C9E, #155F6B); }
+  .badge-bestseller { background: linear-gradient(135deg, #1F8C9E, #0E6F7F); }
   .badge-toprated   { background: linear-gradient(135deg, #28443A, #1F8C9E); }
   .badge-luxury     { background: linear-gradient(135deg, #F2A93B, #B47C1C); }
 

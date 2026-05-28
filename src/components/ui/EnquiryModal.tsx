@@ -76,7 +76,7 @@ function FloatField({
 
 /* ── Shared input style ──────────────────────────────────────────────────── */
 const inputBase =
-  "w-full px-4 py-2.5 sm:py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 placeholder-gray-300";
+  "w-full px-4 py-2.5 sm:py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 placeholder-gray-300";
 const borderNormal = "1.5px solid rgba(20,20,20,0.14)";
 const borderError  = "1.5px solid #f87171";
 const focusNormal  = "focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E]";
@@ -117,6 +117,12 @@ export default function EnquiryModal({
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
+    }
+    // Esc-to-close (a11y)
+    if (isOpen) {
+      const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+      document.addEventListener("keydown", onKey);
+      return () => document.removeEventListener("keydown", onKey);
     }
     return () => { document.body.style.overflow = ""; };
   }, [isOpen, prefillDestination, prefillPackageOrFlight, enquiryType]);
@@ -179,9 +185,9 @@ export default function EnquiryModal({
   const e = errors;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6 sm:p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6 sm:p-4" role="dialog" aria-modal="true" aria-label="Enquiry form">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
       {/* Modal card */}
       <div
@@ -210,23 +216,21 @@ export default function EnquiryModal({
             </button>
 
             {/* Icon + heading */}
-            <div className="px-6 pt-8 pb-5 text-center">
+            <div className="px-6 pt-10 pb-6 flex flex-col items-center text-center">
               {/* Stacked ring icon */}
-              <div className="flex items-center justify-center mb-4">
-                <div className="relative flex items-center justify-center">
-                  <div className="absolute w-24 h-24 rounded-full" style={{ backgroundColor: "rgba(31,140,158,0.08)" }} />
-                  <div className="absolute w-[72px] h-[72px] rounded-full" style={{ backgroundColor: "rgba(31,140,158,0.14)" }} />
-                  <div
-                    className="relative w-14 h-14 rounded-full flex items-center justify-center"
-                    style={{ background: "linear-gradient(135deg, #1F8C9E 0%, #0d6978 100%)", boxShadow: "0 8px 24px rgba(31,140,158,0.40)" }}
-                  >
-                    <CheckCircle className="w-7 h-7 text-white" strokeWidth={2.2} />
-                  </div>
+              <div className="relative flex items-center justify-center w-24 h-24 mb-6">
+                <div className="absolute inset-0 rounded-full" style={{ backgroundColor: "rgba(31,140,158,0.08)" }} />
+                <div className="absolute w-[72px] h-[72px] rounded-full" style={{ backgroundColor: "rgba(31,140,158,0.14)" }} />
+                <div
+                  className="relative w-14 h-14 rounded-full flex items-center justify-center"
+                  style={{ background: "linear-gradient(135deg, #1F8C9E 0%, #0E6F7F 100%)", boxShadow: "0 8px 24px rgba(31,140,158,0.40)" }}
+                >
+                  <CheckCircle className="w-7 h-7 text-white" strokeWidth={2.2} />
                 </div>
               </div>
 
               <div
-                className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-3"
+                className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4"
                 style={{ backgroundColor: "rgba(22,163,74,0.09)", color: "#16a34a" }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
@@ -234,13 +238,13 @@ export default function EnquiryModal({
               </div>
 
               <h3
-                className="font-extrabold leading-tight mb-1"
+                className="font-extrabold leading-tight mb-2"
                 style={{ fontSize: "clamp(22px, 5vw, 28px)", color: "#1a1a1a", letterSpacing: "-0.025em" }}
               >
                 You&apos;re all set,{" "}
                 <span style={{ color: "#1F8C9E" }}>{formData.name}!</span>
               </h3>
-              <p className="text-[13px] leading-relaxed" style={{ color: "rgba(52,52,52,0.50)" }}>
+              <p className="text-[13px] leading-relaxed max-w-xs" style={{ color: "rgba(52,52,52,0.50)" }}>
                 Your request has been received. Our travel expert will reach out shortly.
               </p>
             </div>
@@ -273,7 +277,7 @@ export default function EnquiryModal({
               <button
                 onClick={onClose}
                 className="w-full flex items-center justify-center gap-2 font-bold py-4 rounded-2xl text-white text-[14px] transition-all hover:opacity-90 active:scale-[0.99]"
-                style={{ background: "linear-gradient(135deg, #1F8C9E 0%, #0d6978 100%)", boxShadow: "0 6px 24px rgba(31,140,158,0.32)" }}
+                style={{ background: "linear-gradient(135deg, #1F8C9E 0%, #0E6F7F 100%)", boxShadow: "0 6px 24px rgba(31,140,158,0.32)" }}
               >
                 Back to Exploring
                 <ArrowRight className="w-4 h-4" />
@@ -313,7 +317,9 @@ export default function EnquiryModal({
                 </p>
               </div>
               <button
+                type="button"
                 onClick={onClose}
+                aria-label="Close enquiry form"
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-colors shrink-0 mt-0.5"
                 style={{ backgroundColor: "#f3f4f6", color: "#343434" }}
                 onMouseEnter={ev => (ev.currentTarget.style.backgroundColor = "#e5e7eb")}
@@ -345,7 +351,7 @@ export default function EnquiryModal({
               <FloatField label="Mobile" required error={e.mobile}>
                 <div
                   data-has-error={!!e.mobile}
-                  className="flex overflow-hidden rounded-xl"
+                  className="flex overflow-hidden"
                   style={{ border: e.mobile ? borderError : borderNormal }}
                 >
                   <span
@@ -359,10 +365,12 @@ export default function EnquiryModal({
                     +91
                   </span>
                   <input
-                    type="tel" placeholder="10-digit number"
+                    type="tel" inputMode="numeric" pattern="[0-9]*"
+                    placeholder="10-digit number"
                     maxLength={10}
                     value={formData.mobile}
-                    onChange={ev => handleChange("mobile")(ev.target.value.replace(/\D/g, ""))}
+                    onChange={ev => handleChange("mobile")(ev.target.value.replace(/\D/g, "").slice(0, 10))}
+                    onKeyDown={(e) => { if (["e","E","+","-",".",",", " "].includes(e.key)) e.preventDefault(); }}
                     onBlur={handleBlur("mobile")}
                     className="flex-1 px-3 py-2.5 sm:py-3.5 text-[13px] bg-white outline-none placeholder-gray-300"
                   />
@@ -426,7 +434,7 @@ export default function EnquiryModal({
                 placeholder="Tell us your preferences, budget, or special requirements…"
                 value={formData.message}
                 onChange={ev => handleChange("message")(ev.target.value)}
-                className="w-full px-4 py-2.5 sm:py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300 resize-none"
+                className="w-full px-4 py-2.5 sm:py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300 resize-none"
                 style={{ border: borderNormal }}
               />
             </FloatField>
@@ -436,7 +444,7 @@ export default function EnquiryModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2.5 font-bold py-3 sm:py-4 rounded-xl text-[14px] sm:text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60 text-white"
+                className="w-full flex items-center justify-center gap-2.5 font-bold py-3 sm:py-4 rounded-full text-[14px] sm:text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60 text-white"
                 style={{ backgroundColor: "#343434" }}
               >
                 {isSubmitting ? (

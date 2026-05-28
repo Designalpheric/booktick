@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import {
   Send, CheckCircle, AlertCircle,
   ArrowRight, Plane, Package, Route, Plus, Minus,
+  Phone, Mail, MapPin,
 } from "lucide-react";
 import { EnquiryFormData } from "@/types";
 import DateInput from "@/components/ui/DateInput";
@@ -126,7 +127,7 @@ export default function ContactPage() {
               <h1
                 className="font-extrabold leading-none"
                 style={{
-                  fontSize: "clamp(32px, 7vw, 82px)",
+                  fontSize: "clamp(22px, 4.5vw, 58px)",
                   color: "#343434",
                   letterSpacing: "-0.03em",
                 }}
@@ -163,81 +164,6 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* ── We're Open To ────────────────────────────────────────────────── */}
-      <div className="py-8 xs:py-10 sm:py-16" style={{ backgroundColor: "#F7F6F3" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* Heading */}
-          <div className="text-center mb-5 sm:mb-10">
-            <h2
-              className="font-extrabold leading-tight mb-2 sm:mb-3"
-              style={{ fontSize: "clamp(22px, 4vw, 44px)", color: "#343434", letterSpacing: "-0.03em" }}
-            >
-              We&apos;re Open To...
-            </h2>
-            <p
-              className="max-w-lg mx-auto leading-relaxed"
-              style={{ color: "rgba(52,52,52,0.52)", fontSize: "clamp(13px, 1.1vw, 15px)" }}
-            >
-              Whether you have a trip in mind, a question, or just want to explore your
-              options — we&apos;re always happy to help.
-            </p>
-          </div>
-
-          {/* Card grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
-            {[
-              {
-                icon: Route,
-                title: "Planning a New Trip",
-                desc: "Turn your travel ideas into a personalised, ready-to-go itinerary.",
-              },
-              {
-                icon: Package,
-                title: "Booking a Travel Package",
-                desc: "Browse and book from our curated national and international packages.",
-              },
-              {
-                icon: Plane,
-                title: "Flight Assistance",
-                desc: "Let us find you the best flights, timings, and connecting routes.",
-              },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className="flex flex-row sm:flex-col items-start gap-3 sm:gap-0 p-4 sm:p-6 bg-white"
-                style={{
-                  border: "1px solid rgba(20,20,20,0.07)",
-                  borderRadius: "14px",
-                }}
-              >
-                <div
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center sm:mb-4 shrink-0"
-                  style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
-                >
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#1F8C9E" }} />
-                </div>
-                <div>
-                  <h3
-                    className="font-bold text-sm sm:text-base leading-snug mb-1 sm:mb-2"
-                    style={{ color: "#343434" }}
-                  >
-                    {title}
-                  </h3>
-                  <p
-                    className="text-xs sm:text-sm leading-relaxed"
-                    style={{ color: "rgba(52,52,52,0.52)" }}
-                  >
-                    {desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </div>
-
 
       {/* ── Main content ─────────────────────────────────────────────────── */}
       <div style={{ backgroundColor: "#F7F6F3" }} className="py-8 xs:py-12 sm:py-20">
@@ -268,17 +194,108 @@ export default function ContactPage() {
                 itinerary within 2 hours, Mon–Sat.
               </p>
 
+              {/* Contact details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 sm:mb-8">
+                <a
+                  href="tel:+919876543210"
+                  className="group flex items-start gap-3 p-3.5 rounded-xl transition-all hover:-translate-y-0.5"
+                  style={{ background: "#fff", border: "1px solid rgba(20,20,20,0.08)" }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: "rgba(31,140,158,0.12)" }}
+                  >
+                    <Phone className="w-4 h-4" style={{ color: "#1F8C9E" }} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "rgba(52,52,52,0.5)" }}>
+                      Call us
+                    </p>
+                    <p className="text-[13px] font-bold" style={{ color: "#343434" }}>
+                      +91 98765 43210
+                    </p>
+                  </div>
+                </a>
+
+                <a
+                  href="mailto:hello@booktick.com"
+                  className="group flex items-start gap-3 p-3.5 rounded-xl transition-all hover:-translate-y-0.5"
+                  style={{ background: "#fff", border: "1px solid rgba(20,20,20,0.08)" }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: "rgba(31,140,158,0.12)" }}
+                  >
+                    <Mail className="w-4 h-4" style={{ color: "#1F8C9E" }} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "rgba(52,52,52,0.5)" }}>
+                      Email us
+                    </p>
+                    <p className="text-[13px] font-bold break-all" style={{ color: "#343434" }}>
+                      hello@booktick.com
+                    </p>
+                  </div>
+                </a>
+
+                <div
+                  className="flex items-start gap-3 p-3.5 rounded-xl"
+                  style={{ background: "#fff", border: "1px solid rgba(20,20,20,0.08)" }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: "rgba(31,140,158,0.12)" }}
+                  >
+                    <MapPin className="w-4 h-4" style={{ color: "#1F8C9E" }} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "rgba(52,52,52,0.5)" }}>
+                      Visit us
+                    </p>
+                    <p className="text-[13px] font-semibold leading-snug" style={{ color: "#343434" }}>
+                      221 Travel Plaza, New Delhi 110001, India
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  className="flex items-start gap-3 p-3.5 rounded-xl"
+                  style={{ background: "#fff", border: "1px solid rgba(20,20,20,0.08)" }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: "rgba(31,140,158,0.12)" }}
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#1F8C9E" aria-hidden="true">
+                      <path d="M12 2l2.93 6.94 7.07.61-5.36 4.66 1.6 6.94L12 17.27l-6.24 3.88 1.6-6.94L2 9.55l7.07-.61L12 2z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "rgba(52,52,52,0.5)" }}>
+                      Trusted by travellers
+                    </p>
+                    <p className="text-[13px] font-bold leading-snug" style={{ color: "#343434" }}>
+                      10,000+ happy trips
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* CTA buttons */}
-              <div className="flex flex-wrap gap-3 mb-6 sm:mb-10">
+              <div className="flex gap-2 sm:gap-3 mb-6 sm:mb-10">
                 <a href="/packages"
-                  className="inline-flex items-center px-6 py-3 rounded-full font-bold text-sm transition-all hover:bg-gray-100 active:scale-95"
+                  className="flex-1 lg:flex-none inline-flex items-center justify-center px-4 sm:px-6 py-3 rounded-full font-bold text-[13px] sm:text-sm whitespace-nowrap transition-all hover:bg-gray-100 active:scale-95"
                   style={{ border: "1.5px solid rgba(52,52,52,0.18)", color: "#343434", backgroundColor: "transparent" }}>
                   Browse Packages
                 </a>
                 <a href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
                   target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white transition-all hover:opacity-90 active:scale-95"
-                  style={{ backgroundColor: "#1F8C9E" }}>
+                  className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-full font-bold text-[13px] sm:text-sm whitespace-nowrap transition-all hover:brightness-95 active:scale-95"
+                  style={{
+                    background: "linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)",
+                    color: "#065F46",
+                    border: "1px solid rgba(6,95,70,0.18)",
+                  }}>
                   <WaIcon className="w-4 h-4" />
                   Chat on WhatsApp
                 </a>
@@ -342,7 +359,7 @@ export default function ContactPage() {
                       Thank you, <span className="font-semibold text-gray-700">{formData.name}</span>! Our travel expert will call you on{" "}
                       <span className="font-semibold text-gray-700">{formData.mobile}</span> within 2 hours.
                     </p>
-                    <button onClick={() => { setIsSuccess(false); setFormData(initialState); setBudgetText(""); setErrors({}); setTouched({}); }}
+                    <button onClick={() => { setIsSuccess(false); setFormData(initialState); setBudgetText(""); setErrors({}); }}
                       className="inline-flex items-center gap-2 font-bold px-8 py-3.5 rounded-full text-white transition-all hover:opacity-90 active:scale-95"
                       style={{ backgroundColor: "#1F8C9E" }}>
                       Send Another Enquiry <ArrowRight className="w-4 h-4" />
@@ -363,7 +380,7 @@ export default function ContactPage() {
                     </div>
 
                     {/* Form — floating label inputs */}
-                    <form onSubmit={handleSubmit} className="px-4 sm:px-7 pt-4 sm:pt-7 pb-5 sm:pb-7 space-y-3">
+                    <form ref={formRef} onSubmit={handleSubmit} noValidate className="px-4 sm:px-7 pt-4 sm:pt-7 pb-5 sm:pb-7 space-y-3">
 
                       {/* Row 1: Name + Mobile */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -376,7 +393,7 @@ export default function ContactPage() {
                           </label>
                           <input type="text" placeholder="Enter full name" value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/20 focus:border-[#1F8C9E] placeholder-gray-300"
+                            className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300"
                             style={{ border: errors.name ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }} />
                           {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
                         </div>
@@ -387,14 +404,15 @@ export default function ContactPage() {
                             style={{ color: "#343434", backgroundColor: "#fff" }}>
                             Phone Number <span style={{ color: "#f87171" }}>*</span>
                           </label>
-                          <div className="flex overflow-hidden rounded-xl"
+                          <div className="flex overflow-hidden"
                             style={{ border: errors.mobile ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }}>
                             <span className="flex items-center px-3 text-[13px] font-semibold shrink-0 select-none"
                               style={{ backgroundColor: "rgba(31,140,158,0.06)", borderRight: "1.5px solid rgba(20,20,20,0.10)", color: "#343434" }}>
                               +91
                             </span>
-                            <input type="tel" placeholder="10-digit number" value={formData.mobile}
-                              onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                            <input type="tel" inputMode="numeric" pattern="[0-9]*" maxLength={10} placeholder="10-digit number" value={formData.mobile}
+                              onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/g, "").slice(0, 10) })}
+                              onKeyDown={(e) => { if (["e","E","+","-",".",",", " "].includes(e.key)) e.preventDefault(); }}
                               className="flex-1 px-3 py-3.5 text-[13px] bg-white outline-none placeholder-gray-300" />
                           </div>
                           {errors.mobile && <p className="text-red-400 text-xs mt-1">{errors.mobile}</p>}
@@ -477,7 +495,7 @@ export default function ContactPage() {
                         <textarea rows={3} placeholder="Tell us your travel preferences or any special requirements..."
                           value={formData.message}
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          className="w-full px-4 py-3.5 text-[13px] rounded-xl bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300 resize-none"
+                          className="w-full px-4 py-3.5 text-[13px] bg-white outline-none transition-all focus:ring-2 focus:ring-[#1F8C9E]/15 placeholder-gray-300 resize-none"
                           style={{ border: "1.5px solid rgba(20,20,20,0.14)" }} />
                       </div>
 
@@ -514,6 +532,81 @@ export default function ContactPage() {
 
 
 
+
+      {/* ── We're Open To ────────────────────────────────────────────────── */}
+      <div className="py-8 xs:py-10 sm:py-16" style={{ backgroundColor: "#F7F6F3" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Heading */}
+          <div className="text-center mb-5 sm:mb-10">
+            <h2
+              className="font-extrabold leading-tight mb-2 sm:mb-3"
+              style={{ fontSize: "clamp(22px, 4vw, 44px)", color: "#343434", letterSpacing: "-0.03em" }}
+            >
+              We&apos;re Open To...
+            </h2>
+            <p
+              className="max-w-lg mx-auto leading-relaxed"
+              style={{ color: "rgba(52,52,52,0.52)", fontSize: "clamp(13px, 1.1vw, 15px)" }}
+            >
+              Whether you have a trip in mind, a question, or just want to explore your
+              options — we&apos;re always happy to help.
+            </p>
+          </div>
+
+          {/* Card grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
+            {[
+              {
+                icon: Route,
+                title: "Planning a New Trip",
+                desc: "Turn your travel ideas into a personalised, ready-to-go itinerary.",
+              },
+              {
+                icon: Package,
+                title: "Booking a Travel Package",
+                desc: "Browse and book from our curated national and international packages.",
+              },
+              {
+                icon: Plane,
+                title: "Flight Assistance",
+                desc: "Let us find you the best flights, timings, and connecting routes.",
+              },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="flex flex-row sm:flex-col items-start gap-3 sm:gap-0 p-4 sm:p-6 bg-white"
+                style={{
+                  border: "1px solid rgba(20,20,20,0.07)",
+                  borderRadius: "14px",
+                }}
+              >
+                <div
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center sm:mb-4 shrink-0"
+                  style={{ backgroundColor: "rgba(31,140,158,0.10)" }}
+                >
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#1F8C9E" }} />
+                </div>
+                <div>
+                  <h3
+                    className="font-bold text-sm sm:text-base leading-snug mb-1 sm:mb-2"
+                    style={{ color: "#343434" }}
+                  >
+                    {title}
+                  </h3>
+                  <p
+                    className="text-xs sm:text-sm leading-relaxed"
+                    style={{ color: "rgba(52,52,52,0.52)" }}
+                  >
+                    {desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
 
       {/* ── FAQ Section ──────────────────────────────────────────────────── */}
       <div className="py-8 xs:py-12 sm:py-20" style={{ backgroundColor: "#ffffff" }}>

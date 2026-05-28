@@ -6,11 +6,11 @@ import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
   Menu, X, Phone, ChevronDown, ArrowRight,
-  MapPin, Globe, Plane, Info, Mail,
+  MapPin, Globe, Plane, Info, Mail, Sparkles, MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type DropdownItem = { label: string; href: string };
+type DropdownItem = { label: string; href: string; tag?: string };
 type NavLink = {
   label: string;
   href: string;
@@ -26,14 +26,14 @@ const navLinks: NavLink[] = [
     href: "/packages?category=national",
     icon: MapPin,
     dropdown: [
-      { label: "Goa",       href: "/destinations/goa" },
-      { label: "Kerala",    href: "/destinations/kerala" },
-      { label: "Manali",    href: "/destinations/manali" },
-      { label: "Ladakh",    href: "/destinations/ladakh" },
-      { label: "Rajasthan", href: "/destinations/rajasthan" },
-      { label: "Andaman",   href: "/destinations/andaman" },
-      { label: "Himachal",  href: "/packages?category=national" },
-      { label: "Kashmir",   href: "/packages?category=national" },
+      { label: "Goa",       href: "/destinations/goa",       tag: "Beaches" },
+      { label: "Kerala",    href: "/destinations/kerala",    tag: "Backwaters" },
+      { label: "Manali",    href: "/destinations/manali",    tag: "Mountains" },
+      { label: "Ladakh",    href: "/destinations/ladakh",    tag: "High passes" },
+      { label: "Rajasthan", href: "/destinations/rajasthan", tag: "Heritage" },
+      { label: "Andaman",   href: "/destinations/andaman",   tag: "Islands" },
+      { label: "Himachal",  href: "/packages?category=national", tag: "Adventure" },
+      { label: "Kashmir",   href: "/packages?category=national", tag: "Snow" },
     ],
     columns: 2,
     viewAll: { label: "View All India Packages", href: "/packages?category=national" },
@@ -43,14 +43,14 @@ const navLinks: NavLink[] = [
     href: "/packages?category=international",
     icon: Globe,
     dropdown: [
-      { label: "Dubai",     href: "/destinations/dubai" },
-      { label: "Thailand",  href: "/destinations/thailand" },
-      { label: "Maldives",  href: "/destinations/maldives" },
-      { label: "Bali",      href: "/destinations/bali" },
-      { label: "Singapore", href: "/destinations/singapore" },
-      { label: "Paris",     href: "/destinations/paris" },
-      { label: "Vietnam",   href: "/packages?category=international" },
-      { label: "Malaysia",  href: "/packages?category=international" },
+      { label: "Dubai",     href: "/destinations/dubai",     tag: "Luxury" },
+      { label: "Thailand",  href: "/destinations/thailand",  tag: "Adventure" },
+      { label: "Maldives",  href: "/destinations/maldives",  tag: "Honeymoon" },
+      { label: "Bali",      href: "/destinations/bali",      tag: "Culture" },
+      { label: "Singapore", href: "/destinations/singapore", tag: "City" },
+      { label: "Paris",     href: "/destinations/paris",     tag: "Romance" },
+      { label: "Vietnam",   href: "/packages?category=international", tag: "Heritage" },
+      { label: "Malaysia",  href: "/packages?category=international", tag: "Family" },
     ],
     columns: 2,
     viewAll: { label: "View All International", href: "/packages?category=international" },
@@ -78,7 +78,7 @@ export default function Header() {
   // Schedule close with a small grace delay so users can move from trigger → dropdown
   const scheduleClose = () => {
     cancelClose();
-    closeTimer.current = setTimeout(() => setActiveDropdown(null), 120);
+    closeTimer.current = setTimeout(() => setActiveDropdown(null), 220);
   };
 
   // Click-outside listener — closes the dropdown when clicking outside the nav
@@ -181,8 +181,16 @@ export default function Header() {
                 <div
                   key={link.label}
                   className="relative"
-                  onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  onMouseEnter={() => {
+                    if (link.dropdown) {
+                      cancelClose();
+                      setActiveDropdown(link.label);
+                    } else {
+                      cancelClose();
+                      setActiveDropdown(null);
+                    }
+                  }}
+                  onMouseLeave={() => link.dropdown && scheduleClose()}
                 >
                   <Link
                     href={link.href}
@@ -218,25 +226,25 @@ export default function Header() {
                   {link.dropdown && (
                     <div
                       className={cn(
-                        "absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50",
-                        link.columns === 2 ? "w-[380px]" : "w-[220px]",
-                        "transition-all duration-[160ms] origin-top",
-                        open
+                        "absolute top-full left-1/2 -translate-x-1/2 mt-3 z-50 overflow-hidden",
+                        link.columns === 2 ? "w-[680px]" : "w-[240px]",
+                        "transition-all duration-200 origin-top"
+                      , open
                           ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
                           : "opacity-0 scale-[0.97] -translate-y-1.5 pointer-events-none"
                       )}
                       style={{
-                        background: "#fff",
-                        border: "1px solid rgba(0,0,0,0.08)",
-                        borderRadius: "16px",
-                        boxShadow: "0 4px 6px rgba(0,0,0,0.02), 0 20px 48px -8px rgba(0,0,0,0.18)",
+                        background: "#FFFFFF",
+                        border: "1px solid rgba(15,23,42,0.06)",
+                        borderRadius: "20px",
+                        boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 24px 56px -12px rgba(15,23,42,0.22)",
                       }}
                     >
                       {/* Arrow */}
                       <div
                         className="absolute -top-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45"
                         style={{
-                          border: "1px solid rgba(0,0,0,0.08)",
+                          border: "1px solid rgba(15,23,42,0.06)",
                           borderBottom: "none",
                           borderRight: "none",
                           borderRadius: "2px 0 0 0",
@@ -244,44 +252,183 @@ export default function Header() {
                       />
 
                       {link.columns === 2 ? (
-                        <div className="p-3">
-                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400 px-2 pb-2 pt-1">
-                            {link.label}
-                          </p>
-                          <div className="grid grid-cols-2 gap-0.5">
-                            {link.dropdown.map((item) => (
-                              <Link
-                                key={item.label}
-                                href={item.href}
-                                className="flex items-center gap-2 px-2.5 py-2 rounded-lg text-[13px] font-medium transition-colors duration-100 hover:bg-gray-50 group/item"
-                                style={{ color: "#1F2937" }}
-                              >
-                                <span
-                                  className="w-5 h-5 rounded-md flex items-center justify-center shrink-0"
-                                  style={{ backgroundColor: "rgba(31,140,158,0.09)" }}
+                        (() => {
+                          // Split into Popular (first 4) and Trending (last 4)
+                          const popular  = link.dropdown.slice(0, 4);
+                          const trending = link.dropdown.slice(4, 8);
+                          const isIndia  = link.icon !== Globe;
+                          const featured = isIndia
+                            ? {
+                                title: "Goa Beach Bliss",
+                                subtitle: "Sun, sand & curated stays — escape into India's coastal paradise.",
+                                image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500&h=700&fit=crop",
+                                href: "/destinations/goa",
+                              }
+                            : {
+                                title: "Dubai Luxury Escape",
+                                subtitle: "Iconic skyline, golden dunes & 5-star comfort — your global adventure.",
+                                image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=700&fit=crop",
+                                href: "/destinations/dubai",
+                              };
+
+                          return (
+                            <div className="p-3">
+                              <div className="grid grid-cols-[0.85fr_1.6fr] gap-3">
+                                {/* ── LEFT — Featured destination card ───────────────── */}
+                                <Link
+                                  href={featured.href}
+                                  className="group/feat relative overflow-hidden rounded-2xl flex"
                                 >
-                                  {link.icon === Globe
-                                    ? <Globe className="w-3 h-3" style={{ color: "#1F8C9E" }} />
-                                    : <MapPin className="w-3 h-3" style={{ color: "#1F8C9E" }} />
-                                  }
-                                </span>
-                                {item.label}
-                              </Link>
-                            ))}
-                          </div>
-                          {link.viewAll && (
-                            <div className="mt-2 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-                              <Link
-                                href={link.viewAll.href}
-                                className="flex items-center justify-between px-2.5 py-2 rounded-lg text-[13px] font-semibold transition-colors hover:bg-gray-50"
-                                style={{ color: "#1F8C9E" }}
+                                  <Image
+                                    src={featured.image}
+                                    alt={featured.title}
+                                    fill
+                                    className="object-cover transition-transform duration-500 group-hover/feat:scale-105"
+                                    sizes="280px"
+                                  />
+                                  {/* Dark gradient overlay */}
+                                  <div
+                                    className="absolute inset-0 pointer-events-none"
+                                    style={{
+                                      background: "linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.88) 100%)",
+                                    }}
+                                  />
+                                  {/* Top-left badge */}
+                                  <span
+                                    className="absolute top-3 left-3 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full"
+                                    style={{ background: "rgba(255,255,255,0.92)", color: "#0F172A" }}
+                                  >
+                                    <Sparkles className="w-2.5 h-2.5" style={{ color: "#F2A93B" }} />
+                                    Featured
+                                  </span>
+                                  {/* Content */}
+                                  <div className="absolute inset-0 p-4 flex flex-col justify-end text-white">
+                                    <h4 className="text-[17px] font-extrabold leading-[1.1] mb-1.5" style={{ letterSpacing: "-0.015em" }}>
+                                      {featured.title}
+                                    </h4>
+                                    <p className="text-[11.5px] leading-snug mb-2.5" style={{ color: "rgba(255,255,255,0.80)" }}>
+                                      {featured.subtitle}
+                                    </p>
+                                    <span className="inline-flex items-center gap-1 text-[11.5px] font-bold opacity-90 group-hover/feat:opacity-100 transition-opacity">
+                                      Explore
+                                      <ArrowRight className="w-3 h-3 transition-transform group-hover/feat:translate-x-0.5" />
+                                    </span>
+                                  </div>
+                                </Link>
+
+                                {/* ── RIGHT — 2-column destination list ──────────────── */}
+                                <div className="grid grid-cols-2 gap-x-3 gap-y-1 self-start pt-1">
+                                  {/* Popular column */}
+                                  <div>
+                                    <p
+                                      className="text-[11px] font-semibold mb-3 pl-1"
+                                      style={{ color: "rgba(15,23,42,0.55)" }}
+                                    >
+                                      Popular Destinations
+                                    </p>
+                                    <div className="flex flex-col gap-1">
+                                      {popular.map((item) => (
+                                        <Link
+                                          key={item.label}
+                                          href={item.href}
+                                          className="group/item flex items-center gap-2 px-1.5 py-1 rounded-lg transition-colors hover:bg-gray-50"
+                                          style={{ color: "#0F172A" }}
+                                        >
+                                          <span
+                                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+                                            style={{
+                                              background: "#fff",
+                                              border: "1px solid rgba(15,23,42,0.10)",
+                                              color: "#1F8C9E",
+                                            }}
+                                          >
+                                            {link.icon === Globe
+                                              ? <Globe className="w-3.5 h-3.5" />
+                                              : <MapPin className="w-3.5 h-3.5" />
+                                            }
+                                          </span>
+                                          <span className="min-w-0 flex-1">
+                                            <span className="block text-[12.5px] font-semibold leading-tight">
+                                              {item.label}
+                                            </span>
+                                            {item.tag && (
+                                              <span className="block text-[10.5px] leading-tight mt-0.5" style={{ color: "rgba(15,23,42,0.50)" }}>
+                                                {item.tag}
+                                              </span>
+                                            )}
+                                          </span>
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  </div>
+
+                                  {/* Trending column */}
+                                  <div>
+                                    <p
+                                      className="text-[11px] font-semibold mb-3 pl-1"
+                                      style={{ color: "rgba(15,23,42,0.55)" }}
+                                    >
+                                      Trending Now
+                                    </p>
+                                    <div className="flex flex-col gap-1">
+                                      {trending.map((item) => (
+                                        <Link
+                                          key={item.label}
+                                          href={item.href}
+                                          className="group/item flex items-center gap-2 px-1.5 py-1 rounded-lg transition-colors hover:bg-gray-50"
+                                          style={{ color: "#0F172A" }}
+                                        >
+                                          <span
+                                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                                            style={{
+                                              background: "#fff",
+                                              border: "1px solid rgba(15,23,42,0.10)",
+                                              color: "rgba(15,23,42,0.40)",
+                                            }}
+                                          >
+                                            <span className="w-3 h-3 rounded-full" style={{ border: "1.5px solid currentColor" }} />
+                                          </span>
+                                          <span className="min-w-0 flex-1">
+                                            <span className="block text-[12.5px] font-semibold leading-tight">
+                                              {item.label}
+                                            </span>
+                                            {item.tag && (
+                                              <span className="block text-[10.5px] leading-tight mt-0.5" style={{ color: "rgba(15,23,42,0.50)" }}>
+                                                {item.tag}
+                                              </span>
+                                            )}
+                                          </span>
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* ── Footer — help text + contact button ─────────────── */}
+                              <div
+                                className="flex items-center justify-between mt-4 pt-4 px-2"
+                                style={{ borderTop: "1px solid rgba(15,23,42,0.07)" }}
                               >
-                                <span>{link.viewAll.label}</span>
-                                <ArrowRight className="w-3.5 h-3.5" />
-                              </Link>
+                                <div className="min-w-0">
+                                  <p className="text-[13px] font-bold leading-tight" style={{ color: "#0F172A" }}>
+                                    Need help choosing a destination?
+                                  </p>
+                                  <p className="text-[11.5px] leading-tight mt-0.5" style={{ color: "rgba(15,23,42,0.55)" }}>
+                                    Our travel experts will craft the perfect trip for you.
+                                  </p>
+                                </div>
+                                <Link
+                                  href="/contact"
+                                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-[12.5px] font-bold text-white transition-all hover:opacity-90 hover:-translate-y-0.5 active:scale-95 shrink-0 ml-3"
+                                  style={{ backgroundColor: "#0F172A" }}
+                                >
+                                  Contact us
+                                </Link>
+                              </div>
                             </div>
-                          )}
-                        </div>
+                          );
+                        })()
                       ) : (
                         <div className="p-2">
                           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-gray-400 px-2.5 pb-2 pt-1.5">
@@ -314,7 +461,7 @@ export default function Header() {
               className="hidden lg:inline-flex items-center gap-2 text-[13px] font-semibold text-white transition-all duration-200 hover:brightness-110 hover:scale-[1.02] active:scale-95"
               style={{
                 background: effectiveScrolled
-                  ? "linear-gradient(135deg,#1F8C9E 0%,#14677A 100%)"
+                  ? "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)"
                   : "rgba(255,255,255,0.15)",
                 boxShadow: effectiveScrolled ? "0 4px 16px rgba(31,140,158,0.35)" : "none",
                 border: effectiveScrolled ? "none" : "1px solid rgba(255,255,255,0.35)",
@@ -490,7 +637,7 @@ export default function Header() {
                   href="/contact"
                   className="flex items-center justify-between px-5 py-3.5 rounded-xl text-[14px] font-bold text-white"
                   style={{
-                    background: "linear-gradient(135deg,#1F8C9E,#0E6878)",
+                    background: "linear-gradient(135deg,#1F8C9E,#0E6F7F)",
                     boxShadow: "0 4px 14px rgba(31,140,158,0.28)",
                   }}
                   onClick={() => setMobileOpen(false)}

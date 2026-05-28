@@ -204,13 +204,12 @@ export default function PopularDestinationsBento() {
                   />
                   {/* Category badge */}
                   <span
-                    className="absolute top-3 left-3 text-white text-xs font-bold px-2.5 py-1 rounded-full"
-                    style={{
-                      background:
-                        pkg.category === "International"
-                          ? "linear-gradient(135deg, #4F6BFF 0%, #2541E8 100%)"
-                          : "linear-gradient(135deg, #2EBE7A 0%, #1F9A60 100%)",
-                    }}
+                    className="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full"
+                    style={
+                      pkg.category === "International"
+                        ? { background: "#DBEAFE", color: "#1D4ED8" }
+                        : { background: "#DCFCE7", color: "#15803D" }
+                    }
                   >
                     {pkg.category}
                   </span>

@@ -128,7 +128,7 @@ export default function WhyUs() {
                 href="/packages"
                 className="inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
                 style={{
-                  background: "linear-gradient(135deg,#1F8C9E 0%,#155F6B 100%)",
+                  background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
                   boxShadow: "0 4px 20px rgba(31,140,158,0.35)",
                 }}
               >

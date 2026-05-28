@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Phone } from "lucide-react";
+import { Phone, ArrowRight } from "lucide-react";
 
 const stats = [
   {
@@ -109,9 +109,42 @@ export default function WhyUs() {
             {/* Divider */}
             <div className="h-px mb-7" style={{ backgroundColor: "rgba(0,0,0,0.07)" }} />
 
-            {/* CTA row */}
-            <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-4">
-              <a href="tel:+919876543210" className="flex items-center gap-3 group justify-center xs:justify-start">
+            {/* CTA row — mobile: unified card | xs+: side-by-side */}
+
+            {/* ── Mobile card (< xs) ── */}
+            <div
+              className="xs:hidden rounded-2xl overflow-hidden"
+              style={{ border: "1px solid rgba(31,140,158,0.15)", boxShadow: "0 2px 16px rgba(31,140,158,0.08)" }}
+            >
+              <a
+                href="tel:+919876543210"
+                className="flex items-center gap-3.5 px-4 py-3.5 group"
+                style={{ borderBottom: "1px solid rgba(31,140,158,0.12)", background: "rgba(31,140,158,0.03)" }}
+              >
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all group-hover:scale-110"
+                  style={{ backgroundColor: "#1F8C9E", boxShadow: "0 4px 12px rgba(31,140,158,0.30)" }}
+                >
+                  <Phone className="w-4 h-4 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#94A3B8" }}>Call Us 24/7</p>
+                  <p className="text-[15px] font-bold" style={{ color: "#0F172A" }}>+91 98765 43210</p>
+                </div>
+                <ArrowRight className="w-4 h-4 ml-auto shrink-0" style={{ color: "#1F8C9E" }} />
+              </a>
+              <Link
+                href="/packages"
+                className="flex items-center justify-center gap-2 py-3.5 text-[14px] font-bold text-white transition-all active:scale-[0.98]"
+                style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)" }}
+              >
+                Explore Packages <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* ── xs+ side-by-side ── */}
+            <div className="hidden xs:flex xs:items-center xs:justify-between gap-4">
+              <a href="tel:+919876543210" className="flex items-center gap-3 group">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all group-hover:scale-110"
                   style={{ backgroundColor: "#1F8C9E" }}
@@ -123,10 +156,9 @@ export default function WhyUs() {
                   <p className="text-[15px] font-bold" style={{ color: "#0F172A" }}>+91 98765 43210</p>
                 </div>
               </a>
-
               <Link
                 href="/packages"
-                className="w-full xs:w-auto inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
                 style={{
                   background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
                   boxShadow: "0 4px 20px rgba(31,140,158,0.35)",

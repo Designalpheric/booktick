@@ -107,43 +107,39 @@ export default function WhyUs() {
             </div>
 
             {/* Divider */}
-            <div className="h-px mb-7" style={{ backgroundColor: "rgba(0,0,0,0.07)" }} />
+            <div className="h-px mb-6" style={{ backgroundColor: "rgba(0,0,0,0.07)" }} />
 
-            {/* CTA row — mobile: unified card | xs+: side-by-side */}
-
-            {/* ── Mobile card (< xs) ── */}
-            <div
-              className="xs:hidden rounded-2xl overflow-hidden"
-              style={{ border: "1px solid rgba(31,140,158,0.15)", boxShadow: "0 2px 16px rgba(31,140,158,0.08)" }}
-            >
-              <a
-                href="tel:+919876543210"
-                className="flex items-center gap-3.5 px-4 py-3.5 group"
-                style={{ borderBottom: "1px solid rgba(31,140,158,0.12)", background: "rgba(31,140,158,0.03)" }}
-              >
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all group-hover:scale-110"
-                  style={{ backgroundColor: "#1F8C9E", boxShadow: "0 4px 12px rgba(31,140,158,0.30)" }}
-                >
-                  <Phone className="w-4 h-4 text-white" strokeWidth={2} />
-                </div>
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#94A3B8" }}>Call Us 24/7</p>
-                  <p className="text-[15px] font-bold" style={{ color: "#0F172A" }}>+91 98765 43210</p>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto shrink-0" style={{ color: "#1F8C9E" }} />
-              </a>
+            {/* ── CTA: mobile / tablet (< lg) — two pill buttons ── */}
+            <div className="lg:hidden flex flex-col sm:flex-row gap-3">
+              {/* Primary */}
               <Link
                 href="/packages"
-                className="flex items-center justify-center gap-2 py-3.5 text-[14px] font-bold text-white transition-all active:scale-[0.98]"
-                style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)" }}
+                className="flex-1 inline-flex items-center justify-center gap-2 font-bold px-6 py-3.5 rounded-full text-[14px] text-white transition-all active:scale-[0.97] hover:brightness-110"
+                style={{
+                  background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
+                  boxShadow: "0 4px 18px rgba(31,140,158,0.32)",
+                }}
               >
-                Explore Packages <ArrowRight className="w-4 h-4" />
+                Explore Packages <ArrowRight className="w-[15px] h-[15px]" />
               </Link>
+
+              {/* Secondary */}
+              <a
+                href="tel:+919876543210"
+                className="flex-1 inline-flex items-center justify-center gap-2 font-bold px-6 py-3.5 rounded-full text-[14px] transition-all active:scale-[0.97]"
+                style={{
+                  color: "#0F172A",
+                  background: "rgba(31,140,158,0.06)",
+                  border: "1.5px solid rgba(31,140,158,0.22)",
+                }}
+              >
+                <Phone className="w-[15px] h-[15px] shrink-0" strokeWidth={2.2} style={{ color: "#1F8C9E" }} />
+                +91 98765 43210
+              </a>
             </div>
 
-            {/* ── xs+ side-by-side ── */}
-            <div className="hidden xs:flex xs:items-center xs:justify-between gap-4">
+            {/* ── CTA: desktop (lg+) — icon + label left, button right ── */}
+            <div className="hidden lg:flex lg:items-center lg:justify-between gap-4">
               <a href="tel:+919876543210" className="flex items-center gap-3 group">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all group-hover:scale-110"

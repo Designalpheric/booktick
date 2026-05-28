@@ -102,8 +102,7 @@ export default function DealsSection() {
         </div>
 
         {/* ── Cards ── */}
-        {/* Mobile: horizontal snap-scroll; xs+: 2-col grid; lg+: 4-col grid */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-3 -mx-4 px-4 xs:pb-0 xs:mx-0 xs:px-0 xs:grid xs:grid-cols-2 xs:overflow-visible lg:grid-cols-4 xs:gap-5 2xl:gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-5 2xl:gap-6">
           {deals.map((deal, idx) => {
             const originalPrice = Math.round(
               deal.priceFrom / (1 - (deal.discount ?? 0) / 100)
@@ -114,7 +113,7 @@ export default function DealsSection() {
               <Link
                 key={deal.id}
                 href={`/packages/${deal.slug}`}
-                className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl snap-start shrink-0 w-[78vw] xs:w-auto"
+                className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                 style={{
                   background: "#FFFFFF",
                   boxShadow:

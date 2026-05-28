@@ -375,7 +375,7 @@ export default function HeroBanner() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-start justify-center overflow-hidden">
 
       {/* Background */}
       <div
@@ -385,9 +385,10 @@ export default function HeroBanner() {
       <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.30) 35%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.78) 100%)" }} />
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.40) 100%)" }} />
 
+      {/* ─── navbar-height + 24px fixed gap so the visual space is identical on every device ─── */}
       <div
-        className="relative z-10 w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center"
-        style={{ paddingTop: "clamp(72px, 13vh, 140px)", paddingBottom: "clamp(28px, 6vh, 80px)" }}
+        className="relative z-10 w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center pt-[90px] xs:pt-[92px] sm:pt-[102px] lg:pt-[104px]"
+        style={{ paddingBottom: "clamp(28px, 6vh, 80px)" }}
       >
 
         {/* Glass pill badge */}

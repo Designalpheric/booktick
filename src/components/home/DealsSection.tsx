@@ -44,8 +44,8 @@ export default function DealsSection() {
 
           {/* Left block — center on mobile, left-align xs+ */}
           <div className="w-full xs:w-auto text-center xs:text-left">
-            {/* Eyebrow badge */}
-            <div className="flex items-center justify-center xs:justify-start gap-2.5 mb-3 sm:mb-5">
+            {/* Eyebrow badge — desktop only */}
+            <div className="hidden lg:flex items-center gap-2.5 mb-5">
               <div
                 className="inline-flex items-center gap-1.5 xs:gap-2 px-3 xs:px-4 py-1.5 xs:py-2 rounded-full"
                 style={{

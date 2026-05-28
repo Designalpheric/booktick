@@ -39,10 +39,13 @@ export default function DealsSection() {
       <div className="relative max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
 
         {/* ── Section header ── */}
-        <div className="flex flex-col xs:flex-row xs:items-end justify-between gap-4 xs:gap-5 sm:gap-6 mb-8 xs:mb-10 sm:mb-12">
-          <div>
+        {/* Mobile: centered column. xs+: left/right split row. Desktop: unchanged. */}
+        <div className="flex flex-col items-center xs:flex-row xs:items-end justify-between gap-5 xs:gap-5 sm:gap-6 mb-8 xs:mb-10 sm:mb-12">
+
+          {/* Left block — center on mobile, left-align xs+ */}
+          <div className="w-full xs:w-auto text-center xs:text-left">
             {/* Eyebrow badge */}
-            <div className="flex items-center gap-2.5 mb-3 sm:mb-5">
+            <div className="flex items-center justify-center xs:justify-start gap-2.5 mb-3 sm:mb-5">
               <div
                 className="inline-flex items-center gap-1.5 xs:gap-2 px-3 xs:px-4 py-1.5 xs:py-2 rounded-full"
                 style={{
@@ -69,7 +72,7 @@ export default function DealsSection() {
             </div>
 
             <h2
-              className="font-heading font-extrabold text-white mb-2 text-[28px] xs:text-[32px] sm:text-[38px] lg:text-[44px] xl:text-[48px]"
+              className="font-heading font-extrabold text-white mb-0 text-[28px] xs:text-[32px] sm:text-[38px] lg:text-[44px] xl:text-[48px]"
               style={{ lineHeight: 1.06, letterSpacing: "-0.026em" }}
             >
               Hot Deals &amp;{" "}
@@ -77,16 +80,26 @@ export default function DealsSection() {
                 Offers
               </span>
             </h2>
-            <p className="text-[13px] xs:text-[14px] sm:text-[15px]" style={{ color: "rgba(255,255,255,0.40)" }}>
+
+            {/* Gradient accent rule — mobile only */}
+            <div
+              className="xs:hidden h-[2px] w-14 rounded-full mx-auto my-3"
+              style={{ background: "linear-gradient(90deg,#1F8C9E,#F2A93B)" }}
+            />
+
+            <p
+              className="text-[13px] xs:text-[14px] sm:text-[15px] max-w-[270px] xs:max-w-none mx-auto xs:mx-0 xs:mt-2"
+              style={{ color: "rgba(255,255,255,0.40)" }}
+            >
               Exclusive prices on handpicked destinations — book before they&apos;re gone.
             </p>
           </div>
 
-          {/* "View All Deals" — pill button on mobile/tablet, plain text on sm+ */}
+          {/* "View All Deals" — full-width pill CTA on mobile, plain text link on sm+ */}
           <Link
             href="/packages"
-            className="group inline-flex items-center gap-2 xs:gap-2.5 text-[12px] xs:text-[13px] font-bold text-white transition-all duration-200 self-start xs:self-auto whitespace-nowrap shrink-0
-              border border-white/25 px-4 py-2.5 rounded-full hover:border-white/50 hover:bg-white/5
+            className="group inline-flex items-center justify-center xs:justify-start gap-2 xs:gap-2.5 text-[13px] font-bold text-white transition-all duration-200 xs:self-auto whitespace-nowrap shrink-0 w-full xs:w-auto
+              border border-white/25 px-4 py-3 xs:py-2.5 rounded-full hover:border-white/50 hover:bg-white/5
               sm:border-0 sm:px-0 sm:py-0 sm:rounded-none sm:hover:bg-transparent sm:hover:border-0 sm:hover:opacity-80"
           >
             View All Deals

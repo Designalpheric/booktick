@@ -422,29 +422,6 @@ export default function ReasonsSection() {
               on every journey and every booking, from local tips to full itineraries.
             </p>
           </div>
-          <Link
-            href="/packages"
-            className="hidden sm:inline-flex items-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white shrink-0 transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.97]"
-            style={{
-              background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
-              boxShadow: "0 4px 20px rgba(31,140,158,0.35)",
-            }}
-          >
-            Explore Packages <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-        {/* Mobile-only CTA (full-width below text) */}
-        <div className="sm:hidden mb-7">
-          <Link
-            href="/packages"
-            className="flex items-center justify-center gap-2 font-bold px-7 py-3 rounded-full text-[14px] text-white w-full"
-            style={{
-              background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
-              boxShadow: "0 4px 20px rgba(31,140,158,0.35)",
-            }}
-          >
-            Explore Packages <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
 
         {/* ── Feature cards ────────────────────────────────────────────── */}
@@ -523,6 +500,20 @@ export default function ReasonsSection() {
               </div>
             );
           })}
+        </div>
+
+        {/* ── Bottom CTA — all mobile & tablet (< lg) ── */}
+        <div className="mt-8 sm:mt-10">
+          <Link
+            href="/packages"
+            className="flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white w-full transition-all hover:brightness-110 active:scale-[0.97]"
+            style={{
+              background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
+              boxShadow: "0 4px 20px rgba(31,140,158,0.35)",
+            }}
+          >
+            Explore Packages <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
 

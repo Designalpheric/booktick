@@ -72,7 +72,7 @@ export default function DealsSection() {
             </div>
 
             <h2
-              className="font-heading font-extrabold text-white mb-0 text-[28px] xs:text-[32px] sm:text-[38px] lg:text-[44px] xl:text-[48px]"
+              className="font-heading font-extrabold text-white mb-2 text-[28px] xs:text-[32px] sm:text-[38px] lg:text-[44px] xl:text-[48px]"
               style={{ lineHeight: 1.06, letterSpacing: "-0.026em" }}
             >
               Hot Deals &amp;{" "}
@@ -80,12 +80,6 @@ export default function DealsSection() {
                 Offers
               </span>
             </h2>
-
-            {/* Gradient accent rule — mobile only */}
-            <div
-              className="xs:hidden h-[2px] w-14 rounded-full mx-auto my-3"
-              style={{ background: "linear-gradient(90deg,#1F8C9E,#F2A93B)" }}
-            />
 
             <p
               className="text-[13px] xs:text-[14px] sm:text-[15px] max-w-[270px] xs:max-w-none mx-auto xs:mx-0 xs:mt-2"
@@ -95,12 +89,12 @@ export default function DealsSection() {
             </p>
           </div>
 
-          {/* "View All Deals" — full-width pill CTA on mobile, plain text link on sm+ */}
+          {/* "View All Deals" — pill button on mobile/tablet, plain text link on sm+ */}
           <Link
             href="/packages"
-            className="group inline-flex items-center justify-center xs:justify-start gap-2 xs:gap-2.5 text-[13px] font-bold text-white transition-all duration-200 xs:self-auto whitespace-nowrap shrink-0 w-full xs:w-auto
-              border border-white/25 px-4 py-3 xs:py-2.5 rounded-full hover:border-white/50 hover:bg-white/5
-              sm:border-0 sm:px-0 sm:py-0 sm:rounded-none sm:hover:bg-transparent sm:hover:border-0 sm:hover:opacity-80"
+            className="group inline-flex items-center gap-2 xs:gap-2.5 text-[13px] font-bold text-white transition-all duration-200 xs:self-auto whitespace-nowrap shrink-0
+              border border-white/30 px-5 py-2.5 rounded-full hover:border-white/60 hover:bg-white/[0.07] active:scale-95
+              sm:border-0 sm:px-0 sm:py-0 sm:rounded-none sm:hover:bg-transparent sm:hover:border-0 sm:hover:opacity-80 sm:active:scale-100"
           >
             View All Deals
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />

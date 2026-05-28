@@ -401,7 +401,7 @@ export default function HeroBanner() {
 
         {/* Headline */}
         <h1
-          className="text-white mb-3 sm:mb-6 w-full whitespace-nowrap"
+          className="text-white mb-3 sm:mb-6 w-full"
           style={{ lineHeight: 1.06, letterSpacing: "-0.035em" }}
         >
           <span

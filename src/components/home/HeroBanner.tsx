@@ -405,7 +405,7 @@ export default function HeroBanner() {
           style={{ lineHeight: 1.06, letterSpacing: "-0.035em" }}
         >
           <span
-            className="block font-extrabold text-[28px] xs:text-[34px] sm:text-[46px] md:text-[54px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
+            className="block font-extrabold text-[36px] xs:text-[42px] sm:text-[46px] md:text-[54px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
             style={{
               textShadow: "0 2px 12px rgba(0,0,0,0.60), 0 6px 40px rgba(0,0,0,0.45)",
             }}
@@ -416,7 +416,7 @@ export default function HeroBanner() {
             </span>
           </span>
           <span
-            className="block font-extrabold text-[28px] xs:text-[34px] sm:text-[46px] md:text-[54px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
+            className="block font-extrabold text-[36px] xs:text-[42px] sm:text-[46px] md:text-[54px] lg:text-[60px] xl:text-[68px] 2xl:text-[76px] 3xl:text-[88px]"
             style={{
               textShadow: "0 2px 12px rgba(0,0,0,0.60), 0 6px 40px rgba(0,0,0,0.45)",
             }}

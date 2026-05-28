@@ -110,8 +110,8 @@ export default function WhyUs() {
             <div className="h-px mb-7" style={{ backgroundColor: "rgba(0,0,0,0.07)" }} />
 
             {/* CTA row */}
-            <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-4 flex-wrap">
-              <a href="tel:+919876543210" className="flex items-center gap-3 group">
+            <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-4">
+              <a href="tel:+919876543210" className="flex items-center gap-3 group justify-center xs:justify-start">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all group-hover:scale-110"
                   style={{ backgroundColor: "#1F8C9E" }}
@@ -126,7 +126,7 @@ export default function WhyUs() {
 
               <Link
                 href="/packages"
-                className="inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full xs:w-auto inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
                 style={{
                   background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
                   boxShadow: "0 4px 20px rgba(31,140,158,0.35)",

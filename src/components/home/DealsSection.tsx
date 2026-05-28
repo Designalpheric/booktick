@@ -89,12 +89,10 @@ export default function DealsSection() {
             </p>
           </div>
 
-          {/* "View All Deals" — pill button on mobile/tablet, plain text link on sm+ */}
+          {/* "View All Deals" — desktop only (mobile/tablet use the bottom button) */}
           <Link
             href="/packages"
-            className="group inline-flex items-center gap-2 xs:gap-2.5 text-[13px] font-bold text-white transition-all duration-200 xs:self-auto whitespace-nowrap shrink-0
-              border border-white/30 px-5 py-2.5 rounded-full hover:border-white/60 hover:bg-white/[0.07] active:scale-95
-              sm:border-0 sm:px-0 sm:py-0 sm:rounded-none sm:hover:bg-transparent sm:hover:border-0 sm:hover:opacity-80 sm:active:scale-100"
+            className="group hidden sm:inline-flex items-center gap-2.5 text-[13px] font-bold text-white transition-all duration-200 self-auto whitespace-nowrap shrink-0 hover:opacity-80"
           >
             View All Deals
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />

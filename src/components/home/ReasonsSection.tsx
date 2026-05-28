@@ -395,33 +395,49 @@ export default function ReasonsSection() {
       <div className="lg:hidden max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 2xl:px-12 py-10 xs:py-12 sm:py-16">
 
         {/* ── Intro header ─────────────────────────────────────────────── */}
-        <div className="mb-7 sm:mb-10">
-          <span
-            className="inline-flex items-center text-[11px] font-black uppercase tracking-[0.18em] px-3.5 py-1.5 rounded-full mb-4 sm:mb-5"
-            style={{ background: "rgba(31,140,158,0.10)", color: "#1F8C9E" }}
-          >
-            Why Choose Us
-          </span>
-          <h2
-            className="font-extrabold leading-tight mb-3 sm:mb-4"
-            style={{
-              fontSize: "clamp(24px,6vw,38px)",
-              color: "#0F172A",
-              letterSpacing: "-0.028em",
-            }}
-          >
-            Reasons people love{" "}
-            <span className="font-serif italic font-normal" style={{ color: "#1F8C9E" }}>
-              travelling with us
+        {/* sm+: side-by-side (text left, button bottom-right) */}
+        <div className="mb-7 sm:mb-10 sm:flex sm:items-end sm:justify-between sm:gap-8">
+          <div>
+            <span
+              className="inline-flex items-center text-[11px] font-black uppercase tracking-[0.18em] px-3.5 py-1.5 rounded-full mb-4 sm:mb-5"
+              style={{ background: "rgba(31,140,158,0.10)", color: "#1F8C9E" }}
+            >
+              Why Choose Us
             </span>
-          </h2>
-          <p className="text-[14px] sm:text-[15px] leading-relaxed mb-5 sm:mb-6" style={{ color: "#64748B" }}>
-            We're more than just a travel service — we're your trusted companion
-            on every journey.
-          </p>
+            <h2
+              className="font-extrabold leading-tight mb-3 sm:mb-4"
+              style={{
+                fontSize: "clamp(26px,5vw,42px)",
+                color: "#0F172A",
+                letterSpacing: "-0.028em",
+              }}
+            >
+              Reasons people love{" "}
+              <span className="font-serif italic font-normal" style={{ color: "#1F8C9E" }}>
+                travelling with us
+              </span>
+            </h2>
+            <p className="text-[14px] sm:text-[15px] leading-relaxed sm:max-w-[520px]" style={{ color: "#64748B" }}>
+              We're more than just a travel service — we're your trusted companion
+              on every journey and every booking, from local tips to full itineraries.
+            </p>
+          </div>
           <Link
             href="/packages"
-            className="flex sm:inline-flex items-center justify-center gap-2 font-bold px-7 py-3 sm:py-3.5 rounded-full text-[14px] text-white"
+            className="hidden sm:inline-flex items-center gap-2 font-bold px-7 py-3.5 rounded-full text-[14px] text-white shrink-0 transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.97]"
+            style={{
+              background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
+              boxShadow: "0 4px 20px rgba(31,140,158,0.35)",
+            }}
+          >
+            Explore Packages <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+        {/* Mobile-only CTA (full-width below text) */}
+        <div className="sm:hidden mb-7">
+          <Link
+            href="/packages"
+            className="flex items-center justify-center gap-2 font-bold px-7 py-3 rounded-full text-[14px] text-white w-full"
             style={{
               background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)",
               boxShadow: "0 4px 20px rgba(31,140,158,0.35)",
@@ -448,10 +464,9 @@ export default function ReasonsSection() {
                   boxShadow: feature.shadow,
                 }}
               >
-                {/* Image — top (mobile) / right (sm+) */}
+                {/* Image — top (mobile, fixed 168px) / right (sm+, stretches with content) */}
                 <div
-                  className="relative shrink-0 overflow-hidden w-full sm:w-[42%] sm:order-last"
-                  style={{ height: "168px", borderRadius: "20px 20px 0 0" }}
+                  className="relative shrink-0 overflow-hidden w-full h-[168px] sm:h-auto sm:w-[42%] sm:order-last"
                 >
                   <Image
                     src={feature.image}
@@ -476,7 +491,7 @@ export default function ReasonsSection() {
                 </div>
 
                 {/* Text content */}
-                <div className="flex-1 min-w-0 flex flex-col justify-between px-5 py-4 sm:py-5">
+                <div className="flex-1 min-w-0 flex flex-col justify-between px-5 py-5 sm:py-6 sm:px-6">
                   <div>
                     {/* Number in text area — sm+ only */}
                     <p

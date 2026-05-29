@@ -35,11 +35,10 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
   return (
     <>
       <div
-        className="bg-white flex flex-col group transition-all duration-300 hover:-translate-y-1.5"
+        className="bg-white flex flex-col group overflow-hidden transition-all duration-300 hover:-translate-y-1.5"
         style={{ borderRadius: "20px", boxShadow: "0 2px 8px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.07)", border: "1px solid rgba(0,0,0,0.06)" }}
       >
-        <div className="px-3 pt-3">
-          <div className="relative overflow-hidden" style={{ borderRadius: "14px", height: "clamp(160px, 26vw, 200px)" }}>
+        <div className="relative overflow-hidden" style={{ height: "clamp(160px, 26vw, 200px)" }}>
             <Image src={pkg.coverImage} alt={pkg.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 480px) 100vw, (max-width: 1200px) 50vw, 33vw" />
             <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, transparent 38%, transparent 55%, rgba(0,0,0,0.55) 100%)" }} />
             {pkg.badge && (
@@ -69,7 +68,6 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
               </span>
             </div>
           </div>
-        </div>
 
         <div className="px-4 pt-3 pb-3.5 flex flex-col flex-1">
 

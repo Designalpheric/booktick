@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Send, CheckCircle, ArrowRight, AlertCircle, Phone } from "lucide-react";
 import { EnquiryFormData } from "@/types";
 import DateInput from "@/components/ui/DateInput";
+import CountryCodeSelect, { COUNTRY_CODES, type CountryCode } from "@/components/ui/CountryCodeSelect";
 
 interface EnquiryModalProps {
   isOpen: boolean;
@@ -33,7 +34,7 @@ function validateField(key: FieldKey, value: string | number): string {
       return "";
     case "mobile":
       if (!String(value).trim()) return "Mobile number is required";
-      if (!/^\d{10}$/.test(String(value).replace(/\s/g, ""))) return "Enter a valid 10-digit number";
+      if (!/^\d{6,15}$/.test(String(value).replace(/\s/g, ""))) return "Enter a valid mobile number";
       return "";
     case "email":
       if (!String(value).trim()) return "Email address is required";
@@ -97,6 +98,7 @@ export default function EnquiryModal({
     ...initialState, destination: prefillDestination,
     packageOrFlight: prefillPackageOrFlight, enquiryType,
   });
+  const [mobileCode, setMobileCode] = useState<CountryCode>(COUNTRY_CODES[0]);
   const [errors,   setErrors]   = useState<ErrorMap>({});
   const [touched,  setTouched]  = useState<TouchMap>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -111,6 +113,7 @@ export default function EnquiryModal({
         packageOrFlight: prefillPackageOrFlight,
         enquiryType,
       });
+      setMobileCode(COUNTRY_CODES[0]);
       setErrors({});
       setTouched({});
       setIsSuccess(false);
@@ -174,7 +177,7 @@ export default function EnquiryModal({
     try {
       await fetch("/api/enquiries", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, mobile: `${mobileCode.dial}${formData.mobile}` }),
       });
     } catch { /* show success anyway */ }
     finally { setIsSubmitting(false); setIsSuccess(true); }
@@ -191,7 +194,7 @@ export default function EnquiryModal({
 
       {/* Modal card */}
       <div
-        className="enquiry-modal-card relative w-full sm:max-w-[500px] max-h-[92vh] sm:max-h-[96vh] overflow-y-auto bg-white rounded-[24px]"
+        className="enquiry-modal-card relative w-full sm:max-w-[500px] lg:max-w-[560px] max-h-[92vh] sm:max-h-[96vh] overflow-y-auto bg-white rounded-[24px]"
         style={{
           boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
           scrollbarWidth: "none",
@@ -263,7 +266,7 @@ export default function EnquiryModal({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[11px] font-medium mb-0.5" style={{ color: "rgba(52,52,52,0.45)" }}>We'll call you on</p>
-                  <p className="font-extrabold text-[15px] leading-none" style={{ color: "#1a1a1a" }}>+91 {formData.mobile}</p>
+                  <p className="font-extrabold text-[15px] leading-none" style={{ color: "#1a1a1a" }}>{mobileCode.dial} {formData.mobile}</p>
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-[10px] font-medium mb-0.5" style={{ color: "rgba(52,52,52,0.40)" }}>Response in</p>
@@ -351,28 +354,19 @@ export default function EnquiryModal({
               <FloatField label="Mobile" required error={e.mobile}>
                 <div
                   data-has-error={!!e.mobile}
-                  className="flex overflow-hidden"
+                  className="flex overflow-visible"
                   style={{ border: e.mobile ? borderError : borderNormal }}
                 >
-                  <span
-                    className="flex items-center px-3 text-[13px] font-semibold shrink-0 select-none"
-                    style={{
-                      backgroundColor: e.mobile ? "rgba(248,113,113,0.06)" : "rgba(31,140,158,0.06)",
-                      borderRight: `1.5px solid ${e.mobile ? "rgba(248,113,113,0.3)" : "rgba(20,20,20,0.10)"}`,
-                      color: e.mobile ? "#f87171" : "#343434",
-                    }}
-                  >
-                    +91
-                  </span>
+                  <CountryCodeSelect value={mobileCode} onChange={setMobileCode} error={!!e.mobile} />
                   <input
                     type="tel" inputMode="numeric" pattern="[0-9]*"
-                    placeholder="10-digit number"
-                    maxLength={10}
+                    placeholder="Mobile number"
+                    maxLength={15}
                     value={formData.mobile}
-                    onChange={ev => handleChange("mobile")(ev.target.value.replace(/\D/g, "").slice(0, 10))}
+                    onChange={ev => handleChange("mobile")(ev.target.value.replace(/\D/g, "").slice(0, 15))}
                     onKeyDown={(e) => { if (["e","E","+","-",".",",", " "].includes(e.key)) e.preventDefault(); }}
                     onBlur={handleBlur("mobile")}
-                    className="flex-1 px-3 py-2.5 sm:py-3.5 text-[13px] bg-white outline-none placeholder-gray-300"
+                    className="flex-1 min-w-0 px-3 py-2.5 sm:py-3.5 text-[13px] bg-white outline-none placeholder-gray-300"
                   />
                 </div>
               </FloatField>

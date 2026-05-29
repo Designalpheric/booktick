@@ -6,6 +6,7 @@ import {
   Phone, CheckCircle2, Clock, Shield, Star, Sparkles, Send, Users, AlertCircle,
 } from "lucide-react";
 import DateInput from "@/components/ui/DateInput";
+import CountryCodeSelect, { COUNTRY_CODES, type CountryCode } from "@/components/ui/CountryCodeSelect";
 
 /* ── Per-field validation rules ─────────────────────────────────────────── */
 type FlightFieldKey = "from" | "to" | "depart" | "returnD" | "name" | "phone" | "email";
@@ -37,7 +38,7 @@ function validateFlightField(
       return "";
     case "phone":
       if (!s) return "Phone number is required";
-      if (!/^\d{10}$/.test(s.replace(/\s/g, ""))) return "Enter a valid 10-digit number";
+      if (!/^\d{6,15}$/.test(s.replace(/\s/g, ""))) return "Enter a valid phone number";
       return "";
     case "email":
       if (!s) return ""; // optional
@@ -75,6 +76,7 @@ export default function FlightsPage() {
   const [cabin,     setCabin]     = useState<Cabin>("Economy");
   const [name,      setName]      = useState("");
   const [phone,     setPhone]     = useState("");
+  const [phoneCode, setPhoneCode] = useState<CountryCode>(COUNTRY_CODES[0]);
   const [email,     setEmail]     = useState("");
   const [notes,     setNotes]     = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -153,7 +155,7 @@ export default function FlightsPage() {
   const reset = () => {
     setSubmitted(false);
     setFrom(""); setTo(""); setDepart(""); setReturnD("");
-    setName(""); setPhone(""); setEmail(""); setNotes("");
+    setName(""); setPhone(""); setPhoneCode(COUNTRY_CODES[0]); setEmail(""); setNotes("");
     setAdults(1); setChildren(0); setInfants(0);
     setErrors({}); setTouched({});
   };
@@ -248,7 +250,7 @@ export default function FlightsPage() {
           <p className="text-slate-500 text-[12px] leading-relaxed mb-4">
             Our expert replies within{" "}
             <span className="font-bold" style={{ color: "#1F8C9E" }}>2 hours</span>
-            {phone ? <> on <span className="font-bold text-slate-700">{phone}</span></> : ""}.
+            {phone ? <> on <span className="font-bold text-slate-700">{phoneCode.dial} {phone}</span></> : ""}.
           </p>
 
           {/* Need it faster — inline label + buttons */}
@@ -466,11 +468,11 @@ export default function FlightsPage() {
                 style={{ color: "rgba(52,52,52,0.38)" }}>Trip Details</p>
 
               {/* Trip Type — pill segmented control */}
-              <div className="inline-flex p-1 mb-3 sm:mb-4 w-full sm:w-auto rounded-lg"
+              <div className="inline-flex p-1 mb-3 sm:mb-4 w-full sm:w-auto rounded-full"
                 style={{ backgroundColor: "#F0F0EE" }}>
                 {tripTypes.map((t) => (
                   <button key={t} type="button" onClick={() => setTripType(t)}
-                    className="flex-1 sm:flex-none px-2 sm:px-5 py-1.5 sm:py-2 text-[11px] sm:text-[13px] font-semibold rounded-lg transition-all duration-200 whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-2 sm:px-5 py-1.5 sm:py-2 text-[11px] sm:text-[13px] font-semibold rounded-full transition-all duration-200 whitespace-nowrap"
                     style={tripType === t
                       ? { backgroundColor: "#fff", color: "#343434",
                           boxShadow: "0 1px 4px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)" }
@@ -540,7 +542,7 @@ export default function FlightsPage() {
             </div>
 
             {/* ── PREFERENCES ──────────────────────────────────────────── */}
-            <div className="mb-6 p-4" style={{ backgroundColor: "#F7F6F3", borderRadius: 16 }}>
+            <div className="mb-6 p-4" style={{ backgroundColor: "#F7F6F3" }}>
 
               {/* Travellers — compact rows */}
               <p className="text-[11px] font-bold uppercase tracking-widest mb-3"
@@ -578,7 +580,7 @@ export default function FlightsPage() {
               <div className="flex flex-wrap gap-2">
                 {cabins.map((c) => (
                   <button key={c} type="button" onClick={() => setCabin(c)}
-                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-[12px] font-semibold rounded-lg transition-all duration-150 hover:scale-[1.03] active:scale-[0.97]"
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-[12px] font-semibold rounded-full transition-all duration-150 hover:scale-[1.03] active:scale-[0.97]"
                     style={cabin === c
                       ? { backgroundColor: "#1F8C9E", color: "#fff",
                           boxShadow: "0 2px 10px rgba(31,140,158,0.30)" }
@@ -631,23 +633,16 @@ export default function FlightsPage() {
                     </label>
                     <div
                       data-has-error={!!errors.phone}
-                      className="flex overflow-hidden"
+                      className="flex overflow-visible"
                       style={{ border: errors.phone ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }}>
-                      <span className="flex items-center px-3 text-[13px] font-semibold shrink-0 select-none"
-                        style={{
-                          backgroundColor: errors.phone ? "rgba(248,113,113,0.06)" : "rgba(31,140,158,0.06)",
-                          borderRight: `1.5px solid ${errors.phone ? "rgba(248,113,113,0.3)" : "rgba(20,20,20,0.10)"}`,
-                          color: errors.phone ? "#f87171" : "#343434",
-                        }}>
-                        +91
-                      </span>
+                      <CountryCodeSelect value={phoneCode} onChange={setPhoneCode} error={!!errors.phone} />
                       <input
                         type="tel" inputMode="numeric" pattern="[0-9]*"
-                        placeholder="10-digit number" maxLength={10} value={phone}
-                        onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 10); setPhone(v); handleFieldChange("phone", v); }}
+                        placeholder="Phone number" maxLength={15} value={phone}
+                        onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 15); setPhone(v); handleFieldChange("phone", v); }}
                         onKeyDown={(e) => { if (["e","E","+","-",".",",", " "].includes(e.key)) e.preventDefault(); }}
                         onBlur={handleFieldBlur("phone")}
-                        className="flex-1 px-3 py-3.5 text-[13px] bg-white outline-none placeholder-gray-300" />
+                        className="flex-1 min-w-0 px-3 py-3.5 text-[13px] bg-white outline-none placeholder-gray-300" />
                     </div>
                     {errors.phone && (
                       <p className="flex items-center gap-1 mt-1 text-xs" style={{ color: "#f87171" }}>

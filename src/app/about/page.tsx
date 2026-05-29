@@ -30,7 +30,7 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-2 xs:mb-3">About BookTick</h1>
+          <h1 className="text-4xl xs:text-5xl sm:text-6xl font-extrabold text-white mb-2 xs:mb-3">About BookTick</h1>
           <p className="text-white/80 text-base xs:text-lg sm:text-xl max-w-2xl">
             Your trusted travel partner for handcrafted journeys since 2015
           </p>
@@ -81,7 +81,7 @@ export default function AboutPage() {
         {/* Team */}
         <div className="mb-16">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-extrabold text-gray-900">Meet Our Team</h2>
+            <h2 className="text-3xl font-extrabold text-gray-900">Meet Our Team</h2>
             <p className="text-gray-500 mt-2">The people who make your travel dreams possible</p>
           </div>
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-5 sm:gap-6">

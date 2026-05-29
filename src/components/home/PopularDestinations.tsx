@@ -152,7 +152,7 @@ export default function PopularDestinations() {
               <Link
                 key={`${dest.slug}-${i}`}
                 href={`/destinations/${dest.slug}`}
-                className="group relative overflow-hidden rounded-2xl block shrink-0 snap-center transition-all duration-500 ease-out active:scale-[0.98] w-[70vw] xs:w-[64vw] sm:w-[72vw]"
+                className="group relative overflow-hidden rounded-2xl block shrink-0 snap-center transition-all duration-500 ease-out active:scale-[0.98] w-[70vw] xs:w-[64vw] sm:w-[48vw]"
                 style={{
                   boxShadow: "0 1px 2px rgba(20,20,20,0.04), 0 18px 32px -16px rgba(20,20,20,0.22)",
                   aspectRatio: "3 / 4",

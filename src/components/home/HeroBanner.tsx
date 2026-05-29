@@ -562,18 +562,18 @@ export default function HeroBanner() {
         </div>
 
         {/* Trust strip */}
-        <div className="mt-5 sm:mt-10 flex flex-wrap justify-center items-center gap-x-4 xs:gap-x-6 sm:gap-x-10 gap-y-2 sm:gap-y-3 text-white/85 text-[11px] xs:text-xs sm:text-sm">
-          <div className="flex items-center gap-2">
-            <BadgeCheck className="w-[17px] h-[17px]" style={{ color: "#F2A93B" }} />
-            <span className="font-medium">Expert Local Guides</span>
+        <div className="mt-5 sm:mt-10 flex flex-wrap justify-center items-center gap-2 xs:gap-2.5 sm:gap-x-10 sm:gap-y-3 text-white/85 text-[11px] xs:text-xs sm:text-base lg:text-sm">
+          <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm sm:px-0 sm:py-0 sm:rounded-none sm:bg-transparent sm:border-0 sm:backdrop-blur-none">
+            <BadgeCheck className="w-4 h-4 sm:w-[17px] sm:h-[17px] shrink-0" style={{ color: "#F2A93B" }} />
+            <span className="font-medium whitespace-nowrap">Expert Local Guides</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Shield className="w-[17px] h-[17px]" style={{ color: "#F2A93B" }} />
-            <span className="font-medium">Flexible Cancellation</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm sm:px-0 sm:py-0 sm:rounded-none sm:bg-transparent sm:border-0 sm:backdrop-blur-none">
+            <Shield className="w-4 h-4 sm:w-[17px] sm:h-[17px] shrink-0" style={{ color: "#F2A93B" }} />
+            <span className="font-medium whitespace-nowrap">Flexible Cancellation</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Star className="w-[17px] h-[17px] fill-current" style={{ color: "#F2A93B" }} />
-            <span className="font-medium">4.9/5 Average Rating</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm sm:px-0 sm:py-0 sm:rounded-none sm:bg-transparent sm:border-0 sm:backdrop-blur-none">
+            <Star className="w-4 h-4 sm:w-[17px] sm:h-[17px] fill-current shrink-0" style={{ color: "#F2A93B" }} />
+            <span className="font-medium whitespace-nowrap">4.9/5 Average Rating</span>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { EnquiryFormData } from "@/types";
 import DateInput from "@/components/ui/DateInput";
+import CountryCodeSelect, { COUNTRY_CODES, type CountryCode } from "@/components/ui/CountryCodeSelect";
 
 /* ── Per-field validation rules ─────────────────────────────────────────── */
 type FieldKey = keyof EnquiryFormData | "budget";
@@ -23,7 +24,7 @@ function validateField(key: FieldKey, value: string | number): string {
       return "";
     case "mobile":
       if (!s) return "Mobile number is required";
-      if (!/^\d{10}$/.test(s.replace(/\s/g, ""))) return "Enter a valid 10-digit number";
+      if (!/^\d{6,15}$/.test(s.replace(/\s/g, ""))) return "Enter a valid mobile number";
       return "";
     case "email":
       if (!s) return "Email address is required";
@@ -45,9 +46,9 @@ function validateField(key: FieldKey, value: string | number): string {
 }
 
 /* ── WhatsApp SVG ──────────────────────────────────────────────────────────── */
-function WaIcon({ className }: { className?: string }) {
+function WaIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <svg className={className} style={style} fill="currentColor" viewBox="0 0 24 24">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
     </svg>
   );
@@ -67,6 +68,7 @@ export default function ContactPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof EnquiryFormData, string>>>({});
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [countryCode, setCountryCode] = useState<CountryCode>(COUNTRY_CODES[0]);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleChange = (k: FieldKey, v: string | number) => {
@@ -85,8 +87,8 @@ export default function ContactPage() {
   const validate = () => {
     const e: Partial<Record<keyof EnquiryFormData, string>> = {};
     if (!formData.name.trim()) e.name = "Name is required";
-    if (!formData.mobile.trim() || !/^\d{10}$/.test(formData.mobile.replace(/\s/g, "")))
-      e.mobile = "Valid 10-digit mobile number required";
+    if (!formData.mobile.trim() || !/^\d{6,15}$/.test(formData.mobile.replace(/\s/g, "")))
+      e.mobile = "Enter a valid mobile number";
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email))
       e.email = "Valid email is required";
     setErrors(e);
@@ -104,7 +106,7 @@ export default function ContactPage() {
       await fetch("/api/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, message: fullMessage }),
+        body: JSON.stringify({ ...formData, mobile: `${countryCode.dial}${formData.mobile}`, message: fullMessage }),
       });
     } catch { /* silent */ }
     setIsSubmitting(false);
@@ -125,7 +127,7 @@ export default function ContactPage() {
             {/* Left — large bold heading */}
             <div>
               <h1
-                className="font-extrabold leading-none text-[28px] lg:text-[clamp(36px,4.5vw,58px)]"
+                className="font-extrabold leading-none text-[28px] lg:text-[clamp(44px,5vw,72px)]"
                 style={{
                   color: "#343434",
                   letterSpacing: "-0.03em",
@@ -138,7 +140,7 @@ export default function ContactPage() {
             {/* Right — subtitle + paragraph */}
             <div>
               <h2
-                className="font-extrabold leading-snug mb-2 sm:mb-3 text-[20px] lg:text-[clamp(15px,1.8vw,22px)]"
+                className="font-extrabold leading-snug mb-2 sm:mb-3 text-[20px] lg:text-[clamp(20px,2.2vw,30px)]"
                 style={{
                   color: "#343434",
                   letterSpacing: "-0.018em",
@@ -166,10 +168,10 @@ export default function ContactPage() {
       {/* ── Main content ─────────────────────────────────────────────────── */}
       <div style={{ backgroundColor: "#F7F6F3" }} className="py-8 xs:py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 
             {/* ── Left column ──────────────────────────────────────────── */}
-            <div className="relative lg:pt-2">
+            <div className="relative">
 
               {/* Decorative teal glow */}
               <div className="absolute -top-12 -left-12 w-64 h-64 rounded-full pointer-events-none"
@@ -179,8 +181,8 @@ export default function ContactPage() {
                 style={{ backgroundImage: "radial-gradient(circle, rgba(31,140,158,0.32) 1.5px, transparent 1.5px)", backgroundSize: "12px 12px" }} />
 
               {/* Headline */}
-              <h2 className="font-extrabold leading-[1.05] mb-3 sm:mb-5 sm:text-center lg:text-left"
-                style={{ fontSize: "clamp(22px, 4.5vw, 58px)", color: "#343434", letterSpacing: "-0.030em" }}>
+              <h2 className="font-extrabold leading-[1.05] mb-3 sm:mb-5 sm:text-center lg:text-left text-[clamp(22px,4.5vw,58px)] lg:text-[42px]"
+                style={{ color: "#343434", letterSpacing: "-0.030em" }}>
                 Every trip is unique,<br />
                 we craft journeys<br />
                 <span className="font-serif italic" style={{ fontWeight: 400, color: "#1F8C9E" }}>beyond bookings.</span>
@@ -288,12 +290,7 @@ export default function ContactPage() {
                 </a>
                 <a href="https://wa.me/919876543210?text=Hi%20BookTick!%20I%20want%20to%20plan%20a%20trip."
                   target="_blank" rel="noopener noreferrer"
-                  className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-full font-bold text-[13px] sm:text-sm whitespace-nowrap transition-all hover:brightness-95 active:scale-95"
-                  style={{
-                    background: "linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)",
-                    color: "#065F46",
-                    border: "1px solid rgba(6,95,70,0.18)",
-                  }}>
+                  className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-full font-bold text-[13px] sm:text-sm whitespace-nowrap text-white bg-[#25d366] hover:bg-[#1ebe5d] transition-colors active:scale-95">
                   <WaIcon className="w-4 h-4" />
                   Chat on WhatsApp
                 </a>
@@ -402,16 +399,13 @@ export default function ContactPage() {
                             style={{ color: "#343434", backgroundColor: "#fff" }}>
                             Phone Number <span style={{ color: "#f87171" }}>*</span>
                           </label>
-                          <div className="flex overflow-hidden"
+                          <div className="flex overflow-visible"
                             style={{ border: errors.mobile ? "1.5px solid #f87171" : "1.5px solid rgba(20,20,20,0.14)" }}>
-                            <span className="flex items-center px-3 text-[13px] font-semibold shrink-0 select-none"
-                              style={{ backgroundColor: "rgba(31,140,158,0.06)", borderRight: "1.5px solid rgba(20,20,20,0.10)", color: "#343434" }}>
-                              +91
-                            </span>
-                            <input type="tel" inputMode="numeric" pattern="[0-9]*" maxLength={10} placeholder="10-digit number" value={formData.mobile}
-                              onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/g, "").slice(0, 10) })}
+                            <CountryCodeSelect value={countryCode} onChange={setCountryCode} error={!!errors.mobile} />
+                            <input type="tel" inputMode="numeric" pattern="[0-9]*" maxLength={15} placeholder="Mobile number" value={formData.mobile}
+                              onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/g, "").slice(0, 15) })}
                               onKeyDown={(e) => { if (["e","E","+","-",".",",", " "].includes(e.key)) e.preventDefault(); }}
-                              className="flex-1 px-3 py-3.5 text-[13px] bg-white outline-none placeholder-gray-300" />
+                              className="flex-1 min-w-0 px-3 py-3.5 text-[13px] bg-white outline-none placeholder-gray-300" />
                           </div>
                           {errors.mobile && <p className="text-red-400 text-xs mt-1">{errors.mobile}</p>}
                         </div>
@@ -614,14 +608,14 @@ export default function ContactPage() {
             {/* Left — heading block */}
             <div className="lg:sticky lg:top-28 mb-2 lg:mb-0 text-center lg:text-left">
               <h2
-                className="font-extrabold leading-[1.0] mb-1 sm:mb-2"
-                style={{ fontSize: "clamp(26px, 5.5vw, 68px)", color: "#343434", letterSpacing: "-0.035em" }}
+                className="font-extrabold leading-[1.0] mb-1 sm:mb-2 text-[clamp(26px,5.5vw,68px)] lg:text-[48px]"
+                style={{ color: "#343434", letterSpacing: "-0.035em" }}
               >
                 Got Questions?
               </h2>
               <p
-                className="font-serif italic leading-tight mb-3 sm:mb-6"
-                style={{ fontSize: "clamp(22px, 4.5vw, 58px)", color: "#343434", fontWeight: 400 }}
+                className="font-serif italic leading-tight mb-3 sm:mb-6 text-[clamp(22px,4.5vw,58px)] lg:text-[40px]"
+                style={{ color: "#343434", fontWeight: 400 }}
               >
                 We&apos;ve Got Answers
               </p>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, ArrowRight } from "lucide-react";
+import { Phone, ArrowUpRight } from "lucide-react";
 
 const stats = [
   {
@@ -120,7 +120,7 @@ export default function WhyUs() {
                   boxShadow: "0 4px 18px rgba(31,140,158,0.32)",
                 }}
               >
-                Explore Packages <ArrowRight className="w-[15px] h-[15px]" />
+                Explore Packages <ArrowUpRight className="w-[15px] h-[15px]" />
               </Link>
 
               {/* Secondary */}

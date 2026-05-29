@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, Star, Shield, BadgeCheck,
-  Calendar, ArrowRight, Compass, ChevronDown,
+  Calendar, ArrowRight, ArrowUpRight, Compass, ChevronDown,
   PlaneTakeoff, PlaneLanding,
   ChevronLeft, ChevronRight,
 } from "lucide-react";
@@ -40,17 +40,36 @@ interface FPProps { anchorRef: React.RefObject<HTMLElement | null>; isOpen: bool
 const FloatingPanel = forwardRef<HTMLDivElement, FPProps>(({ anchorRef, isOpen, alignRight = false, children }, ref) => {
   const [mounted, setMounted] = useState(false);
   const [pos, setPos] = useState<React.CSSProperties>({ position: "fixed", top: 0, left: 0 });
+  const [isMobileView, setIsMobileView] = useState(false);
   useEffect(() => { setMounted(true); }, []);
   useEffect(() => {
     if (!isOpen || !anchorRef.current) return;
     const recalc = () => {
       if (!anchorRef.current) return;
       const r = anchorRef.current.getBoundingClientRect();
-      const openUp = r.top > window.innerHeight * 0.5;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const mobile = vw < 640;
+      setIsMobileView(mobile);
+
+      if (mobile) {
+        const panelW = Math.min(348, vw - 32);
+        const left = (vw - panelW) / 2;
+        const openUp = r.top > vh * 0.55;
+        const top = openUp
+          ? Math.max(8, r.top - 8 - 460)
+          : Math.min(r.bottom + 8, vh - 460);
+        setPos({ position: "fixed", zIndex: 9999, top: Math.max(8, top), left, width: panelW });
+        return;
+      }
+
+      const openUp = r.top > vh * 0.5;
+      let left = alignRight ? r.right - 348 : r.left;
+      left = Math.max(8, Math.min(left, vw - 356));
       setPos({
         position: "fixed", zIndex: 9999,
-        ...(openUp ? { bottom: window.innerHeight - r.top + 8 } : { top: r.bottom + 8 }),
-        ...(alignRight ? { right: window.innerWidth - r.right } : { left: r.left }),
+        ...(openUp ? { bottom: vh - r.top + 8 } : { top: r.bottom + 8 }),
+        left,
       });
     };
     recalc();
@@ -59,7 +78,15 @@ const FloatingPanel = forwardRef<HTMLDivElement, FPProps>(({ anchorRef, isOpen, 
     return () => { window.removeEventListener("scroll", recalc, true); window.removeEventListener("resize", recalc); };
   }, [isOpen, anchorRef, alignRight]);
   if (!mounted) return null;
-  return createPortal(<div ref={ref} style={pos}>{children}</div>, document.body);
+  return createPortal(
+    <>
+      {isMobileView && isOpen && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", backdropFilter: "blur(2px)", zIndex: 9998 }} />
+      )}
+      <div ref={ref} style={pos}>{children}</div>
+    </>,
+    document.body
+  );
 });
 FloatingPanel.displayName = "FloatingPanel";
 
@@ -112,7 +139,7 @@ function CalendarPicker({ value, onChange, placeholder, isOpen, onToggle, onClos
         <AnimatePresence>
           {isOpen && (
             <motion.div variants={panelMotion} initial="hidden" animate="show" exit="exit"
-              style={{ ...PANEL_STYLE, width: 348 }}>
+              style={{ ...PANEL_STYLE, width: "100%", maxWidth: 348 }}>
 
               {/* Calendar header */}
               <div style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)", padding: "18px 16px 0" }}>
@@ -527,7 +554,7 @@ export default function HeroBanner() {
                   style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.22) 0%, transparent 65%)" }} />
                 <span className="relative flex items-center gap-1.5">
                   Explore
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowUpRight className="w-3.5 h-3.5" />
                 </span>
               </button>
             </div>

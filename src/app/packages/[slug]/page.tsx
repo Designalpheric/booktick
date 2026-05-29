@@ -116,12 +116,14 @@ export default function PackageDetailPage({ params }: { params: Promise<{ slug: 
                   {/* Badges */}
                   <div className="absolute top-4 left-4 flex gap-2">
                     {pkg.badge && (
-                      <span className="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                      <span className="text-xs font-bold px-3 py-1 rounded-full"
+                        style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}>
                         {pkg.badge}
                       </span>
                     )}
                     {pkg.discount && (
-                      <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                      <span className="text-xs font-bold px-3 py-1 rounded-full"
+                        style={{ background: "rgba(255,255,255,0.92)", color: "#B45309", border: "1px solid rgba(242,169,59,0.35)" }}>
                         {pkg.discount}% OFF
                       </span>
                     )}
@@ -150,7 +152,8 @@ export default function PackageDetailPage({ params }: { params: Promise<{ slug: 
                     <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
                       <MapPin className="w-4 h-4 text-orange-500" />
                       <span className="whitespace-nowrap">{pkg.destination}, {pkg.country}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${pkg.category === "international" ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"}`}>
+                      <span className="px-2 py-0.5 rounded-full text-xs font-semibold"
+                        style={{ background: "rgba(31,140,158,0.10)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}>
                         {pkg.category === "international" ? "International" : "National"}
                       </span>
                     </div>
@@ -398,7 +401,7 @@ export default function PackageDetailPage({ params }: { params: Promise<{ slug: 
                   <div>
                     <p className="text-xs text-gray-400">Starting from</p>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-2xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900">{formatCurrency(pkg.priceFrom)}</span>
+                      <span className="text-2xl sm:text-2xl lg:text-3xl font-extrabold" style={{ color: "#1F8C9E" }}>{formatCurrency(pkg.priceFrom)}</span>
                       <span className="text-gray-400 text-sm">/ person</span>
                     </div>
                   </div>
@@ -407,7 +410,8 @@ export default function PackageDetailPage({ params }: { params: Promise<{ slug: 
                       <span className="text-gray-400 text-sm line-through">
                         {formatCurrency(Math.round(pkg.priceFrom / (1 - pkg.discount / 100)))}
                       </span>
-                      <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+                        style={{ background: "rgba(255,255,255,0.92)", color: "#B45309", border: "1px solid rgba(242,169,59,0.35)" }}>
                         {pkg.discount}% OFF
                       </span>
                     </div>
@@ -493,11 +497,11 @@ export default function PackageDetailPage({ params }: { params: Promise<{ slug: 
         <div className="min-w-0">
           <p className="text-[10px] text-gray-400 leading-none mb-0.5">Starting from</p>
           <div className="flex items-baseline gap-1">
-            <span className="text-lg font-extrabold text-gray-900 leading-none">{formatCurrency(pkg.priceFrom)}</span>
+            <span className="text-lg font-extrabold leading-none" style={{ color: "#1F8C9E" }}>{formatCurrency(pkg.priceFrom)}</span>
             <span className="text-xs text-gray-400">/ person</span>
           </div>
           {pkg.discount && (
-            <p className="text-[10px] text-green-600 font-semibold leading-none mt-0.5">{pkg.discount}% OFF</p>
+            <p className="text-[10px] font-semibold leading-none mt-0.5" style={{ color: "#B45309" }}>{pkg.discount}% OFF</p>
           )}
         </div>
         <button

@@ -466,11 +466,11 @@ export default function FlightsPage() {
                 style={{ color: "rgba(52,52,52,0.38)" }}>Trip Details</p>
 
               {/* Trip Type — pill segmented control */}
-              <div className="inline-flex p-1 mb-3 sm:mb-4 w-full sm:w-auto"
+              <div className="inline-flex p-1 mb-3 sm:mb-4 w-full sm:w-auto rounded-lg"
                 style={{ backgroundColor: "#F0F0EE" }}>
                 {tripTypes.map((t) => (
                   <button key={t} type="button" onClick={() => setTripType(t)}
-                    className="flex-1 sm:flex-none px-2 sm:px-5 py-1.5 sm:py-2 text-[11px] sm:text-[13px] font-semibold transition-all duration-200 whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-2 sm:px-5 py-1.5 sm:py-2 text-[11px] sm:text-[13px] font-semibold rounded-lg transition-all duration-200 whitespace-nowrap"
                     style={tripType === t
                       ? { backgroundColor: "#fff", color: "#343434",
                           boxShadow: "0 1px 4px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)" }
@@ -540,7 +540,7 @@ export default function FlightsPage() {
             </div>
 
             {/* ── PREFERENCES ──────────────────────────────────────────── */}
-            <div className="mb-6 rounded-2xl p-4" style={{ backgroundColor: "#F7F6F3" }}>
+            <div className="mb-6 p-4" style={{ backgroundColor: "#F7F6F3", borderRadius: 16 }}>
 
               {/* Travellers — compact rows */}
               <p className="text-[11px] font-bold uppercase tracking-widest mb-3"
@@ -552,7 +552,7 @@ export default function FlightsPage() {
                   { label: "Infants",  sub: "Under 2",  val: infants,  min: 0, inc: () => setInfants(i => i  + 1), dec: () => setInfants(i  => Math.max(0, i  - 1)) },
                 ].map(({ label, sub, val, min, inc, dec }) => (
                   <div key={label}
-                    className="flex-1 flex items-center justify-between gap-3 px-3 py-3 rounded-xl bg-white"
+                    className="flex-1 flex items-center justify-between gap-3 px-3 py-3 bg-white"
                     style={{ border: "1px solid rgba(20,20,20,0.08)" }}>
                     <div className="min-w-0">
                       <p className="text-[13px] font-semibold leading-tight" style={{ color: "#343434" }}>{label}</p>
@@ -578,7 +578,7 @@ export default function FlightsPage() {
               <div className="flex flex-wrap gap-2">
                 {cabins.map((c) => (
                   <button key={c} type="button" onClick={() => setCabin(c)}
-                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-[12px] font-semibold transition-all duration-150 hover:scale-[1.03] active:scale-[0.97]"
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-[12px] font-semibold rounded-lg transition-all duration-150 hover:scale-[1.03] active:scale-[0.97]"
                     style={cabin === c
                       ? { backgroundColor: "#1F8C9E", color: "#fff",
                           boxShadow: "0 2px 10px rgba(31,140,158,0.30)" }
@@ -692,12 +692,12 @@ export default function FlightsPage() {
             </div>
 
             {/* ── Submit ───────────────────────────────────────────────── */}
-            <div className="mt-2">
+            <div className="mt-2 flex flex-col items-center gap-2.5">
 
               {/* Primary CTA */}
               <button
                 type="submit" disabled={loading}
-                className="w-full sm:w-auto sm:mx-auto flex items-center justify-center gap-2.5 font-bold py-3.5 sm:py-4 px-6 sm:px-10 rounded-full text-[14px] sm:text-[15px] transition-all hover:brightness-105 active:scale-[0.99] disabled:opacity-60 overflow-hidden relative"
+                className="w-auto flex items-center justify-center gap-2.5 font-bold py-3.5 sm:py-4 px-6 sm:px-10 rounded-full text-[14px] sm:text-[15px] transition-all hover:brightness-105 active:scale-[0.99] disabled:opacity-60 overflow-hidden relative"
                 style={{ background: "linear-gradient(135deg,#1F8C9E 0%,#0E6F7F 100%)", color: "#fff",
                   boxShadow: "0 4px 20px rgba(31,140,158,0.35)" }}
               >

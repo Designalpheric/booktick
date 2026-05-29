@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, Clock, ShieldCheck, Users, Wallet } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Clock, ShieldCheck, Users, Wallet } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Layout constants
@@ -208,7 +208,7 @@ function StackCard({
             className="inline-flex items-center gap-1.5 text-[13px] font-bold mt-4 transition-all duration-200 group-hover:gap-3"
             style={{ color: linkColor }}
           >
-            Learn more <ArrowRight className="w-3.5 h-3.5" />
+            Learn more <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -338,7 +338,6 @@ export default function ReasonsSection() {
                 }}
               >
                 Explore Packages
-                <ArrowRight className="w-4 h-4" />
               </Link>
 
 
@@ -413,7 +412,7 @@ export default function ReasonsSection() {
               }}
             >
               Reasons people love{" "}
-              <span className="font-serif italic font-normal" style={{ color: "#1F8C9E" }}>
+              <span className="block sm:inline font-serif italic font-normal" style={{ color: "#1F8C9E" }}>
                 travelling with us
               </span>
             </h2>
@@ -437,7 +436,7 @@ export default function ReasonsSection() {
                 style={{
                   background: feature.bg,
                   border: feature.border,
-                  borderRadius: 20,
+                  borderRadius: 16,
                   boxShadow: feature.shadow,
                 }}
               >
@@ -494,7 +493,7 @@ export default function ReasonsSection() {
                     className="inline-flex items-center gap-1.5 text-[13px] font-bold mt-3 sm:mt-4 transition-all duration-200 hover:gap-2.5"
                     style={{ color: linkColor }}
                   >
-                    Learn more <ArrowRight className="w-3.5 h-3.5" />
+                    Learn more <ArrowUpRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
@@ -512,7 +511,7 @@ export default function ReasonsSection() {
               boxShadow: "0 4px 20px rgba(31,140,158,0.35)",
             }}
           >
-            Explore Packages <ArrowRight className="w-4 h-4" />
+            Explore Packages
           </Link>
         </div>
       </div>

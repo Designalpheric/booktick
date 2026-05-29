@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
-  Menu, X, Phone, ChevronDown, ArrowRight,
+  Menu, X, Phone, ChevronDown, ArrowRight, ArrowUpRight,
   MapPin, Globe, Plane, Info, Mail, Sparkles, MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -342,10 +342,7 @@ export default function Header() {
                                               color: "#1F8C9E",
                                             }}
                                           >
-                                            {link.icon === Globe
-                                              ? <Globe className="w-3.5 h-3.5" />
-                                              : <MapPin className="w-3.5 h-3.5" />
-                                            }
+                                            <ArrowUpRight className="w-3.5 h-3.5" />
                                           </span>
                                           <span className="min-w-0 flex-1">
                                             <span className="block text-[12.5px] font-semibold leading-tight">
@@ -379,14 +376,14 @@ export default function Header() {
                                           style={{ color: "#0F172A" }}
                                         >
                                           <span
-                                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors"
                                             style={{
                                               background: "#fff",
                                               border: "1px solid rgba(15,23,42,0.10)",
-                                              color: "rgba(15,23,42,0.40)",
+                                              color: "#1F8C9E",
                                             }}
                                           >
-                                            <span className="w-3 h-3 rounded-full" style={{ border: "1.5px solid currentColor" }} />
+                                            <ArrowUpRight className="w-3.5 h-3.5" />
                                           </span>
                                           <span className="min-w-0 flex-1">
                                             <span className="block text-[12.5px] font-semibold leading-tight">

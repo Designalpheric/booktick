@@ -125,9 +125,8 @@ export default function ContactPage() {
             {/* Left — large bold heading */}
             <div>
               <h1
-                className="font-extrabold leading-none"
+                className="font-extrabold leading-none text-[28px] lg:text-[clamp(36px,4.5vw,58px)]"
                 style={{
-                  fontSize: "clamp(22px, 4.5vw, 58px)",
                   color: "#343434",
                   letterSpacing: "-0.03em",
                 }}
@@ -139,9 +138,8 @@ export default function ContactPage() {
             {/* Right — subtitle + paragraph */}
             <div>
               <h2
-                className="font-extrabold leading-snug mb-2 sm:mb-3"
+                className="font-extrabold leading-snug mb-2 sm:mb-3 text-[20px] lg:text-[clamp(15px,1.8vw,22px)]"
                 style={{
-                  fontSize: "clamp(15px, 1.8vw, 22px)",
                   color: "#343434",
                   letterSpacing: "-0.018em",
                 }}
@@ -181,7 +179,7 @@ export default function ContactPage() {
                 style={{ backgroundImage: "radial-gradient(circle, rgba(31,140,158,0.32) 1.5px, transparent 1.5px)", backgroundSize: "12px 12px" }} />
 
               {/* Headline */}
-              <h2 className="font-extrabold leading-[1.05] mb-3 sm:mb-5"
+              <h2 className="font-extrabold leading-[1.05] mb-3 sm:mb-5 sm:text-center lg:text-left"
                 style={{ fontSize: "clamp(22px, 4.5vw, 58px)", color: "#343434", letterSpacing: "-0.030em" }}>
                 Every trip is unique,<br />
                 we craft journeys<br />
@@ -189,7 +187,7 @@ export default function ContactPage() {
               </h2>
 
               {/* Description */}
-              <p className="leading-relaxed mb-5 sm:mb-8 max-w-md" style={{ color: "rgba(52,52,52,0.55)", fontSize: "clamp(13px,1.1vw,15px)" }}>
+              <p className="leading-relaxed mb-5 sm:mb-8 max-w-md sm:mx-auto lg:mx-0 sm:text-center lg:text-left" style={{ color: "rgba(52,52,52,0.55)", fontSize: "clamp(13px,1.1vw,15px)" }}>
                 Share your travel goals with us. Our experts reply with a personalised
                 itinerary within 2 hours, Mon–Sat.
               </p>
@@ -320,8 +318,8 @@ export default function ContactPage() {
                     items: ["Honeymoon Couples", "Families & Groups", "Solo Travellers", "Corporate Teams"],
                   },
                 ].map(({ title, items }) => (
-                  <div key={title}>
-                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center mb-2 sm:mb-3"
+                  <div key={title} className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center mb-2 sm:mb-3 mx-auto lg:mx-0"
                       style={{ backgroundColor: "rgba(31,140,158,0.12)" }}>
                       <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" style={{ color: "#1F8C9E" }} />
                     </div>
@@ -500,9 +498,9 @@ export default function ContactPage() {
                       </div>
 
                       {/* Submit */}
-                      <div className="space-y-2.5 pt-1">
+                      <div className="pt-1 flex flex-col items-center gap-2.5">
                         <button type="submit" disabled={isSubmitting}
-                          className="w-full flex items-center justify-center gap-2.5 font-bold py-4 rounded-full text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
+                          className="px-10 flex items-center justify-center gap-2.5 font-bold py-4 rounded-full text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
                           style={{ backgroundColor: "#343434", color: "#fff" }}>
                           {isSubmitting ? (
                             <>
@@ -575,7 +573,7 @@ export default function ContactPage() {
             ].map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex flex-row sm:flex-col items-start gap-3 sm:gap-0 p-4 sm:p-6 bg-white"
+                className="flex flex-row sm:flex-col items-center sm:items-center gap-3 sm:gap-0 p-4 sm:p-6 bg-white"
                 style={{
                   border: "1px solid rgba(20,20,20,0.07)",
                   borderRadius: "14px",
@@ -587,7 +585,7 @@ export default function ContactPage() {
                 >
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#1F8C9E" }} />
                 </div>
-                <div>
+                <div className="sm:text-center">
                   <h3
                     className="font-bold text-sm sm:text-base leading-snug mb-1 sm:mb-2"
                     style={{ color: "#343434" }}
@@ -614,7 +612,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-start">
 
             {/* Left — heading block */}
-            <div className="lg:sticky lg:top-28 mb-2 lg:mb-0">
+            <div className="lg:sticky lg:top-28 mb-2 lg:mb-0 text-center lg:text-left">
               <h2
                 className="font-extrabold leading-[1.0] mb-1 sm:mb-2"
                 style={{ fontSize: "clamp(26px, 5.5vw, 68px)", color: "#343434", letterSpacing: "-0.035em" }}
@@ -628,7 +626,7 @@ export default function ContactPage() {
                 We&apos;ve Got Answers
               </p>
               <p
-                className="leading-relaxed max-w-xs"
+                className="leading-relaxed max-w-xs sm:max-w-sm mx-auto lg:mx-0"
                 style={{ color: "rgba(52,52,52,0.50)", fontSize: "clamp(13px, 1.1vw, 15px)" }}
               >
                 If you&apos;re exploring travel options with BookTick, reach out and we&apos;ll walk you through everything you need to know.

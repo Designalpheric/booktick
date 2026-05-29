@@ -44,29 +44,24 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
             <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, transparent 38%, transparent 55%, rgba(0,0,0,0.55) 100%)" }} />
             {pkg.badge && (
               <div className="absolute top-3 left-3">
-                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm whitespace-nowrap" style={{ backgroundColor: badge.bg, color: badge.text }}>{pkg.badge}</span>
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap" style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}>{pkg.badge}</span>
               </div>
             )}
             <div className="absolute top-3 right-3 flex flex-col items-end gap-1">
               {pkg.discount && (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap" style={{ backgroundColor: BADGE_BG, color: BADGE_TEXT }}>{pkg.discount}% OFF</span>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap" style={{ background: "rgba(255,255,255,0.92)", color: "#B45309", border: "1px solid rgba(242,169,59,0.35)" }}>{pkg.discount}% OFF</span>
               )}
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap"
-                style={
-                  pkg.category === "international"
-                    ? { backgroundColor: "#DBEAFE", color: "#1D4ED8" }
-                    : { backgroundColor: "#DCFCE7", color: "#15803D" }
-                }
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}
               >{pkg.category === "international" ? "International" : "National"}</span>
             </div>
-            {/* Duration — bottom-left of image, text only (gradient below provides readability) */}
+            {/* Duration — bottom-left of image */}
             <div className="absolute bottom-2.5 left-3">
               <span
-                className="inline-flex items-center gap-1.5 text-[12px] font-extrabold whitespace-nowrap tracking-tight"
+                className="inline-flex items-center gap-1.5 text-[12px] font-bold whitespace-nowrap tracking-tight"
                 style={{
                   color: "#ffffff",
-                  textShadow:
-                    "0 1px 2px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.55), 0 0 14px rgba(0,0,0,0.40)",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.55), 0 0 14px rgba(0,0,0,0.40)",
                 }}
               >
                 <Clock className="w-3.5 h-3.5" strokeWidth={2.5} />
@@ -76,41 +71,41 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
           </div>
         </div>
 
-        <div className="px-4 pt-3.5 pb-4 flex flex-col flex-1">
+        <div className="px-4 pt-3 pb-3.5 flex flex-col flex-1">
 
-          {/* Location — subtle, uppercase micro-caption */}
-          <div className="flex items-center gap-1 mb-1.5">
+          {/* Location */}
+          <div className="flex items-center gap-1 mb-1">
             <MapPin className="w-3 h-3 shrink-0" style={{ color: "#9ca3af" }} />
             <span
-              className="text-[11px] font-medium uppercase tracking-[0.06em] leading-none truncate"
-              style={{ color: "#6b7280" }}
+              className="text-[11px] font-semibold uppercase tracking-[0.06em] leading-none truncate"
+              style={{ color: "#9ca3af" }}
             >
               {pkg.destination}, {pkg.country}
             </span>
           </div>
 
-          {/* Title — primary heading, balanced weight */}
+          {/* Title */}
           <h3
-            className="font-bold text-[16px] leading-[1.25] mb-1 line-clamp-1"
-            style={{ color: "#111827", letterSpacing: "-0.012em" }}
+            className="font-bold text-[15px] leading-[1.3] mb-1.5 line-clamp-1"
+            style={{ color: "#111827", letterSpacing: "-0.01em" }}
           >
             {pkg.title}
           </h3>
 
-          {/* Highlights — secondary body, comfortable reading color */}
+          {/* Highlights */}
           <p
-            className="text-[13px] leading-[1.5] line-clamp-1 mb-3"
-            style={{ color: "#6b7280" }}
+            className="text-[12px] leading-[1.5] line-clamp-1 mb-2.5"
+            style={{ color: "#9ca3af" }}
           >
             {pkg.highlights.slice(0, 2).join(" · ")}
           </p>
 
-          {/* Price (left) · Rating (right) */}
-          <div className="flex items-center justify-between gap-2 mb-2">
+          {/* Price · Rating */}
+          <div className="flex items-center justify-between gap-2 mb-1.5">
             <div className="flex items-baseline gap-1 min-w-0">
               <span
-                className="text-[20px] font-extrabold leading-none shrink-0"
-                style={{ color: "#111827", letterSpacing: "-0.02em" }}
+                className="text-[18px] font-extrabold leading-none shrink-0"
+                style={{ color: "#1F8C9E", letterSpacing: "-0.02em" }}
               >
                 {formatCurrency(pkg.priceFrom)}
               </span>
@@ -120,10 +115,7 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
             </div>
             <div className="flex items-center gap-1 shrink-0">
               <Star className="w-3.5 h-3.5" style={{ color: "#F2A93B", fill: "#F2A93B", strokeWidth: 1.5 }} />
-              <span
-                className="text-[13px] font-bold leading-none tabular-nums"
-                style={{ color: "#111827" }}
-              >
+              <span className="text-[13px] font-bold leading-none tabular-nums" style={{ color: "#111827" }}>
                 {(pkg.rating ?? 0).toFixed(1)}
               </span>
               <span className="text-[11px] leading-none tabular-nums" style={{ color: "#9ca3af" }}>
@@ -132,28 +124,28 @@ export default function PackageCard({ pkg }: { pkg: TravelPackage }) {
             </div>
           </div>
 
-          {/* Savings callout — only if discounted */}
+          {/* Savings */}
           {pkg.discount && saving > 0 && (
-            <p
-              className="text-[12px] font-semibold mb-2 leading-none"
-              style={{ color: "#059669", letterSpacing: "0.005em" }}
-            >
+            <p className="text-[12px] font-semibold mb-2 leading-none" style={{ color: "#059669", letterSpacing: "0.005em" }}>
               Save {formatCurrency(saving)}
             </p>
           )}
 
-          <div className="mt-auto pt-3 flex items-center gap-1.5 lg:gap-2" style={{ borderTop: "1px solid #f3f4f6" }}>
+          {/* Action buttons */}
+          <div className="mt-auto pt-2.5 flex items-center gap-1.5 lg:gap-2" style={{ borderTop: "1px solid #f3f4f6" }}>
             <Link href={`/packages/${pkg.slug}`}
-              className="flex-1 flex items-center justify-center gap-1.5 text-[13px] font-semibold py-2.5 rounded-full transition-all hover:bg-gray-50 active:scale-95 whitespace-nowrap"
-              style={{ border: "1.5px solid #e5e7eb", color: "#111827", letterSpacing: "-0.005em" }}
+              className="flex-1 flex items-center justify-center gap-1.5 text-[13px] font-semibold py-2.5 rounded-full transition-all text-[#1F8C9E] hover:bg-[#1F8C9E] hover:text-white active:scale-95 whitespace-nowrap"
+              style={{ border: "1.5px solid #1F8C9E", letterSpacing: "-0.005em" }}
             >
               View Details
               <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
             </Link>
             <button onClick={() => setEnquiryOpen(true)}
-              className="w-9 h-9 lg:w-10 lg:h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 active:scale-95 shrink-0"
-              style={{ border: "1.5px solid #e5e7eb", color: "#343434" }} aria-label="Enquire"
-            ><MessageSquare className="w-4 h-4" /></button>
+              className="w-9 h-9 lg:w-10 lg:h-10 rounded-full flex items-center justify-center transition-all text-[#1F8C9E] hover:bg-[#1F8C9E] hover:text-white active:scale-95 shrink-0"
+              style={{ border: "1.5px solid #1F8C9E" }} aria-label="Enquire"
+            >
+              <MessageSquare className="w-4 h-4" />
+            </button>
             <a href={getWhatsAppUrl(packageEnquiryMessage(pkg.title, pkg.destination))} target="_blank" rel="noopener noreferrer"
               className="w-9 h-9 lg:w-10 lg:h-10 rounded-full flex items-center justify-center transition-all hover:opacity-90 active:scale-95 shrink-0"
               style={{ backgroundColor: "rgba(37,211,102,0.12)", color: "#16a34a" }} aria-label="WhatsApp Enquiry"

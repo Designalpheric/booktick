@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Clock, MapPin, Tag } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Clock, MapPin, Star, Tag } from "lucide-react";
 import { packages } from "@/data/packages";
 import EnquiryModal from "@/components/ui/EnquiryModal";
 import { formatCurrency } from "@/lib/utils";
@@ -39,13 +39,13 @@ export default function FeaturedPackages() {
             <div>
               <h2 className="leading-none">
                 <span
-                  className="block font-extrabold"
+                  className="block sm:inline lg:block font-extrabold"
                   style={{ fontSize: "clamp(28px,3.4vw,46px)", color: "#0F172A", letterSpacing: "-0.03em", lineHeight: 1.06 }}
                 >
-                  Expertly Crafted Travel
+                  Expertly Crafted Travel{" "}
                 </span>
                 <span
-                  className="block font-serif italic font-normal"
+                  className="block sm:inline lg:block font-serif italic font-normal"
                   style={{ fontSize: "clamp(30px,3.8vw,50px)", color: "#1F8C9E", letterSpacing: "-0.02em", lineHeight: 1.1 }}
                 >
                   Packages for Every Traveller
@@ -98,47 +98,57 @@ export default function FeaturedPackages() {
               const savings = origPrice ? origPrice - hero.priceFrom : null;
               return (
                 <>
-                  {/* ── MOBILE + TABLET (< lg): same white-card style as the other cards ── */}
+                  {/* ── MOBILE + TABLET (< lg): Hot Deals card style ── */}
                   <div
-                    className="lg:hidden bg-white group rounded-none overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
+                    className="lg:hidden bg-white group rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5"
                     style={{
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 8px 28px -6px rgba(0,0,0,0.12)",
-                      border: "1px solid #F1F5F9",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
+                      border: "1px solid rgba(0,0,0,0.06)",
                     }}
                     onClick={() => router.push(`/packages/${hero.slug}`)}
                   >
                     {/* Image */}
-                    <div className="relative overflow-hidden" style={{ height: 168 }}>
+                    <div className="relative overflow-hidden" style={{ height: 196 }}>
                       <Image
                         src={hero.coverImage} alt={hero.title} fill priority
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                         sizes="100vw"
                       />
-                      {/* Discount badge — top right */}
+
+                      {/* Gradient overlay */}
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, transparent 40%, transparent 55%, rgba(0,0,0,0.50) 100%)" }}
+                      />
+
+                      {/* Badge — top left: light teal */}
+                      {hero.badge && (
+                        <div
+                          className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wide z-10"
+                          style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}
+                        >
+                          {hero.badge}
+                        </div>
+                      )}
+
+                      {/* Discount — top right: light amber */}
                       {hero.discount && (
                         <div
-                          className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-black px-2.5 py-1.5 rounded-full text-white z-10"
-                          style={{ background: "linear-gradient(135deg,#F59E0B,#D97706)", boxShadow: "0 2px 10px rgba(245,158,11,0.45)" }}
+                          className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black z-10"
+                          style={{ background: "rgba(255,255,255,0.92)", color: "#B45309", border: "1px solid rgba(242,169,59,0.35)" }}
                         >
                           <Tag className="w-2.5 h-2.5" />{hero.discount}% OFF
                         </div>
                       )}
-                      {/* Duration — bottom left */}
+
+                      {/* Duration — bottom gradient overlay */}
                       <div
-                        className="absolute bottom-3 left-3 inline-flex items-center gap-1 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full z-10"
-                        style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}
+                        className="absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center gap-1.5 z-10"
+                        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.60) 0%, transparent 100%)" }}
                       >
-                        <Clock className="w-3 h-3" />{hero.duration}
+                        <Clock className="w-3 h-3 text-white/70" />
+                        <span className="text-white text-[11px] font-semibold">{hero.duration}</span>
                       </div>
-                      {/* Badge — top left */}
-                      {hero.badge && (
-                        <div
-                          className="absolute top-3 left-3 inline-flex items-center text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full z-10"
-                          style={{ background: "#FFFFFF", color: "#1A1A1A" }}
-                        >
-                          ★ {hero.badge}
-                        </div>
-                      )}
                     </div>
 
                     {/* Card body */}
@@ -157,7 +167,7 @@ export default function FeaturedPackages() {
                       <div className="flex items-center justify-between gap-2">
                         <div>
                           <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">From</p>
-                          <span className="font-black text-[17px] leading-none" style={{ color: "#0F172A" }}>
+                          <span className="font-black text-[17px] leading-none" style={{ color: "#1F8C9E" }}>
                             {formatCurrency(hero.priceFrom)}
                           </span>
                           {origPrice && (
@@ -178,7 +188,7 @@ export default function FeaturedPackages() {
                           type="button"
                           onClick={(e) => { e.stopPropagation(); router.push(`/packages/${hero.slug}`); }}
                           className="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
-                          style={{ backgroundColor: "#fff", color: "#1F2937", border: "1px solid #E5E7EB" }}
+                          style={{ backgroundColor: "transparent", color: "#1F8C9E", border: "1.5px solid #1F8C9E" }}
                         >
                           Enquire
                           <ArrowUpRight className="w-3 h-3" />
@@ -211,16 +221,16 @@ export default function FeaturedPackages() {
                       <div className="flex flex-col gap-2">
                         {hero.badge && (
                           <span
-                            className="self-start text-[11px] font-black tracking-wider px-3 py-1.5 rounded-full text-white uppercase"
-                            style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6F7F)", boxShadow: "0 3px 12px rgba(31,140,158,0.45)" }}
+                            className="self-start text-[11px] font-black px-3 py-1.5 rounded-full"
+                            style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}
                           >
                             ★ {hero.badge}
                           </span>
                         )}
                         {hero.discount && (
                           <span
-                            className="self-start inline-flex items-center gap-1 text-[11px] font-black px-3 py-1.5 rounded-full text-white"
-                            style={{ background: "linear-gradient(135deg,#F59E0B,#D97706)", boxShadow: "0 3px 12px rgba(245,158,11,0.40)" }}
+                            className="self-start inline-flex items-center gap-1 text-[11px] font-black px-3 py-1.5 rounded-full"
+                            style={{ background: "rgba(255,255,255,0.92)", color: "#B45309", border: "1px solid rgba(242,169,59,0.35)" }}
                           >
                             <Tag className="w-3 h-3" />{hero.discount}% OFF
                           </span>
@@ -271,7 +281,7 @@ export default function FeaturedPackages() {
                           type="button"
                           onClick={(e) => { e.stopPropagation(); router.push(`/packages/${hero.slug}`); }}
                           className="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
-                          style={{ backgroundColor: "#fff", color: "#1F2937", border: "1px solid #E5E7EB" }}
+                          style={{ backgroundColor: "transparent", color: "#1F8C9E", border: "1.5px solid #1F8C9E" }}
                         >
                           Enquire
                           <ArrowUpRight className="w-3 h-3" />
@@ -293,27 +303,34 @@ export default function FeaturedPackages() {
               return (
                 <div
                   key={pkg.id}
-                  className="bg-white group rounded-none lg:rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
+                  className="bg-white group rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
                   style={{
                     boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 8px 28px -6px rgba(0,0,0,0.12)",
                     border: "1px solid #F1F5F9",
                   }}
                 >
                   {/* ── Image ── */}
-                  <div className="relative overflow-hidden" style={{ height: 168 }}>
+                  <div className="relative overflow-hidden h-[196px] lg:h-[168px]">
                     <Image
                       src={pkg.coverImage} alt={pkg.title} fill
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
                       sizes="(max-width:1024px) 100vw, 28vw"
                     />
 
-                    {/* Single discount badge — top right only */}
+                    {/* Gradient overlay — mobile/tablet only */}
+                    <div
+                      className="lg:hidden absolute inset-0 pointer-events-none"
+                      style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, transparent 40%, transparent 55%, rgba(0,0,0,0.50) 100%)" }}
+                    />
+
+                    {/* Discount badge — top right (all sizes) */}
                     {pkg.discount && (
                       <div
-                        className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-black px-2.5 py-1.5 rounded-full text-white z-10"
+                        className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-black px-2.5 py-1 rounded-full z-10"
                         style={{
-                          background: "linear-gradient(135deg,#F59E0B,#D97706)",
-                          boxShadow: "0 2px 10px rgba(245,158,11,0.45)",
+                          background: "rgba(255,255,255,0.92)",
+                          color: "#B45309",
+                          border: "1px solid rgba(242,169,59,0.35)",
                         }}
                       >
                         <Tag className="w-2.5 h-2.5" />
@@ -321,25 +338,40 @@ export default function FeaturedPackages() {
                       </div>
                     )}
 
-                    {/* Duration pill — bottom left */}
+                    {/* Badge — top left: light teal (mobile/tablet only) */}
+                    {pkg.badge && (
+                      <div
+                        className="lg:hidden absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wide z-10"
+                        style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}
+                      >
+                        {pkg.badge}
+                      </div>
+                    )}
+
+                    {/* Category pill — top left (desktop only) */}
                     <div
-                      className="absolute bottom-3 left-3 inline-flex items-center gap-1 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full z-10"
+                      className="hidden lg:inline-flex absolute top-3 left-3 items-center text-[10px] font-bold px-2.5 py-1 rounded-full z-10"
+                      style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}
+                    >
+                      {pkg.category === "international" ? "International" : "National"}
+                    </div>
+
+                    {/* Duration — bottom gradient overlay (mobile/tablet only) */}
+                    <div
+                      className="lg:hidden absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center gap-1.5 z-10"
+                      style={{ background: "linear-gradient(to top, rgba(0,0,0,0.60) 0%, transparent 100%)" }}
+                    >
+                      <Clock className="w-3 h-3 text-white/70" />
+                      <span className="text-white text-[11px] font-semibold">{pkg.duration}</span>
+                    </div>
+
+                    {/* Duration pill — bottom left (desktop only) */}
+                    <div
+                      className="hidden lg:inline-flex absolute bottom-3 left-3 items-center gap-1 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full z-10"
                       style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}
                     >
                       <Clock className="w-3 h-3" />
                       {pkg.duration}
-                    </div>
-
-                    {/* Category pill — top left */}
-                    <div
-                      className="absolute top-3 left-3 inline-flex items-center text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full z-10"
-                      style={
-                        pkg.category === "international"
-                          ? { background: "#DBEAFE", color: "#1D4ED8" }
-                          : { background: "#DCFCE7", color: "#15803D" }
-                      }
-                    >
-                      {pkg.category === "international" ? "International" : "National"}
                     </div>
                   </div>
 
@@ -365,7 +397,7 @@ export default function FeaturedPackages() {
                     <div className="flex items-center justify-between gap-2">
                       <div>
                         <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">From</p>
-                        <span className="font-black text-[17px] leading-none" style={{ color: "#0F172A" }}>
+                        <span className="font-black text-[17px] leading-none" style={{ color: "#1F8C9E" }}>
                           {formatCurrency(pkg.priceFrom)}
                         </span>
                         {origPrice && (
@@ -386,7 +418,7 @@ export default function FeaturedPackages() {
                         type="button"
                         onClick={() => router.push(`/packages/${pkg.slug}`)}
                         className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
-                        style={{ backgroundColor: "#fff", color: "#1F2937", border: "1px solid #E5E7EB" }}
+                        style={{ backgroundColor: "transparent", color: "#1F8C9E", border: "1.5px solid #1F8C9E" }}
                       >
                         Enquire
                         <ArrowUpRight className="w-3 h-3" />

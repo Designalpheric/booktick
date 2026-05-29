@@ -103,13 +103,10 @@ export default function DealsSection() {
               <Link
                 key={deal.id}
                 href={`/packages/${deal.slug}`}
-                className="group flex flex-col rounded-none lg:rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                 style={{
                   background: "#FFFFFF",
-                  boxShadow:
-                    idx === 0
-                      ? "0 0 0 2px #1F8C9E, 0 12px 40px rgba(0,0,0,0.40)"
-                      : "0 4px 20px rgba(0,0,0,0.30)",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.30)",
                 }}
               >
                 {/* ── Photo ── */}
@@ -125,8 +122,8 @@ export default function DealsSection() {
                   {/* Badge (Best Seller etc.) */}
                   {deal.badge && (
                     <div
-                      className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black text-white tracking-wide uppercase"
-                      style={{ background: "linear-gradient(135deg,#1F8C9E,#0E6F7F)" }}
+                      className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wide"
+                      style={{ background: "rgba(255,255,255,0.92)", color: "#1F8C9E", border: "1px solid rgba(31,140,158,0.22)" }}
                     >
                       {deal.badge}
                     </div>
@@ -134,10 +131,11 @@ export default function DealsSection() {
 
                   {/* Discount pill */}
                   <div
-                    className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black text-white"
+                    className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black"
                     style={{
-                      background: "linear-gradient(135deg,#F2A93B,#C97C14)",
-                      boxShadow: "0 2px 10px rgba(242,169,59,0.45)",
+                      background: "rgba(255,255,255,0.92)",
+                      color: "#B45309",
+                      border: "1px solid rgba(242,169,59,0.35)",
                     }}
                   >
                     <Tag className="w-2.5 h-2.5" />
@@ -161,93 +159,93 @@ export default function DealsSection() {
 
                 {/* ── Card body (white) ── */}
                 <div className="flex flex-col flex-1 p-4">
-                  {/* Title */}
+
+                  {/* Title — full width */}
                   <h3
-                    className="font-bold leading-snug mb-1 line-clamp-1"
+                    className="font-bold leading-snug mb-3 line-clamp-1"
                     style={{ fontSize: 15, color: "#111827" }}
                   >
                     {deal.title}
                   </h3>
 
-                  {/* Location */}
-                  <div className="flex items-center gap-1 mb-2">
-                    <MapPin className="w-3 h-3 shrink-0" style={{ color: "#9CA3AF" }} />
-                    <span className="text-[12px]" style={{ color: "#6B7280" }}>
-                      {deal.destination}, {deal.country}
-                    </span>
-                  </div>
+                  {/* ── Two-column split: Left info | Right price ── */}
+                  <div className="flex gap-3 mb-3">
 
-                  {/* Rating */}
-                  <div className="flex items-center gap-1.5 mb-3">
-                    <div className="flex items-center gap-0.5">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <Star
-                          key={s}
-                          className="w-3 h-3 fill-current"
-                          style={{
-                            color:
-                              s <= Math.round(deal.rating ?? 0)
-                                ? "#F2A93B"
-                                : "#E5E7EB",
-                          }}
-                        />
-                      ))}
+                    {/* Left — location + rating */}
+                    <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-3 h-3 shrink-0" style={{ color: "#9CA3AF" }} />
+                        <span className="text-[11px] truncate" style={{ color: "#6B7280" }}>
+                          {deal.destination}, {deal.country}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-0.5">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star
+                              key={s}
+                              className="w-2.5 h-2.5 fill-current"
+                              style={{ color: s <= Math.round(deal.rating ?? 0) ? "#F2A93B" : "#E5E7EB" }}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[11px] font-bold" style={{ color: "#374151" }}>
+                          {deal.rating?.toFixed(1)}
+                        </span>
+                        <span className="text-[10px]" style={{ color: "#9CA3AF" }}>
+                          ({deal.reviewCount?.toLocaleString()})
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-[12px] font-bold" style={{ color: "#374151" }}>
-                      {deal.rating?.toFixed(1)}
-                    </span>
-                    <span className="text-[11px]" style={{ color: "#9CA3AF" }}>
-                      ({deal.reviewCount?.toLocaleString()} reviews)
-                    </span>
+
+                    {/* Right — price */}
+                    <div className="flex flex-col items-end shrink-0">
+                      <span
+                        className="font-black leading-none"
+                        style={{ fontSize: 18, color: "#1F8C9E" }}
+                      >
+                        {formatCurrency(deal.priceFrom)}
+                      </span>
+                      <span
+                        className="text-[11px] line-through mt-0.5"
+                        style={{ color: "#D1D5DB" }}
+                      >
+                        {formatCurrency(originalPrice)}
+                      </span>
+                      <span className="text-[10px] mt-0.5" style={{ color: "#9CA3AF" }}>
+                        / person
+                      </span>
+                    </div>
+
                   </div>
 
                   {/* Separator */}
                   <div className="h-px mb-3" style={{ background: "#F3F4F6" }} />
 
-                  {/* Pricing */}
-                  <div className="mb-3">
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span
-                        className="font-black leading-none"
-                        style={{ fontSize: 20, color: "#111827" }}
-                      >
-                        {formatCurrency(deal.priceFrom)}
-                      </span>
-                      <span
-                        className="text-[12px] line-through"
-                        style={{ color: "#D1D5DB" }}
-                      >
-                        {formatCurrency(originalPrice)}
-                      </span>
+                  {/* ── Bottom row: savings badge | CTA button ── */}
+                  <div className="mt-auto flex items-center justify-between gap-2">
+                    <div
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0"
+                      style={{
+                        background: "rgba(31,140,158,0.08)",
+                        color: "#1F8C9E",
+                        border: "1px solid rgba(31,140,158,0.18)",
+                      }}
+                    >
+                      ✓ Save {formatCurrency(savings)}
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold"
-                        style={{
-                          background: "rgba(31,140,158,0.08)",
-                          color: "#1F8C9E",
-                          border: "1px solid rgba(31,140,158,0.18)",
-                        }}
-                      >
-                        ✓ Save {formatCurrency(savings)}
-                      </div>
-                      <span className="text-[11px]" style={{ color: "#9CA3AF" }}>
-                        / person
-                      </span>
+                    <div
+                      className="py-2 px-4 rounded-full inline-flex items-center justify-center gap-1 text-[12px] font-bold transition-all duration-200 group-hover:bg-[#1F8C9E] group-hover:text-white shrink-0"
+                      style={{
+                        border: "1.5px solid #1F8C9E",
+                        color: "#1F8C9E",
+                        background: "transparent",
+                      }}
+                    >
+                      Enquire <ArrowUpRight className="w-3 h-3" />
                     </div>
                   </div>
 
-                  {/* CTA */}
-                  <div
-                    className="mt-auto w-full py-2.5 rounded-full inline-flex items-center justify-center gap-1.5 text-[13px] font-bold transition-all duration-200 group-hover:bg-[#1F8C9E] group-hover:text-white"
-                    style={{
-                      border: "1.5px solid #1F8C9E",
-                      color: "#1F8C9E",
-                      background: "transparent",
-                    }}
-                  >
-                    Enquire Now <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
                 </div>
               </Link>
             );
@@ -261,7 +259,7 @@ export default function DealsSection() {
             className="group inline-flex items-center gap-2 text-[13px] font-bold text-white transition-all duration-200 border border-white/30 px-5 py-2.5 rounded-full hover:border-white/60 hover:bg-white/[0.07] active:scale-95"
           >
             View All Deals
-            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200" />
           </Link>
         </div>
 

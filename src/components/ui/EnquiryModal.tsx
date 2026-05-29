@@ -440,11 +440,11 @@ export default function EnquiryModal({
             </FloatField>
 
             {/* Submit */}
-            <div className="space-y-2.5 pt-1">
+            <div className="pt-1 flex flex-col items-center gap-2.5">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2.5 font-bold py-3 sm:py-4 rounded-full text-[14px] sm:text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60 text-white"
+                className="px-10 flex items-center justify-center gap-2.5 font-bold py-3 sm:py-4 rounded-full text-[14px] sm:text-[15px] transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-60 text-white"
                 style={{ backgroundColor: "#343434" }}
               >
                 {isSubmitting ? (

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { SlidersHorizontal, X, Search, ArrowUpRight, MapPin, Phone, Compass, Sparkles, RotateCcw } from "lucide-react";
+import { SlidersHorizontal, X, Search, ArrowUpRight, MapPin, Phone, Compass, Sparkles, RotateCcw, ChevronDown, Check } from "lucide-react";
 import Link from "next/link";
 import { packages } from "@/data/packages";
 import PackageCard from "@/components/packages/PackageCard";
@@ -31,7 +31,26 @@ function PackagesContent() {
   const [selectedDuration, setSelectedDuration] = useState<string | null>(null);
   const [selectedTypes, setSelectedTypes] = useState<string[]>(typeParam ? [typeParam] : []);
   const [sortBy, setSortBy] = useState("popular");
+  const [sortOpen, setSortOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const sortRef = useRef<HTMLDivElement>(null);
+
+  const SORT_OPTIONS = [
+    { value: "popular",    label: "Most Popular" },
+    { value: "rating",     label: "Top Rated" },
+    { value: "price-asc",  label: "Price: Low to High" },
+    { value: "price-desc", label: "Price: High to Low" },
+  ];
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
+        setSortOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
@@ -124,16 +143,47 @@ function PackagesContent() {
             />
           </div>
           <div className="flex gap-2 items-center">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="flex-1 xs:flex-none min-w-0 px-3 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:ring-2 focus:ring-orange-300"
-            >
-              <option value="popular">Most Popular</option>
-              <option value="rating">Top Rated</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-            </select>
+            {/* Custom sort dropdown */}
+            <div ref={sortRef} className="relative flex-1 xs:flex-none min-w-0">
+              <button
+                onClick={() => setSortOpen((o) => !o)}
+                className="w-full flex items-center justify-between gap-2 px-3 py-2.5 border rounded-xl bg-white text-sm font-medium transition-all"
+                style={{
+                  borderColor: sortOpen ? "#1F8C9E" : "#e5e7eb",
+                  color: "#111827",
+                  boxShadow: sortOpen ? "0 0 0 3px rgba(31,140,158,0.12)" : "none",
+                }}
+              >
+                <span className="truncate">{SORT_OPTIONS.find(o => o.value === sortBy)?.label}</span>
+                <ChevronDown
+                  className="w-4 h-4 shrink-0 transition-transform duration-200"
+                  style={{ color: "#6b7280", transform: sortOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                />
+              </button>
+
+              {sortOpen && (
+                <div
+                  className="absolute left-0 top-full mt-1.5 z-50 bg-white rounded-xl overflow-hidden"
+                  style={{
+                    minWidth: "100%",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    boxShadow: "0 4px 6px -1px rgba(0,0,0,0.07), 0 16px 32px -8px rgba(0,0,0,0.12)",
+                  }}
+                >
+                  {SORT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => { setSortBy(opt.value); setSortOpen(false); }}
+                      className="w-full flex items-center justify-between gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-gray-50"
+                      style={{ color: sortBy === opt.value ? "#1F8C9E" : "#374151" }}
+                    >
+                      {opt.label}
+                      {sortBy === opt.value && <Check className="w-3.5 h-3.5 shrink-0" style={{ color: "#1F8C9E" }} />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               onClick={() => setFiltersOpen(!filtersOpen)}
               className="shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm font-medium hover:border-orange-400 hover:text-orange-600 transition-colors"
@@ -169,7 +219,7 @@ function PackagesContent() {
               onClick={() => setFiltersOpen(false)}
             />
             {/* Sheet */}
-            <div className="relative bg-white rounded-[24px] flex flex-col" style={{ maxHeight: "86vh" }}>
+            <div className="relative bg-white rounded-t-3xl flex flex-col" style={{ maxHeight: "86vh" }}>
 
               {/* Drag handle */}
               <div className="flex justify-center pt-3 pb-0 shrink-0">
@@ -222,7 +272,7 @@ function PackagesContent() {
                       <button
                         key={value}
                         onClick={() => setCategory(value)}
-                        className={`flex-1 py-2.5 text-xs font-semibold rounded-xl border transition-all active:scale-95 ${
+                        className={`flex-1 py-2.5 text-xs font-semibold rounded-lg border transition-all active:scale-95 ${
                           category === value
                             ? "bg-orange-500 border-orange-500 text-white shadow-sm"
                             : "border-gray-200 text-gray-600 bg-gray-50/80"
@@ -242,7 +292,7 @@ function PackagesContent() {
                       <button
                         key={range.label}
                         onClick={() => setSelectedBudget(selectedBudget === i ? null : i)}
-                        className={`py-3 px-3 text-xs font-semibold rounded-xl border transition-all active:scale-95 text-left leading-tight ${
+                        className={`py-3 px-3 text-xs font-semibold rounded-lg border transition-all active:scale-95 text-left leading-tight ${
                           selectedBudget === i
                             ? "bg-orange-500 border-orange-500 text-white shadow-sm"
                             : "border-gray-200 text-gray-600 bg-gray-50/80"
@@ -262,7 +312,7 @@ function PackagesContent() {
                       <button
                         key={d}
                         onClick={() => setSelectedDuration(selectedDuration === d ? null : d)}
-                        className={`py-3 px-3 text-xs font-semibold rounded-xl border transition-all active:scale-95 ${
+                        className={`py-3 px-3 text-xs font-semibold rounded-lg border transition-all active:scale-95 ${
                           selectedDuration === d
                             ? "bg-orange-500 border-orange-500 text-white shadow-sm"
                             : "border-gray-200 text-gray-600 bg-gray-50/80"
@@ -282,7 +332,7 @@ function PackagesContent() {
                       <button
                         key={type}
                         onClick={() => toggleType(type)}
-                        className={`text-xs font-semibold px-3.5 py-2 rounded-full border transition-all active:scale-95 ${
+                        className={`text-xs font-semibold px-3.5 py-2 rounded-lg border transition-all active:scale-95 ${
                           selectedTypes.includes(type)
                             ? "bg-orange-500 border-orange-500 text-white shadow-sm"
                             : "border-gray-200 text-gray-600 bg-gray-50/80"

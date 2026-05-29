@@ -155,6 +155,58 @@ export default function CustomerReviews() {
           </motion.div>
         </div>
 
+        {/* ── Thumbnail strip — above card ── */}
+        <motion.div
+          className="mb-6 lg:hidden"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 sm:-mx-6 sm:px-6 py-1.5">
+            {reviews.map((r, i) => (
+              <button
+                key={r.id}
+                onClick={() => goTo(i, i > active ? 1 : -1)}
+                className="relative rounded-lg overflow-hidden shrink-0 group transition-all duration-200 active:scale-95 focus:outline-none"
+                style={{
+                  width: "calc(25% - 6px)",
+                  minWidth: 72,
+                  height: 52,
+                  boxShadow:
+                    i === active
+                      ? "0 0 0 2px #1F8C9E, 0 0 0 5px rgba(31,140,158,0.15), 0 4px 12px rgba(0,0,0,0.12)"
+                      : "0 0 0 1.5px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.08)",
+                }}
+              >
+                <Image
+                  src={r.cover}
+                  alt={r.destination}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  sizes="80px"
+                />
+                <div
+                  className="absolute inset-0 flex items-end px-1.5 pb-1"
+                  style={{ background: "linear-gradient(to top,rgba(0,0,0,0.75) 0%,transparent 65%)" }}
+                >
+                  <span className="text-white text-[9px] font-semibold leading-tight truncate w-full">
+                    {r.destination.split(",")[0]}
+                  </span>
+                </div>
+                {i === active && (
+                  <div className="absolute top-1 right-1">
+                    <span
+                      className="block w-1.5 h-1.5 rounded-full"
+                      style={{ background: "#1F8C9E", boxShadow: "0 0 0 2px rgba(31,140,158,0.3)" }}
+                    />
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
         {/* ── Immersive Hero Card ── */}
         <motion.div
           className="relative rounded-[24px] overflow-hidden"
@@ -336,26 +388,28 @@ export default function CustomerReviews() {
 
         {/* ── Thumbnail strip ── */}
         <motion.div
-          className="mt-8"
+          className="mt-8 hidden lg:block"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <p
-            className="text-center text-[10px] font-black uppercase tracking-[0.16em] mb-5"
+            className="text-center text-[10px] font-bold uppercase tracking-[0.14em] mb-4"
             style={{ color: "#C4C9D4" }}
           >
             Destinations Our Travellers Loved
           </p>
-          <div className="flex gap-2 xs:gap-3 justify-center flex-wrap">
+          <div className="flex gap-4 lg:gap-5 justify-center flex-nowrap">
             {reviews.map((r, i) => (
               <button
                 key={r.id}
                 onClick={() => goTo(i, i > active ? 1 : -1)}
-                className="relative rounded-2xl overflow-hidden shrink-0 group transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none w-24 h-16 sm:w-[126px] sm:h-[84px]"
+                className="relative rounded-xl overflow-hidden shrink-0 group transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none"
                 style={{
-                  outline: i === active ? "2.5px solid #1F8C9E" : "2.5px solid transparent",
+                  width: 152,
+                  height: 96,
+                  outline: i === active ? "2.5px solid #1F8C9E" : "1.5px solid rgba(0,0,0,0.10)",
                   outlineOffset: 3,
                   boxShadow:
                     i === active
@@ -368,14 +422,14 @@ export default function CustomerReviews() {
                   alt={r.destination}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="126px"
+                  sizes="152px"
                 />
                 {/* Name overlay */}
                 <div
                   className="absolute inset-0 flex items-end p-2"
                   style={{ background: "linear-gradient(to top,rgba(0,0,0,0.68) 0%,transparent 55%)" }}
                 >
-                  <span className="text-white text-[10px] font-bold leading-tight">
+                  <span className="text-white text-[11px] font-bold leading-tight">
                     {r.destination.split(",")[0]}
                   </span>
                 </div>

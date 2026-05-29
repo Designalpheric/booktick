@@ -52,9 +52,11 @@ export default function AboutPage() {
             <p className="text-gray-600 leading-relaxed mb-6">
               From beachside resorts in Goa to luxury overwater villas in Maldives, from the desert dunes of Rajasthan to the misty mountains of Ladakh — we&apos;ve helped over 10,000 families and solo travellers experience the world&apos;s most beautiful destinations.
             </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-full transition-colors">
-              Plan Your Trip With Us
-            </Link>
+            <div className="hidden lg:flex lg:justify-center">
+              <Link href="/contact" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-full transition-colors">
+                Plan Your Trip With Us
+              </Link>
+            </div>
           </div>
           <div className="relative h-56 xs:h-64 sm:h-80 lg:h-auto rounded-2xl overflow-hidden shadow-xl">
             <Image
@@ -65,6 +67,12 @@ export default function AboutPage() {
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
+        </div>
+        {/* Button after image — mobile/tablet only */}
+        <div className="lg:hidden mb-12 xs:mb-14 sm:mb-16 -mt-8 xs:-mt-10 sm:-mt-12 flex justify-center">
+          <Link href="/contact" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-full transition-colors">
+            Plan Your Trip With Us
+          </Link>
         </div>
 
         {/* Values — zig-zag timeline */}
